@@ -1,0 +1,5 @@
+name: pluginapi
+version: 1.0
+main: me.xra1ny.pluginapi.RPlugin
+api-version: 1.19
+
