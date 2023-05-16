@@ -3,7 +3,6 @@ package me.xra1ny.pluginapi.models.item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -44,7 +43,7 @@ public class ItemBuilder {
 
 //		Set custom Name is set
 		if(name != null)
-			meta.displayName(Component.text(name));
+			meta.setDisplayName(name);
 
 //		Set Enchantments if set
 		if(enchantments.size() > 0) {
@@ -66,11 +65,7 @@ public class ItemBuilder {
 
 //		Set Lore is set
 		if(lore.size() > 0) {
-			final List<Component> lore = new ArrayList<>();
-			for(String str : this.lore) {
-				lore.add(Component.text(str));
-			}
-			meta.lore(lore);
+			meta.setLore(lore);
 		}
 
 //		Set created ItemStack's ItemMeta

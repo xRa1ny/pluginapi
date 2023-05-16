@@ -68,7 +68,7 @@ public abstract class RItemStack extends ItemStack {
 
             final boolean result;
 
-            if(action.isLeftClick()) {
+            if(action.name().startsWith("LEFT_CLICK")) {
                 result = onLeftClick(e, user);
             }else {
                 result = onRightClick(e, user);

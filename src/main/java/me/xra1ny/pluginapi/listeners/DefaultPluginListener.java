@@ -1,6 +1,5 @@
 package me.xra1ny.pluginapi.listeners;
 
-import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.UserNotRegisteredException;
@@ -9,8 +8,6 @@ import me.xra1ny.pluginapi.models.menu.RPagedInventoryMenu;
 import me.xra1ny.pluginapi.models.scoreboard.GlobalScoreboard;
 import me.xra1ny.pluginapi.models.scoreboard.PerPlayerScoreboard;
 import me.xra1ny.pluginapi.models.user.RUser;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -20,6 +17,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -172,7 +170,7 @@ public final class DefaultPluginListener implements Listener {
 
                     // If the User clicks outside of Inventory Window, close it
                     if(event.getClickedInventory() == null) {
-                        user.getPlayer().closeInventory(InventoryCloseEvent.Reason.CANT_USE);
+                        user.getPlayer().closeInventory();
 
                         return;
                     }
@@ -206,14 +204,12 @@ public final class DefaultPluginListener implements Listener {
                     inventoryMenu.getOpenUsers().remove(user);
 
                     if(inventoryMenu.getPreviousMenu() != null) {
-                        if(event.getReason() == InventoryCloseEvent.Reason.PLAYER) {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    inventoryMenu.getPreviousMenu().open(user);
-                                }
-                            }.runTaskLater(RPlugin.getInstance(), 1L);
-                        }
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                inventoryMenu.getPreviousMenu().open(user);
+                            }
+                        }.runTaskLater(RPlugin.getInstance(), 1L);
                     }
 
                 }
@@ -289,7 +285,7 @@ public final class DefaultPluginListener implements Listener {
 //            RPlugin.getInstance().getDatabaseApiManager().getUserApi().getUserService().updateUser(dbUser);
 
 
-            user.getPlayer().sendPlayerListHeaderAndFooter(Component.text(ChatColor.BOLD + "RAINYMC.DE\n"), Component.text("\n"));
+            user.getPlayer().setPlayerListHeaderFooter(ChatColor.BOLD + "RAINYMC.DE\n", "\n");
 
 //        Hide all Vanished Players
             for (RUser vanished : RPlugin.getInstance().getUserManager().getInVanishMode()) {
@@ -298,11 +294,11 @@ public final class DefaultPluginListener implements Listener {
 
 //        Show Effect when joining Server
             user.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 90, Integer.MAX_VALUE));
-            user.getPlayer().playSound(user.getPlayer(), Sound.BLOCK_LEVER_CLICK, 1f, 1f);
-            user.getPlayer().playSound(user.getPlayer(), Sound.BLOCK_PORTAL_TRIGGER, 1f, 1f);
-            user.getPlayer().playSound(user.getPlayer(), Sound.BLOCK_PORTAL_TRAVEL, 1f, 1f);
+            user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.BLOCK_LEVER_CLICK, 1f, 1f);
+            user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 1f, 1f);
+            user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 1f, 1f);
 
-            event.joinMessage(null);
+            event.setJoinMessage(null);
         }catch(Exception e) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player join event handler!");
             e.printStackTrace();
@@ -327,7 +323,7 @@ public final class DefaultPluginListener implements Listener {
             }
 
             // Reset Users Tablist Custom Name
-            user.getPlayer().playerListName(user.getPlayer().name());
+            user.getPlayer().setPlayerListName(user.getPlayer().getName());
 
 //            final User dbUser = RPlugin.getInstance().getDatabaseApiManager().getUserApi().getUserService().getUser(user.getPlayer().getUniqueId());
 //            // dbUser will never be null at this Point
@@ -342,7 +338,7 @@ public final class DefaultPluginListener implements Listener {
             }
 
             RPlugin.getInstance().getUserManager().unregister(user);
-            event.quitMessage(null);
+            event.setQuitMessage(null);
         }catch(Exception e) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player quit event handler!");
             e.printStackTrace();
@@ -350,9 +346,13 @@ public final class DefaultPluginListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerPickupItem(@NotNull PlayerAttemptPickupItemEvent event) {
+    public void onPlayerPickupItem(@NotNull EntityPickupItemEvent event) {
+       if(!(event.getEntity() instanceof Player player)) {
+           return;
+       }
+
         try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
+            final RUser user = RPlugin.getInstance().getUserManager().get(player);
 
 //        Allow Event if User is in 'Build Mode'
             if(user.isInBuildMode()) {
@@ -365,12 +365,12 @@ public final class DefaultPluginListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerSendChatMessage(AsyncChatEvent event) {
+    public void onPlayerSendChatMessage(AsyncPlayerChatEvent event) {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
 
             if(RPlugin.getInstance().getUserInputWindowManager().get(user).size() > 0) {
-                RPlugin.getInstance().getUserInputWindowManager().get(user).get(0).getInputWindowHandler().onUserSendChatMessage(user, PlainTextComponentSerializer.plainText().serialize(event.message()));
+                RPlugin.getInstance().getUserInputWindowManager().get(user).get(0).getInputWindowHandler().onUserSendChatMessage(user, event.getMessage());
 
                 return;
             }
@@ -380,9 +380,9 @@ public final class DefaultPluginListener implements Listener {
 
                 for (RUser _user : RPlugin.getInstance().getUserManager().getUsers()) {
                     if (!_user.getIgnored().contains(user)) {
-                        _user.getPlayer().sendMessage(PlainTextComponentSerializer.plainText().serialize(user.getPlayer().displayName()) +
+                        _user.getPlayer().sendMessage(user.getPlayer().getDisplayName() +
                                 ChatColor.DARK_GRAY + " >> " +
-                                RPlugin.getInstance().getChatColor() + PlainTextComponentSerializer.plainText().serialize(event.message()));
+                                RPlugin.getInstance().getChatColor() + event.getMessage());
                     }
                 }
             }
@@ -399,7 +399,7 @@ public final class DefaultPluginListener implements Listener {
             if (RPlugin.getInstance().getMaintenanceManager().isEnabled()) {
                 if (!RPlugin.getInstance().getMaintenanceManager().getIgnoredUsers().stream()
                         .map(UUID::toString).toList().contains(event.getUniqueId().toString())) {
-                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, Component.text(RPlugin.getInstance().getMaintenanceManager().getMessage()));
+                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, RPlugin.getInstance().getMaintenanceManager().getMessage());
                 } else {
                     event.allow();
                 }

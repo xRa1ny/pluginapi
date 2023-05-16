@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.models.user.RUser;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -66,7 +65,7 @@ public class MaintenanceManager {
         // Kick all Users not permitted...
         for(RUser user : RPlugin.getInstance().getUserManager().getUsers()) {
             if(!this.ignoredUsers.contains(user.getPlayer().getUniqueId())) {
-                user.getPlayer().kick(Component.text(this.message), PlayerKickEvent.Cause.WHITELIST);
+                user.getPlayer().kickPlayer(this.message);
             }
         }
 

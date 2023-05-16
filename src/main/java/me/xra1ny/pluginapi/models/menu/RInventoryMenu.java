@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import me.xra1ny.pluginapi.models.item.ItemBuilder;
 import me.xra1ny.pluginapi.models.user.RUser;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -54,7 +53,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
                     .toItemStack();
             this.title = info.title();
             this.size = info.size();
-            this.inventory = Bukkit.createInventory(this, this.size, Component.text(this.title));
+            this.inventory = Bukkit.createInventory(this, this.size, this.title);
             this.previousMenu = previousMenu;
         }
     }
@@ -74,7 +73,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
 
         if(!this.background.equals(itemStack)) {
 //        Play Sound
-            player.playSound(player, Sound.BLOCK_LEVER_CLICK, .3f, 1f);
+            player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, .3f, 1f);
         }
 
         onClick(e, user);

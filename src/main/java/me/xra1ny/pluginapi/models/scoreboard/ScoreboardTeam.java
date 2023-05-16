@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.models.user.RUser;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
@@ -46,17 +45,17 @@ public final class ScoreboardTeam {
 
 //    TODO
     public void update() {
-        bukkitTeam.displayName(Component.text(name));
+        bukkitTeam.setDisplayName(name);
 
         bukkitTeam.setAllowFriendlyFire(friendlyFire);
         bukkitTeam.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisibles);
 
         if(prefix != null) {
-            bukkitTeam.prefix(Component.text(prefix));
+            bukkitTeam.setPrefix(prefix);
         }
 
         if(suffix != null) {
-            bukkitTeam.suffix(Component.text(suffix));
+            bukkitTeam.setSuffix(suffix);
         }
 
 

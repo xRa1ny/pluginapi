@@ -2,7 +2,6 @@ package me.xra1ny.pluginapi.models.scoreboard;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -33,11 +32,11 @@ final class ScoreboardContent {
         Objective objective = bukkitScoreboard.getObjective(ChatColor.stripColor(title));
 
         if(objective == null) {
-            objective = bukkitScoreboard.registerNewObjective(ChatColor.stripColor(title), "dummy", Component.text(title));
+            objective = bukkitScoreboard.registerNewObjective(ChatColor.stripColor(title), "dummy", title);
         }
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.displayName(Component.text(title));
+        objective.setDisplayName(title);
 
         for(String entry : bukkitScoreboard.getEntries()) {
             bukkitScoreboard.resetScores(entry);

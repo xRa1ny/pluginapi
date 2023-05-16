@@ -3,7 +3,6 @@ package me.xra1ny.pluginapi.models.hologram;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -100,9 +99,7 @@ public final class Hologram {
 
         if (displayItem != null) {
             final Item item = location.getWorld().dropItem(base.getEyeLocation(), new ItemStack(displayItem));
-            item.setCanMobPickup(false);
-            item.setUnlimitedLifetime(true);
-            item.setCanPlayerPickup(false);
+            item.setPickupDelay(Integer.MAX_VALUE);
             base.addPassenger(item);
         }
 
@@ -117,7 +114,7 @@ public final class Hologram {
 
             armorStand.setVisible(false);
             armorStand.setMarker(true);
-            armorStand.customName(Component.text(line));
+            armorStand.setCustomName(line);
             armorStand.setCustomNameVisible(true);
             baseLines.add(armorStand);
         }
