@@ -1,6 +1,7 @@
 package me.xra1ny.pluginapi;
 
 import lombok.Getter;
+import me.xra1ny.pluginapi.listeners.DefaultPluginConnectionListener;
 import me.xra1ny.pluginapi.listeners.DefaultPluginListener;
 import me.xra1ny.pluginapi.models.command.CommandManager;
 import me.xra1ny.pluginapi.models.item.ItemStackManager;
@@ -265,6 +266,9 @@ public abstract class RPlugin extends JavaPlugin {
 //            if(this.mysqlEnabled) {
 //                this.databaseApiManager = new DatabaseApiManager();
 //            }
+
+            getListenerManager().register(new DefaultPluginConnectionListener());
+
             getLogger().log(Level.INFO, "pluginapi successfully enabled!");
 
             try {

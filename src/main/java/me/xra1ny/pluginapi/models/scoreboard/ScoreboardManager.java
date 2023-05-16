@@ -7,7 +7,6 @@ import me.xra1ny.pluginapi.exceptions.PerPlayerScoreboardAlreadyRegisteredExcept
 import me.xra1ny.pluginapi.exceptions.PerPlayerScoreboardNotRegisteredException;
 import me.xra1ny.pluginapi.models.user.RUser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class ScoreboardManager {
         this.globalScoreboards.remove(globalScoreboard);
     }
 
-    @Nullable
+    @NotNull
     public List<GlobalScoreboard> getGlobalScoreboards(@NotNull RUser user) {
         return this.globalScoreboards.stream()
                 .filter(globalScoreboard -> globalScoreboard.getUsers().contains(user))
@@ -66,7 +65,7 @@ public class ScoreboardManager {
         this.perPlayerScoreboards.remove(perPlayerScoreboard);
     }
 
-    @Nullable
+    @NotNull
     public List<PerPlayerScoreboard> getPerPlayerScoreboards(@NotNull RUser user) {
         return this.perPlayerScoreboards.stream()
                 .filter(perPlayerScoreboard -> perPlayerScoreboard.getScoreboards().containsKey(user))
