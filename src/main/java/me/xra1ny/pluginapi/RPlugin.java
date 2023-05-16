@@ -265,9 +265,6 @@ public abstract class RPlugin extends JavaPlugin {
 //            if(this.mysqlEnabled) {
 //                this.databaseApiManager = new DatabaseApiManager();
 //            }
-
-            this.listenerManager.register(new DefaultPluginListener());
-
             getLogger().log(Level.INFO, "pluginapi successfully enabled!");
 
             try {
@@ -276,6 +273,9 @@ public abstract class RPlugin extends JavaPlugin {
                 saveConfig();
                 saveDefaultConfig();
                 getLogger().log(Level.INFO, "external plugin successfully enabled!");
+                getLogger().log(Level.INFO, "registering default listener...");
+                this.listenerManager.register(new DefaultPluginListener());
+                getLogger().log(Level.INFO, "default listener successfully registered!");
             }catch(Exception e) {
                 getLogger().log(Level.SEVERE, "error while enabling external plugin!");
                 e.printStackTrace();
