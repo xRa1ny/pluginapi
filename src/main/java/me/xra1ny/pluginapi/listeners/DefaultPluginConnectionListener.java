@@ -31,32 +31,14 @@ public class DefaultPluginConnectionListener implements Listener {
                 RPlugin.getInstance().getUserManager().register(user);
             }
 
-//            user.update(RPlugin.getInstance());
-//
-//            final User dbUser = RPlugin.getInstance().getDatabaseApiManager().getUserApi().getService(UserService.class).getDao(UserDao.class).getUser(user.getPlayer().getUniqueId());
-//
-//            if(dbUser == null) {
-//                RPlugin.getInstance().getDatabaseApiManager().getUserApi().getUserService().createUser(user.getPlayer().getUniqueId(), user.getPlayer().getName(), RPlugin.getInstance().getDatabaseApiManager().getPermissionApi().getService(PermissionService.class).getDao(PermissionDao.class).getPermissionGroup("player").getId(), Date.from(Instant.now()));
-//
-//                user.getPlayer().showTitle(Title.title(Component.text(RPlugin.getInstance().CHAT_COLOR + "Willkommen"), Component.text(ChatColor.YELLOW + user.getPlayer().getName())));
-//                user.getPlayer().sendMessage(RPlugin.getInstance().PREFIX + RPlugin.getInstance().CHAT_COLOR + "Willkommen auf RainyMC " + ChatColor.YELLOW + user.getPlayer().getName() + "!");
-//            }
-
-//            // dbUser will never be null at this point
-//            assert dbUser != null;
-//            dbUser.setLastOnline(Date.from(Instant.now()));
-//            dbUser.setOnline(true);
-//            RPlugin.getInstance().getDatabaseApiManager().getUserApi().getUserService().updateUser(dbUser);
-
-
             user.getPlayer().setPlayerListHeaderFooter(ChatColor.BOLD + "RAINYMC.DE\n", "\n");
 
-//        Hide all Vanished Players
+            // Hide all Vanished Players
             for (RUser vanished : RPlugin.getInstance().getUserManager().getInVanishMode()) {
                 user.getPlayer().hidePlayer(RPlugin.getInstance(), vanished.getPlayer());
             }
 
-//        Show Effect when joining Server
+            // Show Effect when joining Server
             user.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 90, Integer.MAX_VALUE));
             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.BLOCK_LEVER_CLICK, 1f, 1f);
             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 1f, 1f);
@@ -97,14 +79,7 @@ public class DefaultPluginConnectionListener implements Listener {
             // Reset Users Tablist Custom Name
             user.getPlayer().setPlayerListName(user.getPlayer().getName());
 
-//            final User dbUser = RPlugin.getInstance().getDatabaseApiManager().getUserApi().getUserService().getUser(user.getPlayer().getUniqueId());
-//            // dbUser will never be null at this Point
-//            assert dbUser != null;
-//            dbUser.setOnline(false);
-//            dbUser.setLastOnline(Date.from(Instant.now()));
-//            RPlugin.getInstance().getDatabaseApiManager().getUserApi().getUserService().updateUser(dbUser);
-
-//        Show all Players in Vanish
+            // Show all Players in Vanish
             for (RUser vanished : RPlugin.getInstance().getUserManager().getInVanishMode()) {
                 user.getPlayer().showPlayer(RPlugin.getInstance(), vanished.getPlayer());
             }

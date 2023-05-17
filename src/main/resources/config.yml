@@ -8,6 +8,10 @@
 #    |_|    |______\____/ \_____|_____|_| \_/_/    \_\_|   |_____|    #
 #                                                                     #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                     #
+#      REMOVING ANY MANDATORY KEYS MAY RESULT IN A BROKEN PLUGIN      #
+#                                                                     #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # OFF     - no messages will be logged
 # SEVERE  - all messages greater or equal to level 1000 will be logged
@@ -40,16 +44,16 @@ non-mysql:
   # when enabled the api will force to use these settings disregarding any mysql connection
   force: true
   # the prefix
-  prefix: §lMyAwesomePlugin
+  prefix: '§lMyAwesomePlugin  '
   # the chat color
   chat-color: GRAY
   # the message to display when performing an action without the required permissions
-  player-no-permission-error-message: §l§cFEHLER! §r§cDafür hast du keine Rechte!
+  player-no-permission-error-message: §l§cERROR! §r§cYou don't have permission to perform this action!
   # the message to display when executing a command that can only be executed by a player
-  only-player-command-error-message: §l§cFEHLER! §r§cDieser Command kann nur durch einen Spieler ausgeführt werden!
+  only-player-command-error-message: §l§cERROR! §r§cThis command can only be executed by a player!
   # the message to display when an error occurs while executing a command
-  command-error-message: §l§cFEHLER! §r§cCommand konnte nicht ausgeführt werden!
+  command-error-message: §l§cERROR! §r§cError while executing command!
   # the message to display when while executing a command has been given invalid args
-  command-invalid-args-error-message: §l§cFEHLER! §r§cUngültige Command Argumente!
+  command-invalid-args-error-message: §l§cERROR! §r§cInvalid arguments!
   # the message to display when an internal error occurs while executing a command
-  command-internal-error-message: §l§cFEHLER! §r§cInterner Fehler beim Ausführen des Commands!
+  command-internal-error-message: §l§cERROR! §r§cInternal error while executing command!

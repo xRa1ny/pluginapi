@@ -8,6 +8,7 @@
     <artifactId>pluginapi</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- DO NOT CHANGE! -->
     <build>
         <plugins>
             <plugin>
@@ -46,7 +47,9 @@
         </resources>
     </build>
 
+    <!-- YOU MIGHT WANT TO ADD ANOTHER REPO IF YOU'RE INTENDING TO USE A DIFFERENT VERSION OF THE BUKKITAPI (SPIGOT, PAPER, etc.) -->
     <repositories>
+        <!-- DO NOT CHANGE! -->
         <repository>
             <id>cloudnet-releases</id>
             <url>https://repo.cloudnetservice.eu/repository/releases/</url>
@@ -54,12 +57,15 @@
     </repositories>
 
     <dependencies>
+        <!-- CHANGE THIS IF YOU WANT TO USE A DIFFERENT VERSION OF THE BUKKITAPI -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
         </dependency>
 
+
+        <!-- DO NOT CHANGE! -->
         <dependency>
             <groupId>de.dytanic.cloudnet</groupId>
             <artifactId>cloudnet-driver</artifactId>
@@ -67,6 +73,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- DO NOT CHANGE! -->
         <dependency>
             <groupId>de.dytanic.cloudnet</groupId>
             <artifactId>cloudnet-bridge</artifactId>
@@ -74,6 +81,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- DO NOT CHANGE! -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -81,11 +89,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- DO NOT CHANGE! -->
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.10.2</version>
         </dependency>
-
     </dependencies>
 </project>

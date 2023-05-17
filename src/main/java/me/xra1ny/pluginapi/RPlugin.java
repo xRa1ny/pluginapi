@@ -22,7 +22,7 @@ import java.util.logging.Level;
 
 public abstract class RPlugin extends JavaPlugin {
     /**
-     * the singleton instance of this plugin
+     * the singleton instance access point of this plugin
      */
     @Getter(onMethod = @__(@NotNull))
     private static RPlugin instance;
@@ -262,10 +262,10 @@ public abstract class RPlugin extends JavaPlugin {
             this.itemStackManager = new ItemStackManager();
             this.scoreboardManager = new ScoreboardManager();
             this.userInputWindowManager = new UserInputWindowManager();
-             // TODO: add database support...
-//            if(this.mysqlEnabled) {
-//                this.databaseApiManager = new DatabaseApiManager();
-//            }
+            // TODO: add database support...
+            // if(this.mysqlEnabled) {
+                // this.databaseApiManager = new DatabaseApiManager();
+            // }
 
             getListenerManager().register(new DefaultPluginConnectionListener());
 

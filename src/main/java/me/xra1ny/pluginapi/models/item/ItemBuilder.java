@@ -36,22 +36,22 @@ public class ItemBuilder {
 
 	@NotNull
 	public ItemStack toItemStack() {
-//		Create ItemStack and ItemMeta
+		// Create ItemStack and ItemMeta
 		final ItemStack item = new ItemStack((type != null ? type : Material.COBBLESTONE), amount);
 		final ItemMeta meta = item.getItemMeta();
 
-//		Set custom Name is set
+		// Set custom Name is set
 		if(name != null)
 			meta.setDisplayName(name);
 
-//		Set Enchantments if set
+		// Set Enchantments if set
 		if(enchantments.size() > 0) {
 			for(Entry<Enchantment, Integer> entrySet : enchantments.entrySet()) {
 				meta.addEnchant(entrySet.getKey(), entrySet.getValue(), true);
 			}
 		}
 
-//		Set ItemFlags is set, else use all
+		// Set ItemFlags is set, else use all
 		if(itemFlags.size() > 0) {
 			for(ItemFlag itemFlag : itemFlags) {
 				meta.addItemFlags(itemFlag);
@@ -62,12 +62,12 @@ public class ItemBuilder {
 			}
 		}
 
-//		Set Lore is set
+		// Set Lore is set
 		if(lore.size() > 0) {
 			meta.setLore(lore);
 		}
 
-//		Set created ItemStack's ItemMeta
+		// Set created ItemStack's ItemMeta
 		item.setItemMeta(meta);
 
 		return item;

@@ -2,14 +2,10 @@ package me.xra1ny.pluginapi.listeners;
 
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
-import me.xra1ny.pluginapi.exceptions.UserNotRegisteredException;
 import me.xra1ny.pluginapi.models.menu.RInventoryMenu;
 import me.xra1ny.pluginapi.models.menu.RPagedInventoryMenu;
-import me.xra1ny.pluginapi.models.scoreboard.GlobalScoreboard;
-import me.xra1ny.pluginapi.models.scoreboard.PerPlayerScoreboard;
 import me.xra1ny.pluginapi.models.user.RUser;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,8 +18,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,11 +31,7 @@ public final class DefaultPluginListener implements Listener {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
 
-//            for(RUserInteractionListener listener : RPlugin.getInstance().getListenerManager().get(RUserInteractionListener.class)) {
-//                listener.onUserPlaceBlock(event, user);
-//            }
-
-//        Allow Event if User is in 'Build Mode'
+            // Allow Event if User is in 'Build Mode'
             if(user.isInBuildMode()) {
                 event.setCancelled(false);
             }
@@ -56,7 +46,7 @@ public final class DefaultPluginListener implements Listener {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
 
-//        Allow Event if User is in 'Build Mode'
+            // Allow Event if User is in 'Build Mode'
             if(user.isInBuildMode()) {
                 event.setCancelled(false);
             }
@@ -72,7 +62,7 @@ public final class DefaultPluginListener implements Listener {
             if(event.getEntity() instanceof Player) {
                 final RUser user = RPlugin.getInstance().getUserManager().get((Player) event.getEntity());
 
-//        Allow Event if User is in 'Build Mode'
+                // Allow Event if User is in 'Build Mode'
                 if(user.isInBuildMode()) {
                     event.setCancelled(false);
                 }
@@ -94,7 +84,7 @@ public final class DefaultPluginListener implements Listener {
                     damager = RPlugin.getInstance().getUserManager().get((Player) event.getEntity());
                 }
 
-//        Allow Event if User is in 'Build Mode'
+                // Allow Event if User is in 'Build Mode'
                 if(user.isInBuildMode()) {
                     event.setCancelled(false);
                 }
@@ -110,7 +100,7 @@ public final class DefaultPluginListener implements Listener {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
 
-//        Allow Event if User is in 'Build Mode'
+            // Allow Event if User is in 'Build Mode'
             if(user.isInBuildMode()) {
                 event.setCancelled(false);
             }
@@ -125,7 +115,7 @@ public final class DefaultPluginListener implements Listener {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
 
-//        Allow Event if User is in 'Build Mode'
+            // Allow Event if User is in 'Build Mode'
             if(user.isInBuildMode()) {
                 event.setCancelled(false);
             }
@@ -180,7 +170,7 @@ public final class DefaultPluginListener implements Listener {
                 }
             }
 
-//        Allow Event if User is in 'Build Mode'
+            // Allow Event if User is in 'Build Mode'
             if(user.isInBuildMode()) {
                 event.setCancelled(false);
             }
@@ -265,7 +255,7 @@ public final class DefaultPluginListener implements Listener {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get(player);
 
-//        Allow Event if User is in 'Build Mode'
+            // Allow Event if User is in 'Build Mode'
             if(user.isInBuildMode()) {
                 event.setCancelled(false);
             }

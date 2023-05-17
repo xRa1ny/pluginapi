@@ -68,17 +68,17 @@ public final class Hologram {
     }
 
     public void remove() {
-//        Remove all Passengers from Base
+        // Remove all Passengers from Base
         for (Entity entity : base.getPassengers()) {
             entity.remove();
         }
 
-//        Remove all Lines
+        // Remove all Lines
         for (ArmorStand armorStand : baseLines) {
             armorStand.remove();
         }
 
-//        Remove Base
+        // Remove Base
         base.remove();
     }
 

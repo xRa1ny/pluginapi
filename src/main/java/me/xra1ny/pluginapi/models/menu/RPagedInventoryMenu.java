@@ -17,14 +17,14 @@ public abstract class RPagedInventoryMenu extends RInventoryMenu {
     protected abstract void onPageChange(int page);
 
     public final void setPage(int page) {
-//        Validate page
+        // Validate page
         if(page <= 0 || page == Integer.MAX_VALUE) {
             return;
         }
 
-//        Set Page
+        // Set Page
         this.page = page;
-//        Call User defined Method
+        // Call User defined Method
         onPageChange(page);
     }
 }

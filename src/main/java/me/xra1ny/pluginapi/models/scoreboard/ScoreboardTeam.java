@@ -43,7 +43,7 @@ public final class ScoreboardTeam {
         bukkitTeam = scoreboard.getBukkitScoreboard().registerNewTeam(ChatColor.stripColor(name));
     }
 
-//    TODO
+    // TODO
     public void update() {
         bukkitTeam.setDisplayName(name);
 
@@ -59,7 +59,7 @@ public final class ScoreboardTeam {
         }
 
 
-//        Update all Options
+        // Update all Options
         for(Map.Entry entry : options.entrySet()) {
             final Team.Option option = (Team.Option) entry.getKey();
             final Team.OptionStatus status = (Team.OptionStatus) entry.getValue();
@@ -67,13 +67,13 @@ public final class ScoreboardTeam {
             bukkitTeam.setOption(option, status);
         }
 
-//        Clear all Members
+        // Clear all Members
         final Set<String> entries = bukkitTeam.getEntries();
         for(String entry : entries) {
             bukkitTeam.removeEntry(entry);
         }
 
-//        Add new Members
+        // Add new Members
         for(RUser user : members) {
             bukkitTeam.addPlayer(user.getPlayer());
         }

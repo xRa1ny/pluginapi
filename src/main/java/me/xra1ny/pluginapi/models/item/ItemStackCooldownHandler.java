@@ -30,10 +30,10 @@ public class ItemStackCooldownHandler extends RRepeatableTask {
                     int cooldown = entry.getValue();
 
                     for(int i = 0; i < 50; i++) {
-//                    Replace old Value
+                        // Replace old Value
                         itemStack.getCooldownQueue().put(user, cooldown-=1);
 
-//                    Validate new Value
+                        // Validate new Value
                         if(cooldown <= 0) {
                             itemStack.getCooldownQueue().remove(user);
                             itemStack.onCooldownExpire(user);

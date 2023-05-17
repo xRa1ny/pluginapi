@@ -72,7 +72,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
         final org.bukkit.inventory.ItemStack itemStack = e.getCurrentItem();
 
         if(!this.background.equals(itemStack)) {
-//        Play Sound
+            // Play Sound
             player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, .3f, 1f);
         }
 
@@ -94,7 +94,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
             return;
         }
 
-//        Open the created Inventory for the specified Player
+        // Open the created Inventory for the specified Player
         user.getPlayer().openInventory(this.inventory);
 
         this.openUsers.add(user);

@@ -29,12 +29,13 @@ public final class HologramManager {
 
     public HologramManager() {
         configFile = new File(RPlugin.getInstance().getDataFolder(), "holograms.yml");
-//        Save default Hologram Config File to Plugins Directory
+        // Save default Hologram Config File to Plugins Directory
         RPlugin.getInstance().saveResource(configFile.getName(), false);
-//        Load default Hologram Config
+
+        // Load default Hologram Config
         config = YamlConfiguration.loadConfiguration(configFile);
 
-//        Attempt to load all Holograms from Config
+        // Attempt to load all Holograms from Config
         loadFromConfig();
     }
 
@@ -62,13 +63,13 @@ public final class HologramManager {
             final double y = location.getDouble("y");
             final double z = location.getDouble("z");
 
-//            Skip Hologram Creation if Values are null
+            // Skip Hologram Creation if Values are null
             if(name == null || id == -1 || lines == null || world == null || x == 0 || y == 0 || z == 0)
                 continue;
 
             final Location loc = new Location(Bukkit.getWorld(world), x, y, z);
 
-//            Attempt to create the loaded Hologram from Config Information...
+            // Attempt to create the loaded Hologram from Config Information...
             final Hologram hologram = createHologram(id, name, lines, loc, material);
             hologram.update();
         }
