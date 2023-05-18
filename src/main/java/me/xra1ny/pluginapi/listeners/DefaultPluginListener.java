@@ -9,15 +9,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,105 +23,6 @@ import java.util.logging.Level;
 
 @Slf4j
 public final class DefaultPluginListener implements Listener {
-    @EventHandler
-    public void onPlayerPlaceBlock(@NotNull BlockPlaceEvent event) {
-        try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
-
-            // Allow Event if User is in 'Build Mode'
-            if(user.isInBuildMode()) {
-                event.setCancelled(false);
-            }
-        }catch(Exception e) {
-            RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default block place event handler!");
-            e.printStackTrace();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerBreakBlock(@NotNull BlockBreakEvent event) {
-        try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
-
-            // Allow Event if User is in 'Build Mode'
-            if(user.isInBuildMode()) {
-                event.setCancelled(false);
-            }
-        }catch(Exception e) {
-            RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default block break event handler!");
-            e.printStackTrace();
-        }
-    }
-
-    @EventHandler
-    public void onEntityDamage(@NotNull EntityDamageEvent event) {
-        try {
-            if(event.getEntity() instanceof Player) {
-                final RUser user = RPlugin.getInstance().getUserManager().get((Player) event.getEntity());
-
-                // Allow Event if User is in 'Build Mode'
-                if(user.isInBuildMode()) {
-                    event.setCancelled(false);
-                }
-            }
-        }catch(Exception e) {
-            RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default entity damage event handler!");
-            e.printStackTrace();
-        }
-    }
-
-    @EventHandler
-    public void onEntityDamageByEntity(@NotNull EntityDamageByEntityEvent event) {
-        try {
-            if(event.getDamager() instanceof Player) {
-                RUser user = RPlugin.getInstance().getUserManager().get((Player) event.getDamager());
-                RUser damager = null;
-
-                if(event.getEntity() instanceof Player) {
-                    damager = RPlugin.getInstance().getUserManager().get((Player) event.getEntity());
-                }
-
-                // Allow Event if User is in 'Build Mode'
-                if(user.isInBuildMode()) {
-                    event.setCancelled(false);
-                }
-            }
-        }catch(Exception e) {
-            RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default entity damage by entity event handler!");
-            e.printStackTrace();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerDropItem(@NotNull PlayerDropItemEvent event) {
-        try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
-
-            // Allow Event if User is in 'Build Mode'
-            if(user.isInBuildMode()) {
-                event.setCancelled(false);
-            }
-        }catch(Exception e) {
-            RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player drop item event handler!");
-            e.printStackTrace();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerConsumeItem(@NotNull PlayerItemConsumeEvent event) {
-        try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
-
-            // Allow Event if User is in 'Build Mode'
-            if(user.isInBuildMode()) {
-                event.setCancelled(false);
-            }
-        }catch(Exception e) {
-            RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player item consume event handler!");
-            e.printStackTrace();
-        }
-    }
-
     @EventHandler
     public void onPlayerOpenInventory(@NotNull InventoryOpenEvent event) {
         try {
@@ -169,11 +67,6 @@ public final class DefaultPluginListener implements Listener {
                     event.setCancelled(true);
                 }
             }
-
-            // Allow Event if User is in 'Build Mode'
-            if(user.isInBuildMode()) {
-                event.setCancelled(false);
-            }
         }catch(Exception e) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default inventory click event handler!");
             e.printStackTrace();
@@ -217,11 +110,6 @@ public final class DefaultPluginListener implements Listener {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
 
-            // Allow Event if User is in 'Build Mode'
-            if(user.isInBuildMode()) {
-                event.setCancelled(false);
-            }
-
             if (event.getItem() == null) {
                 return;
             }
@@ -232,35 +120,6 @@ public final class DefaultPluginListener implements Listener {
                     .findFirst().ifPresent(itemStack -> itemStack.handleInteraction(event, user));
         }catch(Exception e) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player interact event handler!");
-            e.printStackTrace();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerLoginServer(@NotNull PlayerLoginEvent event) {
-        try {
-            event.getPlayer().setOp(false);
-        } catch (Exception e) {
-            RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player login event handler!");
-            e.printStackTrace();
-        }
-    }
-
-    @EventHandler
-    public void onPlayerPickupItem(@NotNull EntityPickupItemEvent event) {
-       if(!(event.getEntity() instanceof Player player)) {
-           return;
-       }
-
-        try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(player);
-
-            // Allow Event if User is in 'Build Mode'
-            if(user.isInBuildMode()) {
-                event.setCancelled(false);
-            }
-        }catch(Exception e) {
-            RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player attempt pickup item event handler!");
             e.printStackTrace();
         }
     }

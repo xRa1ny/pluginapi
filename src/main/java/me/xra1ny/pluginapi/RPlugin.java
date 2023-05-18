@@ -3,6 +3,7 @@ package me.xra1ny.pluginapi;
 import lombok.Getter;
 import me.xra1ny.pluginapi.listeners.DefaultPluginConnectionListener;
 import me.xra1ny.pluginapi.listeners.DefaultPluginListener;
+import me.xra1ny.pluginapi.models.color.HexCodeManager;
 import me.xra1ny.pluginapi.models.command.CommandManager;
 import me.xra1ny.pluginapi.models.item.ItemStackManager;
 import me.xra1ny.pluginapi.models.listener.ListenerManager;
@@ -21,6 +22,8 @@ import java.io.File;
 import java.util.logging.Level;
 
 public abstract class RPlugin extends JavaPlugin {
+    private boolean started = false;
+
     /**
      * the singleton instance access point of this plugin
      */
@@ -145,6 +148,12 @@ public abstract class RPlugin extends JavaPlugin {
     private UserInputWindowManager userInputWindowManager;
 
     /**
+     * the hex code manager responsible for creating strings with color gradients of this plugin
+     */
+    @Getter(onMethod = @__(@NotNull))
+    private HexCodeManager hexCodeManager;
+
+    /**
      * the global player identifier used in strings
      */
     public final String PLAYER_IDENTIFIER = "%PLAYER%";
@@ -239,6 +248,8 @@ public abstract class RPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            this.started = true;
+
             getLogger().log(Level.INFO, "enabling pluginapi...");
 
             RPlugin.instance = this;
@@ -262,6 +273,8 @@ public abstract class RPlugin extends JavaPlugin {
             this.itemStackManager = new ItemStackManager();
             this.scoreboardManager = new ScoreboardManager();
             this.userInputWindowManager = new UserInputWindowManager();
+            this.hexCodeManager = new HexCodeManager();
+
             // TODO: add database support...
             // if(this.mysqlEnabled) {
                 // this.databaseApiManager = new DatabaseApiManager();

@@ -123,37 +123,4 @@ public class UserManager {
 
         return get(player);
     }
-
-    /**
-     * retrieves a list of all users currently in "buildmode"
-     * @return all users currently in "buildmode"
-     * @param <T> all users currently in "buildmode"
-     */
-    public <T extends RUser> List<T> getInBuildMode() {
-        return (List<T>) this.users.stream()
-                .filter(RUser::isInBuildMode)
-                .toList();
-    }
-
-    /**
-     * retrieves a list of all users currently in "flymode"
-     * @return all users currently in "flymode"
-     * @param <T> all users currently in "flymode"
-     */
-    public <T extends RUser> List<T> getInFlyMode() {
-        return (List<T>) this.users.stream()
-                .filter(RUser::isInFlyMode)
-                .toList();
-    }
-
-    /**
-     * retrieves a list of all users currently in "vanishmode"
-     * @return all users currently in "vanishmode"
-     * @param <T> all users currently in "vanishmode"
-     */
-    public <T extends RUser> List<T> getInVanishMode() {
-        return (List<T>) this.users.stream()
-                .filter(RUser::isInVanishMode)
-                .toList();
-    }
 }

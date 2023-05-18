@@ -3,6 +3,7 @@ package me.xra1ny.pluginapi.models.item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -40,9 +41,11 @@ public class ItemBuilder {
 		final ItemStack item = new ItemStack((type != null ? type : Material.COBBLESTONE), amount);
 		final ItemMeta meta = item.getItemMeta();
 
-		// Set custom Name is set
-		if(name != null)
-			meta.setDisplayName(name);
+		if(this.name == null || this.name.isBlank()) {
+			meta.setDisplayName(ChatColor.RESET.toString());
+		}else {
+			meta.setDisplayName(this.name);
+		}
 
 		// Set Enchantments if set
 		if(enchantments.size() > 0) {

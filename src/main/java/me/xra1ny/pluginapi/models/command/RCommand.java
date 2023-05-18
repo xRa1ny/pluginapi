@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,11 +61,9 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
     @Override
     public final boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(!this.permission.isBlank()) {
-            if(!this.permission.isBlank()) {
-                if(!sender.hasPermission(this.permission)) {
-                    sender.sendMessage(RPlugin.getInstance().getPlayerNoPermissionErrorMessage());
-                    return true;
-                }
+            if(!sender.hasPermission(this.permission)) {
+                sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getPlayerNoPermissionErrorMessage());
+                return true;
             }
         }
 
@@ -118,15 +117,15 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
             }
 
            if(commandReturnState == CommandReturnState.ERROR) {
-               sender.sendMessage(RPlugin.getInstance().getCommandErrorMessage());
+               sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandErrorMessage());
             }else if(commandReturnState == CommandReturnState.INVALID_ARGS) {
-               sender.sendMessage(RPlugin.getInstance().getCommandInvalidArgsErrorMessage());
+               sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandInvalidArgsErrorMessage());
             }
 
            return true;
         }catch(Exception e) {
-            sender.sendMessage(RPlugin.getInstance().getCommandInternalErrorMessage());
-            sender.sendMessage(e.toString());
+            sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandInternalErrorMessage());
+            sender.sendMessage(ChatColor.RED.toString() + e);
         }
 
         return true;

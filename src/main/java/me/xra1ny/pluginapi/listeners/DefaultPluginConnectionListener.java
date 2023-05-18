@@ -33,11 +33,6 @@ public class DefaultPluginConnectionListener implements Listener {
 
             user.getPlayer().setPlayerListHeaderFooter(ChatColor.BOLD + "RAINYMC.DE\n", "\n");
 
-            // Hide all Vanished Players
-            for (RUser vanished : RPlugin.getInstance().getUserManager().getInVanishMode()) {
-                user.getPlayer().hidePlayer(RPlugin.getInstance(), vanished.getPlayer());
-            }
-
             // Show Effect when joining Server
             user.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 90, Integer.MAX_VALUE));
             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.BLOCK_LEVER_CLICK, 1f, 1f);
@@ -78,11 +73,6 @@ public class DefaultPluginConnectionListener implements Listener {
 
             // Reset Users Tablist Custom Name
             user.getPlayer().setPlayerListName(user.getPlayer().getName());
-
-            // Show all Players in Vanish
-            for (RUser vanished : RPlugin.getInstance().getUserManager().getInVanishMode()) {
-                user.getPlayer().showPlayer(RPlugin.getInstance(), vanished.getPlayer());
-            }
 
             RPlugin.getInstance().getUserManager().unregister(user);
             event.setQuitMessage(null);

@@ -47,7 +47,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
             throw new RuntimeException(new ClassNotAnnotatedException(getClass(), InventoryMenuInfo.class));
         }else {
             this.background = ItemBuilder.builder()
-                    .name("")
+                    .name(null)
                     .type(info.background())
                     .build()
                     .toItemStack();

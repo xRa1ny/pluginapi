@@ -1,7 +1,6 @@
 package me.xra1ny.pluginapi.models.user;
 
 import lombok.Getter;
-import me.xra1ny.pluginapi.RPlugin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,9 +19,6 @@ public class RUser {
     @Getter(onMethod = @__(@NotNull))
     private final Date creation = Date.from(Instant.now());
 
-    @Getter
-    private boolean inFlyMode, inVanishMode, inBuildMode;
-
     /**
      * the list of all users this user ignores
      */
@@ -31,47 +27,5 @@ public class RUser {
 
     public RUser(@NotNull Player player) {
         this.player = player;
-    }
-
-    public void setInBuildMode(boolean inBuildMode) {
-        if(this.inBuildMode == inBuildMode) {
-            return;
-        }
-
-        if(inBuildMode) {
-            this.player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Du hast den Baumodus betreten!");
-        }else {
-            this.player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Du hast den Baumodus verlassen!");
-        }
-
-        this.inBuildMode = inBuildMode;
-    }
-
-    public void setInFlyMode(boolean inFlyMode) {
-        if(this.inFlyMode == inFlyMode) {
-            return;
-        }
-
-        if(inFlyMode) {
-            this.player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Du hast den Flugmodus betreten!");
-        }else {
-            this.player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Du hast den Flugmodus verlassen!");
-        }
-
-        this.inFlyMode = inFlyMode;
-    }
-
-    public void setInVanishMode(boolean inVanishMode) {
-        if(this.inVanishMode == inVanishMode) {
-            return;
-        }
-
-        if(inVanishMode) {
-            this.player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Du hast den Vanishmodus betreten!");
-        }else {
-            this.player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Du hast den Vanishmodus verlassen!");
-        }
-
-        this.inVanishMode = inVanishMode;
     }
 }
