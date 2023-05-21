@@ -1,8 +1,11 @@
 package me.xra1ny.pluginapi.models.user;
 
 import lombok.Getter;
+import lombok.Setter;
+import me.xra1ny.pluginapi.RPlugin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,6 +22,10 @@ public class RUser {
     @Getter(onMethod = @__(@NotNull))
     private final Date creation = Date.from(Instant.now());
 
+    @Getter
+    @Setter
+    private long timeout;
+
     /**
      * the list of all users this user ignores
      */
@@ -27,5 +34,6 @@ public class RUser {
 
     public RUser(@NotNull Player player) {
         this.player = player;
+        this.timeout = RPlugin.getInstance().getUserManager().getUserTimeoutHandler().getUserTimeout();
     }
 }

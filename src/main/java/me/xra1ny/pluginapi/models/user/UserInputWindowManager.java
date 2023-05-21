@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.xra1ny.pluginapi.exceptions.UserInputWindowAlreadyRegisteredException;
 import me.xra1ny.pluginapi.exceptions.UserInputWindowNotRegisteredException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +56,11 @@ public final class UserInputWindowManager {
      * @param user the user
      * @return all user input windows that are currently open for the specified user
      */
-    @NotNull
-    public List<UserInputWindow> get(@NotNull RUser user) {
+    @Nullable
+    public UserInputWindow get(@NotNull RUser user) {
         return this.userInputWindows.stream()
                 .filter(userInputWindow -> userInputWindow.getUsers().containsKey(user))
-                .toList();
+                .findFirst()
+                .orElse(null);
     }
 }

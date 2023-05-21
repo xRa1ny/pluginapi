@@ -57,3 +57,5 @@ non-mysql:
   command-invalid-args-error-message: §l§cERROR! §r§cInvalid arguments!
   # the message to display when an internal error occurs while executing a command
   command-internal-error-message: §l§cERROR! §r§cInternal error while executing command!
+  # the time when a user unregisters after a certain time of disconnection
+  user-timeout: 20

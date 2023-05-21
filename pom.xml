@@ -60,7 +60,7 @@
         <!-- CHANGE THIS IF YOU WANT TO USE A DIFFERENT VERSION OF THE BUKKITAPI -->
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
         </dependency>
 

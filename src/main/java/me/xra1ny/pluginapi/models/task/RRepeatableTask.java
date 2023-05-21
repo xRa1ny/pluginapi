@@ -9,13 +9,15 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.logging.Level;
+
 @Slf4j
 public abstract class RRepeatableTask {
     /**
      * the bukkit runnable of this repeatable task defining its logic
      */
     @Getter(onMethod = @__(@NotNull))
-    private final BukkitRunnable runnable;
+    private BukkitRunnable runnable;
 
     /**
      * the bukkit task of this repeatable task
@@ -34,25 +36,28 @@ public abstract class RRepeatableTask {
 
         if(info == null) {
             throw new ClassNotAnnotatedException(getClass(), RepeatableTaskInfo.class);
-        }else {
-            this.interval = info.interval();
-
-            this.runnable = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    tick();
-                }
-            };
         }
+
+        this.interval = info.interval();
+
+        run();
     }
 
     public RRepeatableTask(int interval) {
         this.interval = interval;
+        run();
+    }
 
+    private void run() {
         this.runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                tick();
+                try {
+                    tick();
+                } catch (Exception ex) {
+                    RPlugin.getInstance().getLogger().log(Level.INFO, "exception in repeatable task " + this);
+                    ex.printStackTrace();
+                }
             }
         };
     }
@@ -84,5 +89,5 @@ public abstract class RRepeatableTask {
     /**
      * called whenever the interval of this repeatable task expires
      */
-    public abstract void tick();
+    public abstract void tick() throws Exception;
 }

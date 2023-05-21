@@ -5,7 +5,7 @@ import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.models.menu.RInventoryMenu;
 import me.xra1ny.pluginapi.models.menu.RPagedInventoryMenu;
 import me.xra1ny.pluginapi.models.user.RUser;
-import org.bukkit.ChatColor;
+import me.xra1ny.pluginapi.models.user.UserInputWindow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,16 +24,16 @@ import java.util.logging.Level;
 @Slf4j
 public final class DefaultPluginListener implements Listener {
     @EventHandler
-    public void onPlayerOpenInventory(@NotNull InventoryOpenEvent event) {
+    public void onPlayerOpenInventory(@NotNull InventoryOpenEvent e) {
         try {
-            final RUser user = RPlugin.getInstance().getUserManager().get((Player) event.getPlayer());
+            final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getPlayer());
 
-            if (event.getInventory().getHolder() == null) {
+            if (e.getInventory().getHolder() == null) {
                 return;
             }
 
-            if (event.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
-                inventoryMenu.onOpen(event, user);
+            if (e.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
+                inventoryMenu.onOpen(e, user);
 
                 inventoryMenu.setBackground();
                 inventoryMenu.setItems(user);
@@ -42,47 +42,47 @@ public final class DefaultPluginListener implements Listener {
                     pagedInventoryMenu.setPage(1);
                 }
             }
-        }catch(Exception e) {
+        }catch(Exception ex) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default inventory open event handler!");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 
     @EventHandler
-    public void onPlayerClickInInventory(@NotNull InventoryClickEvent event) {
+    public void onPlayerClickInInventory(@NotNull InventoryClickEvent e) {
         try {
-            final RUser user = RPlugin.getInstance().getUserManager().get((Player) event.getWhoClicked());
+            final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getWhoClicked());
 
-            if (event.getInventory().getHolder() != null) {
-                if (event.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
+            if (e.getInventory().getHolder() != null) {
+                if (e.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
 
                     // If the User clicks outside of Inventory Window, close it
-                    if(event.getClickedInventory() == null) {
+                    if(e.getClickedInventory() == null) {
                         user.getPlayer().closeInventory();
 
                         return;
                     }
 
-                    inventoryMenu.handleClick(event, user);
-                    event.setCancelled(true);
+                    inventoryMenu.handleClick(e, user);
+                    e.setCancelled(true);
                 }
             }
-        }catch(Exception e) {
+        }catch(Exception ex) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default inventory click event handler!");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 
     @EventHandler
-    public void onPlayerCloseInventory(@NotNull InventoryCloseEvent event) {
+    public void onPlayerCloseInventory(@NotNull InventoryCloseEvent e) {
         try {
-            final RUser user = RPlugin.getInstance().getUserManager().get((Player) event.getPlayer());
+            final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getPlayer());
 
-            if (event.getInventory().getHolder() == null) {
+            if (e.getInventory().getHolder() == null) {
                 return;
             }
 
-            if (event.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
+            if (e.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
                 if(inventoryMenu.getOpenUsers().contains(user)) {
                     inventoryMenu.getOpenUsers().remove(user);
 
@@ -97,76 +97,66 @@ public final class DefaultPluginListener implements Listener {
 
                 }
 
-                inventoryMenu.onClose(event, user);
+                inventoryMenu.onClose(e, user);
             }
-        }catch(Exception e) {
+        }catch(Exception ex) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default inventory close event handler!");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 
     @EventHandler
-    public void onPlayerInteract(@NotNull PlayerInteractEvent event) {
+    public void onPlayerInteract(@NotNull PlayerInteractEvent e) {
         try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
+            final RUser user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
 
-            if (event.getItem() == null) {
+            if (e.getItem() == null) {
                 return;
             }
 
             RPlugin.getInstance().getItemStackManager().getItems()
                     .stream()
-                    .filter(i -> i.toString().equals(event.getItem().toString()))
-                    .findFirst().ifPresent(itemStack -> itemStack.handleInteraction(event, user));
-        }catch(Exception e) {
+                    .filter(i -> i.toString().equals(e.getItem().toString()))
+                    .findFirst().ifPresent(itemStack -> itemStack.handleInteraction(e, user));
+        }catch(Exception ex) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player interact event handler!");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 
     @EventHandler
-    public void onPlayerSendChatMessage(AsyncPlayerChatEvent event) {
+    public void onPlayerSendChatMessage(AsyncPlayerChatEvent e) {
         try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(event.getPlayer());
+            final RUser user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
+            final UserInputWindow userInputWindow = RPlugin.getInstance().getUserInputWindowManager().get(user);
 
-            if(RPlugin.getInstance().getUserInputWindowManager().get(user).size() > 0) {
-                RPlugin.getInstance().getUserInputWindowManager().get(user).get(0).getInputWindowHandler().onUserSendChatMessage(user, event.getMessage());
-
+            if(userInputWindow == null) {
                 return;
             }
 
-            if(!event.isCancelled()) {
-                event.setCancelled(true);
-
-                for (RUser _user : RPlugin.getInstance().getUserManager().getUsers()) {
-                    if (!_user.getIgnored().contains(user)) {
-                        _user.getPlayer().sendMessage(user.getPlayer().getDisplayName() +
-                                ChatColor.DARK_GRAY + " >> " +
-                                RPlugin.getInstance().getChatColor() + event.getMessage());
-                    }
-                }
-            }
-        }catch(Exception e) {
+            e.setCancelled(true);
+            userInputWindow.getInputWindowHandler().onUserSendChatMessage(user, e.getMessage());
+        }catch(Exception ex) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default async chat event handler!");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 
     @EventHandler
-    public void onPlayerPreLogin(@NotNull AsyncPlayerPreLoginEvent event) {
+    public void onPlayerPreLogin(@NotNull AsyncPlayerPreLoginEvent e) {
         try {
             // If the Maintenances are enabled on this Server, check whether the current User is allowed to Join or not
             if (RPlugin.getInstance().getMaintenanceManager().isEnabled()) {
                 if (!RPlugin.getInstance().getMaintenanceManager().getIgnoredUsers().stream()
-                        .map(UUID::toString).toList().contains(event.getUniqueId().toString())) {
-                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, RPlugin.getInstance().getMaintenanceManager().getMessage());
+                        .map(UUID::toString).toList().contains(e.getUniqueId().toString())) {
+                    e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, RPlugin.getInstance().getMaintenanceManager().getMessage());
                 } else {
-                    event.allow();
+                    e.allow();
                 }
             }
-        }catch(Exception e) {
+        }catch(Exception ex) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default async player pre login event handler!");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 }

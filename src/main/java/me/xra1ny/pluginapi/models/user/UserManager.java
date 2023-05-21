@@ -24,8 +24,13 @@ public class UserManager {
     @Getter(onMethod = @__(@NotNull))
     private final List<RUser> users = new ArrayList<>();
 
-    public UserManager(@NotNull Class<? extends RUser> userClass) {
+    @Getter(onMethod = @__(@NotNull))
+    private final UserTimeoutHandler userTimeoutHandler;
+
+    public UserManager(@NotNull Class<? extends RUser> userClass, long userTimeout) {
         this.userClass = userClass;
+        this.userTimeoutHandler = new UserTimeoutHandler(userTimeout);;
+        this.userTimeoutHandler.start();
     }
 
     /**
@@ -44,6 +49,7 @@ public class UserManager {
      */
     public void register(@NotNull RUser user) throws UserAlreadyRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "registering user " + user + "...");
+
         if(isRegistered(user)) {
             throw new UserAlreadyRegisteredException(user);
         }
@@ -59,6 +65,7 @@ public class UserManager {
      */
     public void unregister(@NotNull RUser user) throws UserNotRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "unregistering user " + user + "...");
+
         if(!isRegistered(user)) {
             throw new UserNotRegisteredException(user);
         }
@@ -76,16 +83,7 @@ public class UserManager {
      */
     @Nullable
     public <T extends RUser> T get(@NotNull Player player) throws UserNotRegisteredException {
-        @Nullable
-        final T user = (T) this.users.stream()
-                .filter(_user -> _user.getPlayer().equals(player))
-                .findFirst().orElse(null);
-
-        if(user == null) {
-            throw new UserNotRegisteredException(player);
-        }
-
-        return user;
+        return get(player.getUniqueId());
     }
 
     /**
@@ -96,14 +94,15 @@ public class UserManager {
      * @throws UserNotRegisteredException if the user identified by the specified player uuid is not yet registered
      */
     public <T extends RUser> T get(@NotNull UUID uuid) throws UserNotRegisteredException {
-        @Nullable
-        final Player player = Bukkit.getPlayer(uuid);
+        final T user = (T) this.users.stream()
+                .filter(_user -> _user.getPlayer().getUniqueId().equals(uuid))
+                .findFirst().orElse(null);
 
-        if(player == null) {
+        if(user == null) {
             throw new UserNotRegisteredException(uuid);
         }
 
-        return get(player);
+        return user;
     }
 
     /**
@@ -114,7 +113,6 @@ public class UserManager {
      * @throws UserNotRegisteredException if the user identified by the specified player name is not yet registered
      */
     public <T extends RUser> T get(@NotNull String name) throws UserNotRegisteredException {
-        @Nullable
         final Player player = Bukkit.getPlayer(name);
 
         if(player == null) {

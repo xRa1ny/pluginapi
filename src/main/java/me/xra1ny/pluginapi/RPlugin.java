@@ -108,6 +108,8 @@ public abstract class RPlugin extends JavaPlugin {
     @Getter(onMethod = @__(@NotNull))
     private String onlyPlayerCommandErrorMessage;
 
+    private long userTimeout;
+
     @Getter(onMethod = @__(@NotNull))
     private ListenerManager listenerManager;
 
@@ -186,8 +188,8 @@ public abstract class RPlugin extends JavaPlugin {
         getLogger().setLevel(Level.parse(getConfig().getString("logging-level", "ALL")));
         getConfig().set("logging-level", getLogger().getLevel().toString());
 
-        @Nullable
         ConfigurationSection mysql = getConfig().getConfigurationSection("mysql");
+
         if(mysql == null) {
             mysql = getConfig().createSection("mysql");
         }
@@ -207,38 +209,41 @@ public abstract class RPlugin extends JavaPlugin {
 
             this.mysqlPassword = mysql.getString("password", "");
             mysql.set("password", this.mysqlPassword);
-        }else {
-            @Nullable
-            ConfigurationSection nonMysql = getConfig().getConfigurationSection("non-mysql");
-            if(nonMysql == null) {
-                nonMysql = getConfig().createSection("non-mysql");
-            }
+        }
 
-            this.forceNonMysqlSettings = nonMysql.getBoolean("force", true);
-            nonMysql.set("force", this.forceNonMysqlSettings);
+        ConfigurationSection nonMysql = getConfig().getConfigurationSection("non-mysql");
 
-            if(this.forceNonMysqlSettings) {
-                this.prefix = nonMysql.getString("prefix", ChatColor.BOLD + "MyAwesomePlugin  ");
-                nonMysql.set("prefix", this.prefix);
+        if(nonMysql == null) {
+            nonMysql = getConfig().createSection("non-mysql");
+        }
 
-                this.chatColor = ChatColor.valueOf(nonMysql.getString("chat-color", String.valueOf(ChatColor.GRAY)));
-                nonMysql.set("chat-color", this.chatColor.name());
+        this.forceNonMysqlSettings = nonMysql.getBoolean("force", true);
+        nonMysql.set("force", this.forceNonMysqlSettings);
 
-                this.playerNoPermissionErrorMessage = nonMysql.getString("player-no-permission-error-message", "§l§cFEHLER! §r§cDafür hast du keine Rechte!");
-                nonMysql.set("player-no-permission-error-message", this.playerNoPermissionErrorMessage);
+        if(!this.mysqlEnabled || this.forceNonMysqlSettings) {
+            this.prefix = nonMysql.getString("prefix", ChatColor.BOLD + "MyAwesomePlugin  ");
+            nonMysql.set("prefix", this.prefix);
 
-                this.onlyPlayerCommandErrorMessage = nonMysql.getString("only-player-command-error-message", "§l§cFEHLER! §r§cDieser Command kann nur durch einen Spieler ausgeführt werden!");
-                nonMysql.set("only-player-command-error-message", this.onlyPlayerCommandErrorMessage);
+            this.chatColor = ChatColor.valueOf(nonMysql.getString("chat-color", String.valueOf(ChatColor.GRAY)));
+            nonMysql.set("chat-color", this.chatColor.name());
 
-                this.commandErrorMessage = nonMysql.getString("command-error-message", "§l§cFEHLER! §r§cCommand konnte nicht ausgeführt werden!");
-                nonMysql.set("command-error-message", this.commandErrorMessage);
+            this.playerNoPermissionErrorMessage = nonMysql.getString("player-no-permission-error-message", "§l§cFEHLER! §r§cDafür hast du keine Rechte!");
+            nonMysql.set("player-no-permission-error-message", this.playerNoPermissionErrorMessage);
 
-                this.commandInvalidArgsErrorMessage = nonMysql.getString("command-invalid-args-error-message", "§l§cFEHLER! §r§cUngültige Command Argumente!");
-                nonMysql.set("command-invalid-args-error-message", this.commandInvalidArgsErrorMessage);
+            this.onlyPlayerCommandErrorMessage = nonMysql.getString("only-player-command-error-message", "§l§cFEHLER! §r§cDieser Command kann nur durch einen Spieler ausgeführt werden!");
+            nonMysql.set("only-player-command-error-message", this.onlyPlayerCommandErrorMessage);
 
-                this.commandInternalErrorMessage = nonMysql.getString("command-internal-error-message", "§l§cFEHLER! §r§cInterner Fehler beim Ausführen des Commands!");
-                nonMysql.set("command-internal-error-message", this.commandInternalErrorMessage);
-            }
+            this.commandErrorMessage = nonMysql.getString("command-error-message", "§l§cFEHLER! §r§cCommand konnte nicht ausgeführt werden!");
+            nonMysql.set("command-error-message", this.commandErrorMessage);
+
+            this.commandInvalidArgsErrorMessage = nonMysql.getString("command-invalid-args-error-message", "§l§cFEHLER! §r§cUngültige Command Argumente!");
+            nonMysql.set("command-invalid-args-error-message", this.commandInvalidArgsErrorMessage);
+
+            this.commandInternalErrorMessage = nonMysql.getString("command-internal-error-message", "§l§cFEHLER! §r§cInterner Fehler beim Ausführen des Commands!");
+            nonMysql.set("command-internal-error-message", this.commandInternalErrorMessage);
+
+            this.userTimeout = nonMysql.getLong("user-timeout", 20);
+            nonMysql.set("user-timeout", this.userTimeout);
         }
 
         saveConfig();
@@ -248,6 +253,10 @@ public abstract class RPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            // TODO
+            // Fix ...NotRegisteredException on onLeave
+            // order listener structure, so that the users are unregistered at last... (after every other registered listeners)
+
             this.started = true;
 
             getLogger().log(Level.INFO, "enabling pluginapi...");
@@ -259,6 +268,7 @@ public abstract class RPlugin extends JavaPlugin {
 
             @Nullable
             final PluginInfo pluginInfo = getClass().getDeclaredAnnotation(PluginInfo.class);
+
             if(pluginInfo != null) {
                 userClass = pluginInfo.userClass();
             }else {
@@ -266,9 +276,10 @@ public abstract class RPlugin extends JavaPlugin {
             }
 
             setupConfig();
+
             this.listenerManager = new ListenerManager();
             this.commandManager = new CommandManager();
-            this.userManager = new UserManager(userClass);
+            this.userManager = new UserManager(userClass, this.userTimeout);
             this.maintenanceManager = new MaintenanceManager();
             this.itemStackManager = new ItemStackManager();
             this.scoreboardManager = new ScoreboardManager();
@@ -280,18 +291,17 @@ public abstract class RPlugin extends JavaPlugin {
                 // this.databaseApiManager = new DatabaseApiManager();
             // }
 
-            getListenerManager().register(new DefaultPluginConnectionListener());
-
             getLogger().log(Level.INFO, "pluginapi successfully enabled!");
 
             try {
                 getLogger().log(Level.INFO, "enabling external plugin...");
+                this.listenerManager.register(new DefaultPluginConnectionListener());
+                this.listenerManager.register(new DefaultPluginListener());
                 onPluginEnable();
                 saveConfig();
                 saveDefaultConfig();
                 getLogger().log(Level.INFO, "external plugin successfully enabled!");
                 getLogger().log(Level.INFO, "registering default listener...");
-                this.listenerManager.register(new DefaultPluginListener());
                 getLogger().log(Level.INFO, "default listener successfully registered!");
             }catch(Exception e) {
                 getLogger().log(Level.SEVERE, "error while enabling external plugin!");
