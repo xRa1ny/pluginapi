@@ -1,6 +1,7 @@
 package me.xra1ny.pluginapi.models.user;
 
 import lombok.Getter;
+import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.UserInputWindowAlreadyRegisteredException;
 import me.xra1ny.pluginapi.exceptions.UserInputWindowNotRegisteredException;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public final class UserInputWindowManager {
     /**
@@ -31,11 +33,15 @@ public final class UserInputWindowManager {
      * @throws UserInputWindowAlreadyRegisteredException if the specified user input window is already registered
      */
     public void register(@NotNull UserInputWindow userInputWindow) throws UserInputWindowAlreadyRegisteredException {
+        RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to register user input window " + userInputWindow + "...");
+
         if(isRegistered(userInputWindow)) {
             throw new UserInputWindowAlreadyRegisteredException(userInputWindow);
         }
 
         this.userInputWindows.add(userInputWindow);
+
+        RPlugin.getInstance().getLogger().log(Level.INFO, "user input window " + userInputWindow + " successfully registered!");
     }
 
     /**
@@ -44,11 +50,23 @@ public final class UserInputWindowManager {
      * @throws UserInputWindowNotRegisteredException is the specified user input window is not yet registered
      */
     public void unregister(@NotNull UserInputWindow userInputWindow) throws UserInputWindowNotRegisteredException {
+        RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to unregister user input window " + userInputWindow + "...");
+
         if(!isRegistered(userInputWindow)) {
             throw new UserInputWindowNotRegisteredException(userInputWindow);
         }
 
         this.userInputWindows.remove(userInputWindow);
+
+        RPlugin.getInstance().getLogger().log(Level.INFO, "user input window " + userInputWindow + " successfully unregistered!");
+    }
+
+    public void unregisterAll() throws UserInputWindowNotRegisteredException {
+        RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to unregister all user input windows...");
+
+        for(UserInputWindow userInputWindow : this.userInputWindows) {
+            unregister(userInputWindow);
+        }
     }
 
     /**

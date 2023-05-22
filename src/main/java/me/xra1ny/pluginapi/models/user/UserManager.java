@@ -48,14 +48,14 @@ public class UserManager {
      * @throws UserAlreadyRegisteredException if the specified user is already registered
      */
     public void register(@NotNull RUser user) throws UserAlreadyRegisteredException {
-        RPlugin.getInstance().getLogger().log(Level.INFO, "registering user " + user + "...");
+        RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to register user " + user + "...");
 
         if(isRegistered(user)) {
             throw new UserAlreadyRegisteredException(user);
         }
 
         this.users.add(user);
-        RPlugin.getInstance().getLogger().log(Level.INFO, "user " + user + " registered successfully!");
+        RPlugin.getInstance().getLogger().log(Level.INFO, "user " + user + " successfully registered!");
     }
 
     /**
@@ -64,7 +64,7 @@ public class UserManager {
      * @throws UserNotRegisteredException if the specified user is not yet registered
      */
     public void unregister(@NotNull RUser user) throws UserNotRegisteredException {
-        RPlugin.getInstance().getLogger().log(Level.INFO, "unregistering user " + user + "...");
+        RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to unregister user " + user + "...");
 
         if(!isRegistered(user)) {
             throw new UserNotRegisteredException(user);

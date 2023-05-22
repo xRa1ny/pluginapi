@@ -6,6 +6,6 @@ import java.lang.annotation.Annotation;
 
 public class ClassNotAnnotatedException extends RuntimeException {
     public ClassNotAnnotatedException(@NotNull Class<?> clazz, @NotNull Class<? extends Annotation> annotation) {
-        super("class " + clazz.getName() + " requires to be annotated with " + annotation.getName());
+        super("class " + clazz.getName() + " needs to be annotated with " + annotation.getName());
     }
 }
