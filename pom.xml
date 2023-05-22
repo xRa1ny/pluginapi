@@ -6,7 +6,7 @@
 
     <groupId>me.xra1ny</groupId>
     <artifactId>pluginapi</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.16.5-SNAPSHOT</version>
 
     <!-- DO NOT CHANGE! -->
     <build>

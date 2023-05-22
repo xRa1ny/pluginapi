@@ -3,6 +3,7 @@ package me.xra1ny.pluginapi.models.user;
 import lombok.Getter;
 import lombok.Setter;
 import me.xra1ny.pluginapi.RPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,10 +15,10 @@ import java.util.List;
 
 public class RUser {
     /**
-     * the player of this user
+     * the player of this user (might be null after player disconnected)
      */
-    @Getter(onMethod = @__(@NotNull))
-    private final Player player;
+    @Getter(onMethod = @__(@Nullable))
+    private Player player;
 
     @Getter(onMethod = @__(@NotNull))
     private final Date creation = Date.from(Instant.now());
@@ -35,5 +36,16 @@ public class RUser {
     public RUser(@NotNull Player player) {
         this.player = player;
         this.timeout = RPlugin.getInstance().getUserManager().getUserTimeoutHandler().getUserTimeout();
+    }
+
+    /**
+     * updates this user
+     */
+    public void update() {
+        if(this.player == null) {
+            return;
+        }
+
+        this.player = Bukkit.getPlayer(this.player.getUniqueId());
     }
 }

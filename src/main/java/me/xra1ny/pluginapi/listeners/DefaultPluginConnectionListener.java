@@ -23,6 +23,7 @@ public class DefaultPluginConnectionListener implements Listener {
             try {
                 user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
                 user.setTimeout(RPlugin.getInstance().getUserManager().getUserTimeoutHandler().getUserTimeout());
+                user.update();
             }catch (UserNotRegisteredException ex) {
                 user = RPlugin.getInstance().getUserManager().getUserClass().getDeclaredConstructor(Player.class).newInstance(e.getPlayer());
                 RPlugin.getInstance().getUserManager().register(user);
