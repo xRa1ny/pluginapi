@@ -22,7 +22,7 @@
 # FINER   - all messages greater or equal to level 400 will be logged
 # FINEST  - all messages greater or equal to level 300 will be logged
 # ALL     - all messages will be logged
-logging-level: ALL
+logging-level: 'ALL'
 
 # the settings required to connect to a mysql server
 mysql:
