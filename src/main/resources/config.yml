@@ -44,7 +44,7 @@ non-mysql:
   # when enabled the api will force to use these settings disregarding any mysql connection
   force: true
   # the prefix
-  prefix: '§lMyAwesomePlugin  '
+  prefix: '§lMyPlugin | '
   # the chat color
   chat-color: GRAY
   # the message to display when performing an action without the required permissions
