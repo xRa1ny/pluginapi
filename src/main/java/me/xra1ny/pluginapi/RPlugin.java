@@ -22,8 +22,6 @@ import java.io.File;
 import java.util.logging.Level;
 
 public abstract class RPlugin extends JavaPlugin {
-    private boolean started = false;
-
     /**
      * the singleton instance access point of this plugin
      */
@@ -253,12 +251,6 @@ public abstract class RPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            // TODO
-            // Fix ...NotRegisteredException on onLeave
-            // order listener structure, so that the users are unregistered at last... (after every other registered listeners)
-
-            this.started = true;
-
             getLogger().log(Level.INFO, "enabling pluginapi...");
 
             RPlugin.instance = this;
