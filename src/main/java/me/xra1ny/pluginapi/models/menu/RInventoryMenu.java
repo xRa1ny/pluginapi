@@ -22,21 +22,39 @@ import java.util.List;
 /** Used to create Interactive Inventories */
 @Slf4j
 public abstract class RInventoryMenu implements InventoryHolder {
+    /**
+     * the inventory of this inventory menu
+     */
     @Getter(onMethod = @__(@NotNull))
     private Inventory inventory;
 
+    /**
+     * the background item of this inventory menu
+     */
     @Getter(onMethod = @__(@NotNull))
     private final org.bukkit.inventory.ItemStack background;
 
+    /**
+     * the title of this inventory menu
+     */
     @Getter(onMethod = @__(@NotNull))
     private final String title;
 
+    /**
+     * the size of this inventory menu
+     */
     @Getter
     private final int size;
 
+    /**
+     * the users this inventory is currently open for
+     */
     @Getter(onMethod = @__(@NotNull))
     private final List<RUser> openUsers = new ArrayList<>();
 
+    /**
+     * the previous menu of this inventory menu
+     */
     @Getter(onMethod = @__(@Nullable))
     private final RInventoryMenu previousMenu;
 
@@ -58,8 +76,24 @@ public abstract class RInventoryMenu implements InventoryHolder {
         }
     }
 
+    /**
+     * called when this inventory menu opens and asks to be filled with items
+     * @param user the user
+     */
     public abstract void setItems(@NotNull RUser user);
+
+    /**
+     * called when this inventory menu opens
+     * @param e the inventory open event
+     * @param user the user
+     */
     public abstract void onOpen(@NotNull InventoryOpenEvent e, @NotNull RUser user);
+
+    /**
+     * called when this inventory menu closes
+     * @param e the inventory close event
+     * @param user the user
+     */
     public abstract void onClose(@NotNull InventoryCloseEvent e, @NotNull RUser user);
 
     public final void handleClick(@NotNull InventoryClickEvent e, @NotNull RUser user) {
@@ -72,12 +106,17 @@ public abstract class RInventoryMenu implements InventoryHolder {
         final org.bukkit.inventory.ItemStack itemStack = e.getCurrentItem();
 
         if(!this.background.equals(itemStack)) {
-            // Play Sound
             player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, .3f, 1f);
         }
 
         onClick(e, user);
     }
+
+    /**
+     * called when a user clicks within this inventory menu
+     * @param e the inventory click event
+     * @param user the user
+     */
     public abstract void onClick(@NotNull InventoryClickEvent e, @NotNull RUser user);
 
     public void setBackground() {
@@ -88,7 +127,10 @@ public abstract class RInventoryMenu implements InventoryHolder {
         }
     }
 
-    /** Opens this InventoryMenu for the specified Player */
+    /**
+     * opens this inventory menu for the user specified
+     * @param user the user
+     */
     public final void open(@NotNull RUser user) {
         if(this.openUsers.contains(user)) {
             return;

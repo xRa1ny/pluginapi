@@ -34,18 +34,18 @@ public class UserManager {
     }
 
     /**
-     * retrieves the registration state of the specified user
+     * retrieves the registration state of the user specified
      * @param user the user
-     * @return true if the specified user is registered, false otherwise
+     * @return true if the user specified is registered, false otherwise
      */
     public boolean isRegistered(@NotNull RUser user) {
         return this.users.contains(user);
     }
 
     /**
-     * registers the specified user
+     * registers the user specified
      * @param user the user
-     * @throws UserAlreadyRegisteredException if the specified user is already registered
+     * @throws UserAlreadyRegisteredException if the user specified is already registered
      */
     public void register(@NotNull RUser user) throws UserAlreadyRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to register user " + user + "...");
@@ -55,13 +55,14 @@ public class UserManager {
         }
 
         this.users.add(user);
+
         RPlugin.getInstance().getLogger().log(Level.INFO, "user " + user + " successfully registered!");
     }
 
     /**
-     * unregisters the specified user
+     * unregisters the user specified
      * @param user the user
-     * @throws UserNotRegisteredException if the specified user is not yet registered
+     * @throws UserNotRegisteredException if the user specified is not yet registered
      */
     public void unregister(@NotNull RUser user) throws UserNotRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to unregister user " + user + "...");
@@ -71,15 +72,16 @@ public class UserManager {
         }
 
         this.users.remove(user);
+
         RPlugin.getInstance().getLogger().log(Level.INFO, "user " + user + " successfully unregistered!");
     }
 
     /**
-     * retrieves the user of the specified player
+     * retrieves the user of the player specified
      * @param player the player
      * @return the user
      * @param <T> the user
-     * @throws UserNotRegisteredException if the user identified by the specified player is not yet registered
+     * @throws UserNotRegisteredException if the user identified by the player specified is not yet registered
      */
     @Nullable
     public <T extends RUser> T get(@NotNull Player player) throws UserNotRegisteredException {
@@ -87,11 +89,11 @@ public class UserManager {
     }
 
     /**
-     * retrieves the user of the specified player uuid
+     * retrieves the user of the player uuid specified
      * @param uuid the player uuid
      * @return the user
      * @param <T> the user
-     * @throws UserNotRegisteredException if the user identified by the specified player uuid is not yet registered
+     * @throws UserNotRegisteredException if the user identified by the player uuid specified is not yet registered
      */
     public <T extends RUser> T get(@NotNull UUID uuid) throws UserNotRegisteredException {
         final T user = (T) this.users.stream()
@@ -106,11 +108,11 @@ public class UserManager {
     }
 
     /**
-     * retrieves the user of the specified player name
+     * retrieves the user of the player name specified
      * @param name the player name
      * @return the user
      * @param <T> the user
-     * @throws UserNotRegisteredException if the user identified by the specified player name is not yet registered
+     * @throws UserNotRegisteredException if the user identified by the player name specified is not yet registered
      */
     public <T extends RUser> T get(@NotNull String name) throws UserNotRegisteredException {
         final Player player = Bukkit.getPlayer(name);

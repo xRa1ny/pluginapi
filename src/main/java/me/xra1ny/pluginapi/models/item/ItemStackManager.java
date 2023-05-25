@@ -17,9 +17,15 @@ import java.util.logging.Level;
 
 @Slf4j
 public final class ItemStackManager {
+    /**
+     * all currently registered items
+     */
     @Getter(onMethod = @__(@NotNull))
     private final List<RItemStack> items = new ArrayList<>();
 
+    /**
+     * the cooldown handler of this item stack manager
+     */
     @Getter(onMethod = @__(@NotNull))
     private final ItemStackCooldownHandler cooldownHandler;
 
@@ -28,10 +34,20 @@ public final class ItemStackManager {
         this.cooldownHandler.start();
     }
 
+    /**
+     * checks if the item specified is registered or not
+     * @param itemStack the item
+     * @return true if the item specified is registered, false otherwise
+     */
     public boolean isRegistered(@NotNull RItemStack itemStack) {
         return this.items.contains(itemStack);
     }
 
+    /**
+     * registers the item specified
+     * @param itemStack the item
+     * @throws ItemStackAlreadyRegisteredException if the item specified is already registered
+     */
     public void register(@NotNull RItemStack itemStack) throws ItemStackAlreadyRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to register itemstack " + itemStack + "...");
 
@@ -44,6 +60,15 @@ public final class ItemStackManager {
         RPlugin.getInstance().getLogger().log(Level.INFO, "itemstack " + itemStack + " successfully registered!");
     }
 
+    /**
+     * registers all item found within the package specified
+     * @param packageName the package name
+     * @throws NoSuchMethodException if the constructor of any item found within the package specified does not have the signature ()
+     * @throws InvocationTargetException if an exception occurs while constructing any item found within the package specified
+     * @throws InstantiationException if any item found in within the package specified could not be instantiated (abstract)
+     * @throws IllegalAccessException if the constructor of any item found in within the package specified is inaccessible
+     * @throws ItemStackAlreadyRegisteredException if any item found in within the package specified is already registered
+     */
     public void registerAll(@NotNull String packageName) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, ItemStackAlreadyRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to register all itemstacks in package " + packageName + "...");
 
@@ -52,6 +77,11 @@ public final class ItemStackManager {
         }
     }
 
+    /**
+     * unregisters the item specified
+     * @param itemStack the item
+     * @throws ItemStackNotRegisteredException if the item specified is not yet registered
+     */
     public void unregister(@NotNull RItemStack itemStack) throws ItemStackNotRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to unregister itemstack " + itemStack + "...");
 
@@ -64,6 +94,11 @@ public final class ItemStackManager {
         RPlugin.getInstance().getLogger().info("itemstack " + itemStack + " successfully unregistered!");
     }
 
+    /**
+     * unregisters all items registered within the package specified
+     * @param packageName the package name
+     * @throws ItemStackNotRegisteredException if any item within the package specified is not yet registered
+     */
     public void unregisterAll(@NotNull String packageName) throws ItemStackNotRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "unregistering itemstacks...");
 
@@ -78,6 +113,11 @@ public final class ItemStackManager {
         RPlugin.getInstance().getLogger().log(Level.INFO, "itemstacks unregistered!");
     }
 
+    /**
+     * retrieves all items that match the item specified
+     * @param itemStack the item
+     * @return all items that match the item specified
+     */
     @NotNull
     public List<RItemStack> getAll(@NotNull ItemStack itemStack) {
         return this.items.stream()

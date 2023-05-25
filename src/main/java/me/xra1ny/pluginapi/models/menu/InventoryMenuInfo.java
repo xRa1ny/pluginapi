@@ -12,18 +12,18 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface InventoryMenuInfo {
     /**
-     * Specifies the Title of the Inventory Menu
+     * the title of this inventory menu
      */
     @NotNull
     String title();
 
     /**
-     * Specifies the Size of the Inventory Menu
+     * the size of this inventory menu
      */
     int size();
 
     /**
-     * Specifies the Background this Inventory Menu should have
+     * the material used as background of this inventory menu
      */
     @NotNull
     Material background();

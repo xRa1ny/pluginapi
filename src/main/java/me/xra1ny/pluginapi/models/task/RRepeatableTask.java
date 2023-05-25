@@ -67,7 +67,7 @@ public abstract class RRepeatableTask {
      */
     public final void start() {
         stop();
-        task = runnable.runTaskTimer(RPlugin.getInstance(), 0L, (interval/1000)*20);
+        this.task = this.runnable.runTaskTimer(RPlugin.getInstance(), 0L, (this.interval / 1000) * 20);
     }
 
     /**

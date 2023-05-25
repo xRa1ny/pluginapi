@@ -20,9 +20,15 @@ public class RUser {
     @Getter(onMethod = @__(@Nullable))
     private Player player;
 
+    /**
+     * the date of creation of this user instance
+     */
     @Getter(onMethod = @__(@NotNull))
     private final Date creation = Date.from(Instant.now());
 
+    /**
+     * the timeout of this user (unregisters this user when 0)
+     */
     @Getter
     @Setter
     private long timeout;

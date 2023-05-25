@@ -14,12 +14,21 @@ import java.util.List;
 
 @Slf4j
 final class ScoreboardContent {
+    /**
+     * the title of this scoreboard content
+     */
     @Getter(onMethod = @__(@NotNull))
     private String title;
 
+    /**
+     * the bukkit instance this scoreboard content represents
+     */
     @Getter(onMethod = @__(@NotNull))
     private final Scoreboard bukkitScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
+    /**
+     * the scoreboard teams of this scoreboard content
+     */
     @Getter(onMethod = @__(@NotNull))
     private final List<ScoreboardTeam> teams = new ArrayList<>();
 
@@ -27,46 +36,63 @@ final class ScoreboardContent {
         this.title = title;
     }
 
-    /** Updates this Scoreboards Content */
+    /**
+     * updates this scoreboard content
+     */
     public void update() {
-        Objective objective = bukkitScoreboard.getObjective(ChatColor.stripColor(title));
+        Objective objective = this.bukkitScoreboard.getObjective(ChatColor.stripColor(this.title));
 
         if(objective == null) {
-            objective = bukkitScoreboard.registerNewObjective(ChatColor.stripColor(title), "dummy", title);
+            objective = this.bukkitScoreboard.registerNewObjective(ChatColor.stripColor(this.title), "dummy", this.title);
         }
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(title);
+        objective.setDisplayName(this.title);
 
-        for(String entry : bukkitScoreboard.getEntries()) {
-            bukkitScoreboard.resetScores(entry);
+        for(String entry : this.bukkitScoreboard.getEntries()) {
+            this.bukkitScoreboard.resetScores(entry);
         }
 
-        for(ScoreboardTeam team : teams) {
+        for(ScoreboardTeam team : this.teams) {
             team.update();
         }
     }
 
+    /**
+     * sets the title of this scoreboard content and updates it
+     * @param title the title
+     */
     public void setTitle(@NotNull String title) {
         this.title = title;
+
         update();
     }
 
+    /**
+     * adds the scoreboard team specified to this scoreboard content
+     * @param team the scoreboard team
+     */
     public void add(@NotNull ScoreboardTeam team) {
-        if(teams.contains(team)) {
+        if(this.teams.contains(team)) {
             return;
         }
 
-        teams.add(team);
+        this.teams.add(team);
+
         update();
     }
 
+    /**
+     * removes the scoreboard team specified from this scoreboard content
+     * @param team the scoreboard team
+     */
     public void remove(@NotNull ScoreboardTeam team) {
-        if(!teams.contains(team)) {
+        if(!this.teams.contains(team)) {
             return;
         }
 
-        teams.remove(team);
+        this.teams.remove(team);
+
         update();
     }
 }

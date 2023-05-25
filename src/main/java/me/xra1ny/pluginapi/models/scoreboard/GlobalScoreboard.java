@@ -1,7 +1,6 @@
 package me.xra1ny.pluginapi.models.scoreboard;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.models.user.RUser;
 import org.bukkit.Bukkit;
@@ -17,13 +16,21 @@ import java.util.List;
 
 @Slf4j
 public final class GlobalScoreboard extends RScoreboard {
+    /**
+     * the scoreboard content of this global scoreboard
+     */
     @Getter(onMethod = @__(@NotNull))
-    @NonNull
     private final ScoreboardContent scoreboardContent;
 
+    /**
+     * the lines of this global scoreboard
+     */
     @Getter(onMethod = @__(@NotNull))
     private List<String> lines;
 
+    /**
+     * the users of this global scoreboard
+     */
     @Getter(onMethod = @__({@NotNull, @Unmodifiable}))
     private final List<RUser> users = new ArrayList<>();
 
@@ -32,17 +39,26 @@ public final class GlobalScoreboard extends RScoreboard {
         this.lines = Arrays.asList(lines);
     }
 
+    /**
+     * sets the lines of this global scoreboard
+     * @param lines the lines
+     */
     public void setLines(@NotNull String... lines) {
         this.lines = List.of(lines);
     }
 
-    /** Updates the Scoreboard for the User specified */
+    /**
+     * updates the scoreboard for the user specified
+     * @param user the user
+     */
     private void update(@NotNull RUser user) {
         user.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         user.getPlayer().setScoreboard(this.scoreboardContent.getBukkitScoreboard());
     }
 
-    /** Updates the Scoreboards of all Users */
+    /**
+     * updates the scoreboards of all users
+     */
     public void update() {
         updateContent();
 
@@ -51,7 +67,9 @@ public final class GlobalScoreboard extends RScoreboard {
         }
     }
 
-    /** Updates the Content of this Scoreboard */
+    /**
+     * updates the content of this scoreboard
+     */
     public void updateContent() {
         this.scoreboardContent.update();
 
@@ -65,19 +83,29 @@ public final class GlobalScoreboard extends RScoreboard {
             }
 
             final Score score = objective.getScore(line.toString());
+
             score.setScore(this.lines.size()-i);
         }
     }
 
+    /**
+     * adds the user specified to this global scoreboard
+     * @param user the user
+     */
     public void add(@NotNull RUser user) {
         if(this.users.contains(user)) {
             return;
         }
 
         this.users.add(user);
+
         update();
     }
 
+    /**
+     * removes the user specified from this global scoreboard
+     * @param user the user
+     */
     public void remove(@NotNull RUser user) {
         if(!this.users.contains(user)) {
             return;
@@ -85,6 +113,7 @@ public final class GlobalScoreboard extends RScoreboard {
 
         this.users.remove(user);
         user.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+
         update();
     }
 }

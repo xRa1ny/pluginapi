@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -18,12 +17,18 @@ import java.util.UUID;
 
 @Slf4j
 public class MaintenanceManager {
+    /**
+     * the message to display when a user gets kicked in result of ongoing maintenance
+     */
     @Getter(onMethod = @__(@NotNull))
     private String message;
 
     @Getter
     private boolean enabled;
 
+    /**
+     * all uuids ignored by the maintenance system
+     */
     @Getter(onMethod = @__({ @NotNull, @Unmodifiable}))
     private final List<UUID> ignoredUsers = new ArrayList<>();
 
@@ -38,6 +43,10 @@ public class MaintenanceManager {
         }
     }
 
+    /**
+     * sets the message of the maintenance and updates it in the config
+     * @param message the message
+     */
     public void setMessage(@NotNull String message) {
         if(this.message != null && this.message.equals(message)) {
             return;
@@ -46,7 +55,6 @@ public class MaintenanceManager {
         RPlugin.getInstance().getConfig().set("maintenance.message", message);
         RPlugin.getInstance().saveConfig();
 
-        // TODO: Add filter (Send Message only to permitted Players)
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Die Wartungsarbeiten Nachricht wurde angepasst!");
         }
@@ -54,6 +62,10 @@ public class MaintenanceManager {
         this.message = message;
     }
 
+    /**
+     * updates the enabled status of the maintenance system
+     * @param enabled true or false
+     */
     public void setEnabled(boolean enabled) {
         if(this.enabled == enabled) {
             return;
@@ -83,6 +95,10 @@ public class MaintenanceManager {
         RPlugin.getInstance().saveConfig();
     }
 
+    /**
+     * adds the uuid specified to be ignored by the maintenance system on join
+     * @param uuid the uuid
+     */
     public void add(@NotNull UUID uuid) {
         if(this.ignoredUsers.contains(uuid)) {
             return;
@@ -100,6 +116,10 @@ public class MaintenanceManager {
         updateConfig();
     }
 
+    /**
+     * removes the uuid specified from the whitelist of ignored uuids on join
+     * @param uuid the uuid
+     */
     public void remove(@NotNull UUID uuid) {
         if(!this.ignoredUsers.contains(uuid)) {
             return;

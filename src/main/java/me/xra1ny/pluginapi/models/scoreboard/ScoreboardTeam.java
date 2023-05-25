@@ -14,91 +14,139 @@ import java.util.*;
 
 @Slf4j
 public final class ScoreboardTeam {
+    /**
+     * the name of this scoreboard team
+     */
     @Getter(onMethod = @__(@NotNull))
     private final String name;
 
+    /**
+     * the members of this scoreboard team
+     */
     @Getter(onMethod = @__({@NotNull, @Unmodifiable}))
     private final List<RUser> members = new ArrayList<>();
 
+    /**
+     * the scoreboard content this scoreboard team belongs to
+     */
     @Getter(onMethod = @__(@NotNull))
     private final ScoreboardContent scoreboard;
 
+    /**
+     * the scoreboard team options of this scoreboard team
+     */
     @Getter(onMethod = @__(@NotNull))
     private final Map<Team.Option, Team.OptionStatus> options = new HashMap<>();
 
+    /**
+     * the bukkit instance this scoreboard team represents
+     */
     @Getter(onMethod = @__(@NotNull))
     private final Team bukkitTeam;
 
+    /**
+     * the prefix of this scoreboard team
+     */
     @Getter(onMethod = @__(@Nullable))
     @Setter(onParam = @__(@NotNull))
-    private String prefix, suffix;
+    private String prefix;
+
+    /**
+     * the suffix of this scoreboard team
+     */
+    @Getter(onMethod = @__(@Nullable))
+    @Setter(onParam = @__(@NotNull))
+    private String suffix;
 
     @Getter
     @Setter
-    private boolean friendlyFire, canSeeFriendlyInvisibles;
+    private boolean friendlyFire;
+
+    /**
+     * when true, each scoreboard team member can see each other disregarding any invisibility
+     */
+    @Getter
+    @Setter
+    private boolean canSeeFriendlyInvisibles;
 
     ScoreboardTeam(@NotNull String name, @NotNull ScoreboardContent scoreboard) {
         this.name = name;
         this.scoreboard = scoreboard;
-        bukkitTeam = scoreboard.getBukkitScoreboard().registerNewTeam(ChatColor.stripColor(name));
+        this.bukkitTeam = scoreboard.getBukkitScoreboard().registerNewTeam(ChatColor.stripColor(name));
     }
 
-    // TODO
+    /**
+     * updates this scoreboard team
+     */
     public void update() {
-        bukkitTeam.setDisplayName(name);
+        this.bukkitTeam.setDisplayName(this.name);
 
-        bukkitTeam.setAllowFriendlyFire(friendlyFire);
-        bukkitTeam.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisibles);
+        this.bukkitTeam.setAllowFriendlyFire(this.friendlyFire);
+        this.bukkitTeam.setCanSeeFriendlyInvisibles(this.canSeeFriendlyInvisibles);
 
-        if(prefix != null) {
-            bukkitTeam.setPrefix(prefix);
+        if(this.prefix != null) {
+            this.bukkitTeam.setPrefix(this.prefix);
         }
 
-        if(suffix != null) {
-            bukkitTeam.setSuffix(suffix);
+        if(this.suffix != null) {
+            this.bukkitTeam.setSuffix(this.suffix);
         }
 
 
         // Update all Options
-        for(Map.Entry entry : options.entrySet()) {
-            final Team.Option option = (Team.Option) entry.getKey();
-            final Team.OptionStatus status = (Team.OptionStatus) entry.getValue();
+        for(Map.Entry<Team.Option, Team.OptionStatus> entry : this.options.entrySet()) {
+            final Team.Option option = entry.getKey();
+            final Team.OptionStatus status = entry.getValue();
 
-            bukkitTeam.setOption(option, status);
+            this.bukkitTeam.setOption(option, status);
         }
 
         // Clear all Members
-        final Set<String> entries = bukkitTeam.getEntries();
+        final Set<String> entries = this.bukkitTeam.getEntries();
+
         for(String entry : entries) {
-            bukkitTeam.removeEntry(entry);
+            this.bukkitTeam.removeEntry(entry);
         }
 
         // Add new Members
-        for(RUser user : members) {
-            bukkitTeam.addPlayer(user.getPlayer());
+        for(RUser user : this.members) {
+            this.bukkitTeam.addPlayer(user.getPlayer());
         }
     }
 
+    /**
+     * sets the option of this scoreboard team to those specified
+     * @param option the team option
+     * @param status the team option status
+     */
     public void setOption(@NotNull Team.Option option, @NotNull Team.OptionStatus status) {
-        options.put(option, status);
+        this.options.put(option, status);
     }
 
+    /**
+     * adds the user specified to this scoreboard team
+     * @param user the user
+     */
     public void addMember(@NotNull RUser user) {
-        if(members.contains(user)) {
+        if(this.members.contains(user)) {
             return;
         }
 
-        members.add(user);
+        this.members.add(user);
 
         update();
     }
 
+    /**
+     * removes the user specified from this scoreboard team
+     * @param user the user
+     */
     public void removeMember(@NotNull RUser user) {
-        if(!members.contains(user)) {
+        if(!this.members.contains(user)) {
             return;
         }
 
-        members.remove(user);
+        this.members.remove(user);
 
         update();
     }

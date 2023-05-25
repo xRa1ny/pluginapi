@@ -19,9 +19,15 @@ import java.util.Map;
  */
 @Slf4j
 public abstract class RItemStack extends ItemStack {
+    /**
+     * the cooldown queue of this item stack
+     */
     @Getter(onMethod = @__(@NotNull))
     private final Map<RUser, Integer> cooldownQueue = new HashMap<>();
 
+    /**
+     * the cooldown of this item stack
+     */
     @Getter
     private int cooldown = 0;
 
@@ -55,15 +61,35 @@ public abstract class RItemStack extends ItemStack {
         log.info("Initialising ItemStack {}", this);
     }
 
+    /**
+     * called when this item has been left clicked
+     * @param e the player interact event
+     * @param user the user
+     */
     public abstract boolean onLeftClick(@NotNull PlayerInteractEvent e, @NotNull RUser user);
 
+    /**
+     * called when this item has been right clicked
+     * @param e the player interact event
+     * @param user the user
+     */
     public abstract boolean onRightClick(@NotNull PlayerInteractEvent e, @NotNull RUser user);
+
+    /**
+     * called when this item has been left or right clicked but the cooldown has not yet expired
+     * @param e the player interact event
+     * @param user the user
+     */
     public abstract void onCooldown(@NotNull PlayerInteractEvent e, @NotNull RUser user);
 
+    /**
+     * called when the cooldown of this item expires for the user specified
+     * @param user the user
+     */
     public abstract void onCooldownExpire(@NotNull RUser user);
 
     public final void handleInteraction(@NotNull PlayerInteractEvent e, @NotNull RUser user) {
-        if(!cooldownQueue.containsKey(user)) {
+        if(!this.cooldownQueue.containsKey(user)) {
             final Action action = e.getAction();
 
             final boolean result;
@@ -75,8 +101,8 @@ public abstract class RItemStack extends ItemStack {
             }
 
             if(result) {
-                if(cooldown >= 1)
-                    cooldownQueue.put(user, cooldown);
+                if(this.cooldown >= 1)
+                    this.cooldownQueue.put(user, this.cooldown);
             }
         }else {
             onCooldown(e, user);

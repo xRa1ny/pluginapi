@@ -17,7 +17,7 @@ public class UserTimeoutHandler extends RRepeatableTask {
     @Override
     public void tick() throws Exception {
         for(RUser user : RPlugin.getInstance().getUserManager().getUsers()) {
-            if(user.getPlayer().isOnline()) {
+            if(user.getPlayer() != null && user.getPlayer().isOnline()) {
                 continue;
             }
 

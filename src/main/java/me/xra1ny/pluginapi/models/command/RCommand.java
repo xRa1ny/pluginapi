@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
@@ -23,9 +22,21 @@ import java.util.stream.Stream;
 /** Used to create Commands */
 @Slf4j
 public abstract class RCommand implements CommandExecutor, TabExecutor {
+    /**
+     * the name of this command
+     */
     @Getter(onMethod = @__(@NotNull))
-    private final String name, permission;
+    private final String name;
 
+    /**
+     * the permission of this command
+     */
+    @Getter(onMethod = @__(@NotNull))
+    private final String permission;
+
+    /**
+     * the valid arguments of this command
+     */
     @Getter(onMethod = @__(@NotNull))
     private final String[] args;
 
@@ -33,21 +44,33 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
     private final boolean requiresPlayer;
 
     public RCommand() throws ClassNotAnnotatedException {
-        @Nullable
         final CommandInfo info = getClass().getDeclaredAnnotation(CommandInfo.class);
 
         if(info == null) {
             throw new ClassNotAnnotatedException(getClass(), CommandInfo.class);
-        }else {
-            this.name = info.name();
-            this.permission = info.permission();
-            this.args = info.args();
-            this.requiresPlayer = info.requiresPlayer();
         }
+
+        this.name = info.name();
+        this.permission = info.permission();
+        this.args = info.args();
+        this.requiresPlayer = info.requiresPlayer();
     }
 
+    /**
+     * called when this command is executed with only the base command (/commandname)
+     * @param sender the sender
+     * @return the status of this command execution
+     */
     @NotNull
     protected abstract CommandReturnState executeBaseCommand(@NotNull CommandSender sender);
+
+    /**
+     * called when this command is executed with arguments (/command name arg1 arg2 arg3)
+     * @param sender the sender
+     * @param args the arguments
+     * @param values the values of any unknown arguments
+     * @return the status of this command execution
+     */
     @NotNull
     protected abstract CommandReturnState executeWithArgs(@NotNull CommandSender sender, @NotNull String args, @NotNull String[] values);
 
@@ -152,8 +175,6 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
                     for(Player player : Bukkit.getOnlinePlayers()) {
                         tabCompleted.add(player.getName());
                     }
-                }else if(finalArg.equalsIgnoreCase(RPlugin.getInstance().COMMAND_IDENTIFIER)) {
-                    tabCompleted.add(this.name);
                 }else if(finalArg.equalsIgnoreCase("%INTEGER%")) {
                     tabCompleted.add("<-2.147.483.647 bis 2.147.483.647>");
                 }else if(finalArg.equalsIgnoreCase("%LONG%")) {

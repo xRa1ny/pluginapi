@@ -12,11 +12,12 @@ import me.xra1ny.pluginapi.models.scoreboard.ScoreboardManager;
 import me.xra1ny.pluginapi.models.user.RUser;
 import me.xra1ny.pluginapi.models.user.UserInputWindowManager;
 import me.xra1ny.pluginapi.models.user.UserManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -159,16 +160,6 @@ public abstract class RPlugin extends JavaPlugin {
     public final String PLAYER_IDENTIFIER = "%PLAYER%";
 
     /**
-     * the global command identifier used in strings
-     */
-    public final String COMMAND_IDENTIFIER = "%COMMAND%";
-
-    /**
-     * the global command arguments identifier used in strings
-     */
-    public final String COMMAND_ARGUMENTS_IDENTIFIER = "%COMMAND_ARGUMENTS%";
-
-    /**
      * called when this plugin enables
      */
     public abstract void onPluginEnable() throws Exception;
@@ -179,6 +170,8 @@ public abstract class RPlugin extends JavaPlugin {
     public abstract void onPluginDisable() throws Exception;
 
     private void setupConfig() {
+        getLogger().log(Level.INFO, "attempting to setup config...");
+
         if(!new File(getDataFolder(), "config.yml").exists()) {
             saveResource("config.yml", false);
         }
@@ -244,8 +237,14 @@ public abstract class RPlugin extends JavaPlugin {
             nonMysql.set("user-timeout", this.userTimeout);
         }
 
+        getLogger().log(Level.INFO, "config successfully setup!");
+
+        getLogger().log(Level.INFO, "attempting to save config...");
+
         saveConfig();
         saveDefaultConfig();
+
+        getLogger().log(Level.INFO, "config successfully saved!");
     }
 
     @Override
@@ -255,16 +254,11 @@ public abstract class RPlugin extends JavaPlugin {
 
             RPlugin.instance = this;
 
-            @NotNull
             Class<? extends RUser> userClass = RUser.class;
-
-            @Nullable
             final PluginInfo pluginInfo = getClass().getDeclaredAnnotation(PluginInfo.class);
 
             if(pluginInfo != null) {
                 userClass = pluginInfo.userClass();
-            }else {
-                getLogger().log(Level.INFO, "plugin main class not annotated with plugin info! using default settings...");
             }
 
             setupConfig();
@@ -283,27 +277,25 @@ public abstract class RPlugin extends JavaPlugin {
                 // this.databaseApiManager = new DatabaseApiManager();
             // }
 
+            this.listenerManager.register(new DefaultPluginConnectionListener());
+            this.listenerManager.register(new DefaultPluginListener());
+
             getLogger().log(Level.INFO, "pluginapi successfully enabled!");
 
             try {
                 getLogger().log(Level.INFO, "enabling external plugin...");
-                this.listenerManager.register(new DefaultPluginConnectionListener());
-                this.listenerManager.register(new DefaultPluginListener());
+
                 onPluginEnable();
+
                 saveConfig();
                 saveDefaultConfig();
-                getLogger().log(Level.INFO, "external plugin successfully enabled!");
-                getLogger().log(Level.INFO, "registering default listener...");
-                getLogger().log(Level.INFO, "default listener successfully registered!");
-            }catch(Exception e) {
-                getLogger().log(Level.SEVERE, "error while enabling external plugin!");
-                e.printStackTrace();
 
-                throw new Exception();
+                getLogger().log(Level.INFO, "external plugin successfully enabled!");
+            }catch(Exception e) {
+                getLogger().log(Level.SEVERE, "error while enabling external plugin!", e);
             }
         }catch(Exception e) {
-            getLogger().log(Level.SEVERE, "error while enabling pluginapi!");
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "error while enabling pluginapi!", e);
         }
     }
 
@@ -311,18 +303,24 @@ public abstract class RPlugin extends JavaPlugin {
     public void onDisable() {
         try {
             getLogger().log(Level.INFO, "disabling pluginapi...");
-            // TODO: disable logic here...
+
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                player.kickPlayer("Server is restarting...");
+            }
+
             getLogger().log(Level.INFO, "pluginapi successfully disabled!");
 
             try {
                 getLogger().log(Level.INFO, "disabling external plugin...");
+
                 onPluginDisable();
+
                 getLogger().log(Level.INFO, "external plugin successfully disabled!");
             }catch(Exception e) {
-                getLogger().log(Level.SEVERE, "error while disabling external plugin!");
+                getLogger().log(Level.SEVERE, "error while disabling external plugin!", e);
             }
         }catch(Exception e) {
-            getLogger().log(Level.SEVERE, "error while disabling pluginapi!");
+            getLogger().log(Level.SEVERE, "error while disabling pluginapi!", e);
         }
     }
 }

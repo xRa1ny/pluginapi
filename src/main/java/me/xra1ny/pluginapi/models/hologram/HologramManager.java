@@ -18,30 +18,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class HologramManager {
+    /**
+     * the config file of this hologram manager
+     */
     @Getter(onMethod=@__(@NotNull))
     private final File configFile;
 
+    /**
+     * the config of this hologram manager
+     */
     @Getter(onMethod=@__(@NotNull))
     private final FileConfiguration config;
 
+    /**
+     * all currently registered holograms
+     */
     @Getter(onMethod=@__({@NotNull, @Unmodifiable}))
     private final List<Hologram> holograms = new ArrayList<>();
 
     public HologramManager() {
-        configFile = new File(RPlugin.getInstance().getDataFolder(), "holograms.yml");
+        this.configFile = new File(RPlugin.getInstance().getDataFolder(), "holograms.yml");
         // Save default Hologram Config File to Plugins Directory
-        RPlugin.getInstance().saveResource(configFile.getName(), false);
+        RPlugin.getInstance().saveResource(this.configFile.getName(), false);
 
         // Load default Hologram Config
-        config = YamlConfiguration.loadConfiguration(configFile);
+        this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
         // Attempt to load all Holograms from Config
         loadFromConfig();
     }
 
-    /** Attempts to load all Config saved Holograms */
+    /**
+     * loads all holograms from config
+     */
     public void loadFromConfig() {
-        final ConfigurationSection holograms = config.getConfigurationSection("");
+        final ConfigurationSection holograms = this.config.getConfigurationSection("");
+
         for(String key : holograms.getKeys(false)) {
             final ConfigurationSection section = holograms.getConfigurationSection(key);
 
@@ -55,8 +67,9 @@ public final class HologramManager {
 
             final ConfigurationSection location = section.getConfigurationSection("location");
 
-            if(location == null)
+            if(location == null) {
                 continue;
+            }
 
             final String world = location.getString("world");
             final double x = location.getDouble("x");
@@ -64,13 +77,15 @@ public final class HologramManager {
             final double z = location.getDouble("z");
 
             // Skip Hologram Creation if Values are null
-            if(name == null || id == -1 || lines == null || world == null || x == 0 || y == 0 || z == 0)
+            if(name == null || id == -1 || lines == null || world == null || x == 0 || y == 0 || z == 0) {
                 continue;
+            }
 
             final Location loc = new Location(Bukkit.getWorld(world), x, y, z);
 
             // Attempt to create the loaded Hologram from Config Information...
             final Hologram hologram = createHologram(id, name, lines, loc, material);
+
             hologram.update();
         }
     }
@@ -92,26 +107,28 @@ public final class HologramManager {
 
     /** Removes the specified Hologram */
     public void removeHologram(@NotNull Hologram hologram) {
-        holograms.remove(hologram);
+        this.holograms.remove(hologram);
         hologram.getBase().remove();
     }
 
     /** Saves the specified Hologram to Config */
     public void saveToConfig(@NotNull Hologram hologram) {
-        final ConfigurationSection section = config.createSection(String.valueOf(hologram.getId()));
+        final ConfigurationSection section = this.config.createSection(String.valueOf(hologram.getId()));
+
         section.set("id", hologram.getId());
         section.set("name", hologram.getName());
         section.set("lines", hologram.getLines());
         section.set("material", hologram.getDisplayItem().toString());
 
         final ConfigurationSection location = section.createSection("location");
+
         location.set("world", hologram.getLocation().getWorld().getName());
         location.set("x", hologram.getLocation().getX());
         location.set("y", hologram.getLocation().getY());
         location.set("z", hologram.getLocation().getZ());
 
         try {
-            config.save(configFile);
+            this.config.save(this.configFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,10 +136,10 @@ public final class HologramManager {
 
     /** Removes the specified Hologram from Config */
     public void removeFromConfig(@NotNull Hologram hologram) {
-        config.set(String.valueOf(hologram.getId()), null);
+        this.config.set(String.valueOf(hologram.getId()), null);
 
         try {
-            config.save(configFile);
+            this.config.save(this.configFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -130,6 +147,6 @@ public final class HologramManager {
 
     @Nullable
     public Hologram getHologram(int id) {
-        return holograms.stream().filter(hologram -> hologram.getId() == id).findAny().orElse(null);
+        return this.holograms.stream().filter(hologram -> hologram.getId() == id).findAny().orElse(null);
     }
 }

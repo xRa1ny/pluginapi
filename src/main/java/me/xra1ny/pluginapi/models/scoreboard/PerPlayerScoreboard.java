@@ -15,13 +15,21 @@ import java.util.function.Function;
 
 @Slf4j
 public final class PerPlayerScoreboard extends RScoreboard {
+    /**
+     * the title of this per player scoreboard
+     */
     @Getter(onMethod = @__(@NotNull))
     private final String title;
 
+    /**
+     * the lines of this per player scoreboard
+     */
     @Getter(onMethod = @__(@NotNull))
     private List<Function<RUser, String>> lines;
 
-
+    /**
+     * the scoreboard contents for each member of this per player scoreboard
+     */
     @Getter(onMethod = @__(@NotNull))
     private final Map<RUser, ScoreboardContent> scoreboards = new HashMap<>();
 
@@ -31,20 +39,30 @@ public final class PerPlayerScoreboard extends RScoreboard {
         this.lines = Arrays.asList(lines);
     }
 
+    /**
+     * sets the lines of this per player scoreboard
+     * @param lines the lines
+     */
     @SafeVarargs
     public final void setLines(@NotNull Function<RUser, String>... lines) {
         this.lines = List.of(lines);
     }
 
-    /** Updates the specified Users Scoreboard */
+    /**
+     * updates the users specified scoreboard
+     * @param user the user
+     */
     public void update(@NotNull RUser user) {
         if(!this.scoreboards.containsKey(user)) {
             return;
         }
 
         user.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+
         updateContent(user);
+
         final ScoreboardContent scoreboard = this.scoreboards.get(user);
+
         user.getPlayer().setScoreboard(scoreboard.getBukkitScoreboard());
     }
 
@@ -54,7 +72,9 @@ public final class PerPlayerScoreboard extends RScoreboard {
         }
 
         final ScoreboardContent scoreboard = this.scoreboards.get(user);
+
         scoreboard.update();
+
         final Objective objective = scoreboard.getBukkitScoreboard().getObjective(ChatColor.stripColor(scoreboard.getTitle()));
         final List<String> lines = applyLines(user);
 
@@ -66,19 +86,29 @@ public final class PerPlayerScoreboard extends RScoreboard {
             }
 
             final Score score = objective.getScore(line.toString());
+
             score.setScore(lines.size()-i);
         }
     }
 
+    /**
+     * adds the user specified to this per player scoreboard
+     * @param user the user
+     */
     public void add(@NotNull RUser user) {
         if(this.scoreboards.containsKey(user)) {
             return;
         }
 
         this.scoreboards.put(user, new ScoreboardContent(title));
+
         update(user);
     }
 
+    /**
+     * removes the user specified from this per player scoreboard
+     * @param user the user
+     */
     public void remove(@NotNull RUser user) {
         if(!this.scoreboards.containsKey(user)) {
             return;
@@ -99,6 +129,11 @@ public final class PerPlayerScoreboard extends RScoreboard {
         return lines;
     }
 
+    /**
+     * retrieves the scoreboard content of the user specified
+     * @param user the user
+     * @return the scoreboard content of the user specified
+     */
     @Nullable
     public ScoreboardContent getContent(@NotNull RUser user) {
         if(!this.scoreboards.containsKey(user)) {

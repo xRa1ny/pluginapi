@@ -39,7 +39,6 @@ public class UserInputWindowHandler extends RRepeatableTask {
     }
 
     private void close(@NotNull RUser user, @Nullable String input) {
-        // unregister here...
         stop();
         this.inputWindow.close(user, input);
     }

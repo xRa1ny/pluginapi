@@ -32,12 +32,11 @@ public abstract class UserInputWindow {
 
     public UserInputWindow(int millis) throws ClassNotAnnotatedException {
         this.timer = millis;
-
         this.inputWindowHandler = new UserInputWindowHandler(this);
     }
 
     /**
-     * opens this user input window for the specified user
+     * opens this user input window for the user specified
      * @param user the user
      */
     public void open(@NotNull RUser user) {
@@ -49,13 +48,13 @@ public abstract class UserInputWindow {
     }
 
     /**
-     * called when this user input window is opened for the specified user
+     * called when this user input window is opened for the user specified
      * @param user the user
      */
     public abstract void onOpen(@NotNull RUser user);
 
     /**
-     * closed this user input windows for the specified user, using the specified input
+     * closes this user input windows for the user specified
      * @param user the user
      * @param input the input
      */
@@ -65,6 +64,7 @@ public abstract class UserInputWindow {
         }
 
         this.users.remove(user);
+
         onClose(user, input);
     }
 
