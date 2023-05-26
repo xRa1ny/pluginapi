@@ -250,7 +250,7 @@ public abstract class RPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            getLogger().log(Level.INFO, "enabling pluginapi...");
+            getLogger().log(Level.INFO, "attempting to enable pluginapi...");
 
             RPlugin.instance = this;
 
@@ -283,7 +283,7 @@ public abstract class RPlugin extends JavaPlugin {
             getLogger().log(Level.INFO, "pluginapi successfully enabled!");
 
             try {
-                getLogger().log(Level.INFO, "enabling external plugin...");
+                getLogger().log(Level.INFO, "attempting to enable external plugin...");
 
                 onPluginEnable();
 
@@ -291,18 +291,18 @@ public abstract class RPlugin extends JavaPlugin {
                 saveDefaultConfig();
 
                 getLogger().log(Level.INFO, "external plugin successfully enabled!");
-            }catch(Exception e) {
-                getLogger().log(Level.SEVERE, "error while enabling external plugin!", e);
+            }catch(Exception ex) {
+                getLogger().log(Level.SEVERE, "error while enabling external plugin!", ex);
             }
-        }catch(Exception e) {
-            getLogger().log(Level.SEVERE, "error while enabling pluginapi!", e);
+        }catch(Exception ex) {
+            getLogger().log(Level.SEVERE, "error while enabling pluginapi!", ex);
         }
     }
 
     @Override
     public void onDisable() {
         try {
-            getLogger().log(Level.INFO, "disabling pluginapi...");
+            getLogger().log(Level.INFO, "attempting to disable pluginapi...");
 
             for(Player player : Bukkit.getOnlinePlayers()) {
                 player.kickPlayer("Server is restarting...");
@@ -311,16 +311,16 @@ public abstract class RPlugin extends JavaPlugin {
             getLogger().log(Level.INFO, "pluginapi successfully disabled!");
 
             try {
-                getLogger().log(Level.INFO, "disabling external plugin...");
+                getLogger().log(Level.INFO, "attempting to disable external plugin...");
 
                 onPluginDisable();
 
                 getLogger().log(Level.INFO, "external plugin successfully disabled!");
-            }catch(Exception e) {
-                getLogger().log(Level.SEVERE, "error while disabling external plugin!", e);
+            }catch(Exception ex) {
+                getLogger().log(Level.SEVERE, "error while disabling external plugin!", ex);
             }
-        }catch(Exception e) {
-            getLogger().log(Level.SEVERE, "error while disabling pluginapi!", e);
+        }catch(Exception ex) {
+            getLogger().log(Level.SEVERE, "error while disabling pluginapi!", ex);
         }
     }
 }
