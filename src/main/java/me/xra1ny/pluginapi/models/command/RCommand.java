@@ -92,7 +92,8 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
         if(this.requiresPlayer) {
             if(!(sender instanceof Player)) {
-                sender.sendMessage(RPlugin.getInstance().getOnlyPlayerCommandErrorMessage());
+                sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getOnlyPlayerCommandErrorMessage());
+
                 return true;
             }
         }
@@ -108,7 +109,6 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
             // Create List of all valid Command Arguments in all lower case
             final List<String> commandArgs = new ArrayList<>(Stream.of(this.args).map(String::toLowerCase).toList());
-
             final List<String> commandValues = new ArrayList<>();
             final StringBuilder builder = new StringBuilder();
 
@@ -146,9 +146,9 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
             }
 
            return true;
-        }catch(Exception e) {
+        }catch(Exception ex) {
             sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandInternalErrorMessage());
-            sender.sendMessage(ChatColor.RED.toString() + e);
+            sender.sendMessage(ChatColor.RED.toString() + ex);
         }
 
         return true;
