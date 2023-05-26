@@ -315,6 +315,8 @@ public abstract class RPlugin extends JavaPlugin {
 
                 onPluginDisable();
 
+                saveConfig();
+
                 getLogger().log(Level.INFO, "external plugin successfully disabled!");
             }catch(Exception ex) {
                 getLogger().log(Level.SEVERE, "error while disabling external plugin!", ex);
