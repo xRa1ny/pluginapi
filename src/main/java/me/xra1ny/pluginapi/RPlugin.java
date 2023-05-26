@@ -3,6 +3,7 @@ package me.xra1ny.pluginapi;
 import lombok.Getter;
 import me.xra1ny.pluginapi.listeners.DefaultPluginConnectionListener;
 import me.xra1ny.pluginapi.listeners.DefaultPluginListener;
+import me.xra1ny.pluginapi.models.cloudnet.CloudNetManager;
 import me.xra1ny.pluginapi.models.color.HexCodeManager;
 import me.xra1ny.pluginapi.models.command.CommandManager;
 import me.xra1ny.pluginapi.models.item.ItemStackManager;
@@ -155,6 +156,12 @@ public abstract class RPlugin extends JavaPlugin {
     private HexCodeManager hexCodeManager;
 
     /**
+     * the cloud net manager responsible for cloud net operations
+     */
+    @Getter(onMethod = @__(@NotNull))
+    private CloudNetManager cloudNetManager;
+
+    /**
      * the global player identifier used in strings
      */
     public final String PLAYER_IDENTIFIER = "%PLAYER%";
@@ -271,6 +278,7 @@ public abstract class RPlugin extends JavaPlugin {
             this.scoreboardManager = new ScoreboardManager();
             this.userInputWindowManager = new UserInputWindowManager();
             this.hexCodeManager = new HexCodeManager();
+            this.cloudNetManager = new CloudNetManager();
 
             // TODO: add database support...
             // if(this.mysqlEnabled) {

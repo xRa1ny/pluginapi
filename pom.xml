@@ -70,7 +70,6 @@
             <groupId>de.dytanic.cloudnet</groupId>
             <artifactId>cloudnet-driver</artifactId>
             <version>3.4.0-RELEASE</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- DO NOT CHANGE! -->
