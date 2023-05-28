@@ -39,39 +39,42 @@ public class ItemBuilder {
 	public ItemStack toItemStack() {
 		// Create ItemStack and ItemMeta
 		final ItemStack item = new ItemStack((type != null ? type : Material.COBBLESTONE), amount);
-		final ItemMeta meta = item.getItemMeta();
 
-		if(this.name == null || this.name.isBlank()) {
-			meta.setDisplayName(ChatColor.RESET.toString());
-		}else {
-			meta.setDisplayName(this.name);
-		}
+		if(this.type != Material.AIR) {
+			final ItemMeta meta = item.getItemMeta();
 
-		// Set Enchantments if set
-		if(enchantments.size() > 0) {
-			for(Entry<Enchantment, Integer> entrySet : enchantments.entrySet()) {
-				meta.addEnchant(entrySet.getKey(), entrySet.getValue(), true);
+			if(this.name == null || this.name.isBlank()) {
+				meta.setDisplayName(ChatColor.RESET.toString());
+			}else {
+				meta.setDisplayName(this.name);
 			}
-		}
 
-		// Set ItemFlags is set, else use all
-		if(itemFlags.size() > 0) {
-			for(ItemFlag itemFlag : itemFlags) {
-				meta.addItemFlags(itemFlag);
+			// Set Enchantments if set
+			if(enchantments.size() > 0) {
+				for(Entry<Enchantment, Integer> entrySet : enchantments.entrySet()) {
+					meta.addEnchant(entrySet.getKey(), entrySet.getValue(), true);
+				}
 			}
-		}else {
-			for(ItemFlag itemFlag : ItemFlag.values()) {
-				meta.addItemFlags(itemFlag);
+
+			// Set ItemFlags is set, else use all
+			if(itemFlags.size() > 0) {
+				for(ItemFlag itemFlag : itemFlags) {
+					meta.addItemFlags(itemFlag);
+				}
+			}else {
+				for(ItemFlag itemFlag : ItemFlag.values()) {
+					meta.addItemFlags(itemFlag);
+				}
 			}
-		}
 
-		// Set Lore is set
-		if(lore.size() > 0) {
-			meta.setLore(lore);
-		}
+			// Set Lore is set
+			if(lore.size() > 0) {
+				meta.setLore(lore);
+			}
 
-		// Set created ItemStack's ItemMeta
-		item.setItemMeta(meta);
+			// Set created ItemStack's ItemMeta
+			item.setItemMeta(meta);
+		}
 
 		return item;
 	}

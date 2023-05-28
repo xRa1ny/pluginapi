@@ -6,6 +6,7 @@ import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import me.xra1ny.pluginapi.models.item.ItemBuilder;
 import me.xra1ny.pluginapi.models.user.RUser;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -99,13 +100,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
     public final void handleClick(@NotNull InventoryClickEvent e, @NotNull RUser user) {
         final Player player = (Player) e.getWhoClicked();
 
-        if(e.getClickedInventory() == null)  {
-            return;
-        }
-
-        final org.bukkit.inventory.ItemStack itemStack = e.getCurrentItem();
-
-        if(!this.background.equals(itemStack)) {
+        if(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR && !e.getCurrentItem().equals(this.background)) {
             player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, .3f, 1f);
         }
 
