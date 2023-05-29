@@ -16,15 +16,15 @@ public @interface ItemStackInfo {
     String name();
 
     @NotNull
-    String[] lore();
+    String[] lore() default {};
 
-    int amount();
+    int amount() default 1;
 
     @NotNull
     Material type();
 
     @NotNull
-    ItemFlag[] itemFlags();
+    ItemFlag[] itemFlags() default {};
 
-    int cooldown();
+    int cooldown() default 0;
 }

@@ -20,11 +20,11 @@ public @interface InventoryMenuInfo {
     /**
      * the size of this inventory menu
      */
-    int size();
+    int size() default 9;
 
     /**
      * the material used as background of this inventory menu
      */
     @NotNull
-    Material background();
+    Material background() default Material.AIR;
 }

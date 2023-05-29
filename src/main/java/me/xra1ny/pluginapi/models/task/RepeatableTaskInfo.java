@@ -11,5 +11,5 @@ public @interface RepeatableTaskInfo {
     /**
      * defines the interval of this repeatable task
      */
-    int interval();
+    int interval() default 0;
 }

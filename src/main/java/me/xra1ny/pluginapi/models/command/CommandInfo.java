@@ -20,12 +20,12 @@ public @interface CommandInfo {
      * defines the permission required to run this command
      */
     @NotNull
-    String permission();
+    String permission() default "";
 
     /**
      * defines if this command can only be executed by a player
      */
-    boolean requiresPlayer();
+    boolean requiresPlayer() default true;
 
     /**
      * defines all valid arguments of this command
@@ -53,5 +53,5 @@ public @interface CommandInfo {
      * <li>user %PLAYER% rd set %INTEGER%</li>
      */
     @NotNull
-    String[] args();
+    String[] args() default {};
 }
