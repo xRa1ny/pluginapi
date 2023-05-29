@@ -28,10 +28,6 @@ public final class DefaultPluginListener implements Listener {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getPlayer());
 
-            if (e.getInventory().getHolder() == null) {
-                return;
-            }
-
             if (e.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
                 inventoryMenu.onOpen(e, user);
 
@@ -39,7 +35,7 @@ public final class DefaultPluginListener implements Listener {
                 inventoryMenu.setItems(user);
 
                 if (inventoryMenu instanceof RPagedInventoryMenu pagedInventoryMenu) {
-                    pagedInventoryMenu.setPage(1);
+                    pagedInventoryMenu.setPage(1, user);
                 }
             }
         }catch(Exception ex) {
@@ -51,21 +47,23 @@ public final class DefaultPluginListener implements Listener {
     @EventHandler
     public void onPlayerClickInInventory(@NotNull InventoryClickEvent e) {
         try {
+            if(e.getClickedInventory() == null) {
+                return;
+            }
+
             final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getWhoClicked());
 
-            if (e.getInventory().getHolder() != null) {
-                if (e.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
+            if(e.getClickedInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
 
-                    // If the User clicks outside of Inventory Window, close it
-                    if(e.getClickedInventory() == null) {
-                        user.getPlayer().closeInventory();
+                // If the User clicks outside of Inventory Window, close it
+                if(e.getClickedInventory() == null) {
+                    user.getPlayer().closeInventory();
 
-                        return;
-                    }
-
-                    inventoryMenu.handleClick(e, user);
-                    e.setCancelled(true);
+                    return;
                 }
+
+                inventoryMenu.handleClick(e, user);
+                e.setCancelled(true);
             }
         }catch(Exception ex) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default inventory click event handler!");
@@ -77,10 +75,6 @@ public final class DefaultPluginListener implements Listener {
     public void onPlayerCloseInventory(@NotNull InventoryCloseEvent e) {
         try {
             final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getPlayer());
-
-            if (e.getInventory().getHolder() == null) {
-                return;
-            }
 
             if (e.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
                 if(inventoryMenu.getOpenUsers().contains(user)) {
@@ -108,11 +102,11 @@ public final class DefaultPluginListener implements Listener {
     @EventHandler
     public void onPlayerInteract(@NotNull PlayerInteractEvent e) {
         try {
-            final RUser user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
-
             if (e.getItem() == null) {
                 return;
             }
+
+            final RUser user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
 
             RPlugin.getInstance().getItemStackManager().getItems()
                     .stream()

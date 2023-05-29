@@ -2,6 +2,8 @@ package me.xra1ny.pluginapi.models.menu;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import me.xra1ny.pluginapi.models.user.RUser;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /** Used to easily create an interactive paged Inventory Menu */
@@ -11,7 +13,7 @@ public abstract class RPagedInventoryMenu extends RInventoryMenu {
      * the current page of this paged inventory menu
      */
     @Getter
-    private int page = 0;
+    private long page = 0;
 
     public RPagedInventoryMenu(@Nullable RInventoryMenu previousMenu) {
         super(previousMenu);
@@ -21,19 +23,19 @@ public abstract class RPagedInventoryMenu extends RInventoryMenu {
      * called when the page of this paged inventory menu changes
      * @param page the new page
      */
-    protected abstract void onPageChange(int page);
+    protected abstract void onPageChange(long page, @NotNull RUser user);
 
     /**
      * sets the current page of this paged inventory menu
      * @param page the page
      */
-    public final void setPage(int page) {
-        if(page <= 0 || page == Integer.MAX_VALUE) {
+    public final void setPage(long page, @NotNull RUser user) {
+        if(page <= 0) {
             return;
         }
 
         this.page = page;
 
-        onPageChange(page);
+        onPageChange(page, user);
     }
 }

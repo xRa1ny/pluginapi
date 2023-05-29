@@ -98,7 +98,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
     public abstract void onClose(@NotNull InventoryCloseEvent e, @NotNull RUser user);
 
     public final void handleClick(@NotNull InventoryClickEvent e, @NotNull RUser user) {
-        final Player player = (Player) e.getWhoClicked();
+        final Player player = user.getPlayer();
 
         if(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR && !e.getCurrentItem().equals(this.background)) {
             player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, .3f, 1f);
