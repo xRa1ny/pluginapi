@@ -68,14 +68,16 @@
         <dependency>
             <groupId>de.dytanic.cloudnet</groupId>
             <artifactId>cloudnet-driver</artifactId>
-            <version>3.4.0-RELEASE</version>
+            <version>3.4.5-RELEASE</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- DO NOT CHANGE! -->
         <dependency>
             <groupId>de.dytanic.cloudnet</groupId>
             <artifactId>cloudnet-bridge</artifactId>
-            <version>3.4.0-RELEASE</version>
+            <version>3.4.5-RELEASE</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- DO NOT CHANGE! -->
