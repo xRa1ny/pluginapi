@@ -167,6 +167,12 @@ public abstract class RPlugin extends JavaPlugin {
     public final String PLAYER_IDENTIFIER = "%PLAYER%";
 
     /**
+     * the time of plugin initialisation measured in milliseconds
+     */
+    @Getter
+    private long startupTime;
+
+    /**
      * called when this plugin enables
      */
     public abstract void onPluginEnable() throws Exception;
@@ -297,6 +303,8 @@ public abstract class RPlugin extends JavaPlugin {
 
                 saveConfig();
                 saveDefaultConfig();
+
+                this.startupTime = System.currentTimeMillis();
 
                 getLogger().log(Level.INFO, "external plugin successfully enabled!");
             }catch(Exception ex) {

@@ -44,6 +44,14 @@ public class RUser {
         this.timeout = RPlugin.getInstance().getUserManager().getUserTimeoutHandler().getUserTimeout();
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "RUser(player=%s, creation=%s, timeout=%o)",
+                this.player.getName(), this.creation, this.timeout
+        );
+    }
+
     /**
      * updates this user
      */
