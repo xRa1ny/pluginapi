@@ -286,15 +286,10 @@ public abstract class RPlugin extends JavaPlugin {
             this.hexCodeManager = new HexCodeManager();
             this.cloudNetManager = new CloudNetManager();
 
-            // TODO: add database support...
-            // if(this.mysqlEnabled) {
-                // this.databaseApiManager = new DatabaseApiManager();
-            // }
-
             this.listenerManager.register(new DefaultPluginConnectionListener());
             this.listenerManager.register(new DefaultPluginListener());
 
-            getLogger().log(Level.INFO, "pluginapi successfully enabled!");
+            getLogger().log(Level.INFO, "pluginapi enabled successfully!");
 
             try {
                 getLogger().log(Level.INFO, "attempting to enable external plugin...");
@@ -306,7 +301,7 @@ public abstract class RPlugin extends JavaPlugin {
 
                 this.startupTime = System.currentTimeMillis();
 
-                getLogger().log(Level.INFO, "external plugin successfully enabled!");
+                getLogger().log(Level.INFO, "external plugin enabled successfully!");
             }catch(Exception ex) {
                 getLogger().log(Level.SEVERE, "error while enabling external plugin!", ex);
             }
@@ -324,7 +319,7 @@ public abstract class RPlugin extends JavaPlugin {
                 player.kickPlayer("Server is restarting...");
             }
 
-            getLogger().log(Level.INFO, "pluginapi successfully disabled!");
+            getLogger().log(Level.INFO, "pluginapi disabled successfully!");
 
             try {
                 getLogger().log(Level.INFO, "attempting to disable external plugin...");
@@ -333,7 +328,7 @@ public abstract class RPlugin extends JavaPlugin {
 
                 saveConfig();
 
-                getLogger().log(Level.INFO, "external plugin successfully disabled!");
+                getLogger().log(Level.INFO, "external plugin disabled successfully!");
             }catch(Exception ex) {
                 getLogger().log(Level.SEVERE, "error while disabling external plugin!", ex);
             }
