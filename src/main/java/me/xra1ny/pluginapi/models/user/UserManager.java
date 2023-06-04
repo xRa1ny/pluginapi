@@ -29,7 +29,7 @@ public class UserManager {
 
     public UserManager(@NotNull Class<? extends RUser> userClass, long userTimeout) {
         this.userClass = userClass;
-        this.userTimeoutHandler = new UserTimeoutHandler(userTimeout);;
+        this.userTimeoutHandler = new UserTimeoutHandler(userTimeout);
         this.userTimeoutHandler.start();
     }
 

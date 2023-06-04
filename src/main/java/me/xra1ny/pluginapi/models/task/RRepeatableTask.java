@@ -45,6 +45,7 @@ public abstract class RRepeatableTask {
 
     public RRepeatableTask(int interval) {
         this.interval = interval;
+
         run();
     }
 
@@ -55,8 +56,7 @@ public abstract class RRepeatableTask {
                 try {
                     tick();
                 } catch (Exception ex) {
-                    RPlugin.getInstance().getLogger().log(Level.INFO, "exception in repeatable task " + this);
-                    ex.printStackTrace();
+                    RPlugin.getInstance().getLogger().log(Level.SEVERE, "error in repeatable task tick " + this, ex);
                 }
             }
         };
@@ -67,6 +67,7 @@ public abstract class RRepeatableTask {
      */
     public final void start() {
         stop();
+
         this.task = this.runnable.runTaskTimer(RPlugin.getInstance(), 0L, (this.interval / 1000) * 20);
     }
 
