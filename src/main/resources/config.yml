@@ -44,13 +44,13 @@ non-mysql:
   # when enabled the api will force to use these settings disregarding any mysql connection
   force: true
   # the prefix
-  prefix: '§lMyPlugin | '
+  prefix: '§lMyPlugin  '
   # the chat color
   chat-color: GRAY
   # the message to display when performing an action without the required permissions
   player-no-permission-error-message: §l§cERROR! §r§cYou don't have permission to perform this action!
   # the message to display when executing a command that can only be executed by a player
-  only-player-command-error-message: §l§cERROR! §r§cThis command can only be executed by a player!
+  command-only-player-error-message: §l§cERROR! §r§cThis command can only be executed by a player!
   # the message to display when an error occurs while executing a command
   command-error-message: §l§cERROR! §r§cError while executing command!
   # the message to display when while executing a command has been given invalid args
