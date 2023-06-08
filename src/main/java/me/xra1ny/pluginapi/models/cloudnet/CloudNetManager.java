@@ -6,6 +6,7 @@ import de.dytanic.cloudnet.driver.service.ServiceTask;
 import de.dytanic.cloudnet.ext.bridge.BridgeServiceProperty;
 import me.xra1ny.pluginapi.exceptions.ServiceInfoSnapshotNotFoundException;
 import me.xra1ny.pluginapi.exceptions.ServiceTaskNotFoundException;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +59,22 @@ public final class CloudNetManager {
         return playerCount;
     }
 
-    public List<ServiceInfoSnapshot> getCloudServers(@NotNull String task) {
-        return CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServices(task).stream().toList();
+    public List<CloudNetServer> getCloudServers() {
+        return CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServices().stream()
+                .map(CloudNetServer::new)
+                .toList();
+    }
+
+    public List<CloudNetServer> getCloudServers(@NotNull String task) {
+        return CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServices(task).stream()
+                .map(CloudNetServer::new)
+                .toList();
+    }
+
+    @Nullable
+    public CloudNetServer getCloudServer(@NotNull Player player) {
+        return getCloudServers().stream()
+                .filter(cloudServer -> cloudServer.getPlayers().contains(player))
+                .findFirst().orElse(null);
     }
 }

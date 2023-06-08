@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-public class MaintenanceManager {
+public class RMaintenanceManager {
     /**
      * the message to display when a user gets kicked in result of ongoing maintenance
      */
@@ -32,7 +32,7 @@ public class MaintenanceManager {
     @Getter(onMethod = @__({ @NotNull, @Unmodifiable}))
     private final List<UUID> ignoredUsers = new ArrayList<>();
 
-    public MaintenanceManager() {
+    public RMaintenanceManager() {
         this.message = RPlugin.getInstance().getConfig().getString("maintenance.message");
         this.enabled = RPlugin.getInstance().getConfig().getBoolean("maintenance.enabled");
 

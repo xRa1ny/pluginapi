@@ -6,13 +6,14 @@ import me.xra1ny.pluginapi.listeners.DefaultPluginListener;
 import me.xra1ny.pluginapi.models.cloudnet.CloudNetManager;
 import me.xra1ny.pluginapi.models.color.HexCodeManager;
 import me.xra1ny.pluginapi.models.command.CommandManager;
+import me.xra1ny.pluginapi.models.hologram.HologramManager;
 import me.xra1ny.pluginapi.models.item.ItemStackManager;
 import me.xra1ny.pluginapi.models.listener.ListenerManager;
-import me.xra1ny.pluginapi.models.maintenance.MaintenanceManager;
+import me.xra1ny.pluginapi.models.maintenance.RMaintenanceManager;
 import me.xra1ny.pluginapi.models.scoreboard.ScoreboardManager;
 import me.xra1ny.pluginapi.models.user.RUser;
+import me.xra1ny.pluginapi.models.user.RUserManager;
 import me.xra1ny.pluginapi.models.user.UserInputWindowManager;
-import me.xra1ny.pluginapi.models.user.UserManager;
 import me.xra1ny.pluginapi.utils.ConfigKeys;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -123,14 +124,12 @@ public abstract class RPlugin extends JavaPlugin {
     /**
      * the user manager responsible for storing and managing all users of this plugin
      */
-    @Getter(onMethod = @__(@NotNull))
-    private UserManager userManager;
+    private RUserManager userManager;
 
     /**
      * the maintenance manager responsible for storing all maintenance related information and managing them
      */
-    @Getter(onMethod = @__(@NotNull))
-    private MaintenanceManager maintenanceManager;
+    private RMaintenanceManager maintenanceManager;
 
     /**
      * the item stack manager responsible for storing and managing all custom item stacks of this plugin
@@ -149,6 +148,12 @@ public abstract class RPlugin extends JavaPlugin {
      */
     @Getter(onMethod = @__(@NotNull))
     private UserInputWindowManager userInputWindowManager;
+
+    /**
+     * the hologram manager responsible for storing and managing all holograms of this plugin
+     */
+    @Getter(onMethod = @__(@NotNull))
+    private HologramManager hologramManager;
 
     /**
      * the hex code manager responsible for creating strings with color gradients of this plugin
@@ -268,21 +273,26 @@ public abstract class RPlugin extends JavaPlugin {
 
             RPlugin.instance = this;
 
+            final PluginInfo info = getClass().getDeclaredAnnotation(PluginInfo.class);
             Class<? extends RUser> userClass = RUser.class;
-            final PluginInfo pluginInfo = getClass().getDeclaredAnnotation(PluginInfo.class);
+            Class<? extends RUserManager> userManagerClass = RUserManager.class;
+            Class<? extends RMaintenanceManager> maintenanceManagerClass = RMaintenanceManager.class;
 
-            if(pluginInfo != null) {
-                userClass = pluginInfo.userClass();
+            if(info != null) {
+                userClass = info.userClass();
+                userManagerClass = info.userManagerClass();
+                maintenanceManagerClass = info.maintenanceManagerClass();
             }
 
             setupConfig();
 
             this.listenerManager = new ListenerManager();
             this.commandManager = new CommandManager();
-            this.userManager = new UserManager(userClass, this.userTimeout);
-            this.maintenanceManager = new MaintenanceManager();
+            this.userManager = userManagerClass.getDeclaredConstructor(Class.class, long.class).newInstance(userClass, this.userTimeout);
+            this.maintenanceManager = maintenanceManagerClass.getDeclaredConstructor().newInstance();
             this.itemStackManager = new ItemStackManager();
             this.scoreboardManager = new ScoreboardManager();
+            this.hologramManager = new HologramManager();
             this.userInputWindowManager = new UserInputWindowManager();
             this.hexCodeManager = new HexCodeManager();
             this.cloudNetManager = new CloudNetManager();
@@ -336,5 +346,13 @@ public abstract class RPlugin extends JavaPlugin {
         }catch(Exception ex) {
             getLogger().log(Level.SEVERE, "error while disabling pluginapi!", ex);
         }
+    }
+
+    public <T extends RUserManager> T getUserManager() {
+        return (T) this.userManager;
+    }
+
+    public <T extends RMaintenanceManager> T getMaintenanceManager() {
+        return (T) this.maintenanceManager;
     }
 }

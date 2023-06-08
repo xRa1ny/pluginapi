@@ -5,10 +5,11 @@ import de.dytanic.cloudnet.ext.bridge.BridgeServiceProperty;
 import de.dytanic.cloudnet.ext.bridge.PluginInfo;
 import de.dytanic.cloudnet.ext.bridge.player.ServicePlayer;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.List;
 
 public final class CloudNetServer {
@@ -31,10 +32,6 @@ public final class CloudNetServer {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.IS_STARTING).orElse(false);
     }
 
-    public void setStarting(boolean starting) {
-        this.serviceInfoSnapshot.setProperty(BridgeServiceProperty.IS_STARTING, starting);
-    }
-
     public boolean isOnline() {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.IS_ONLINE).orElse(false);
     }
@@ -47,16 +44,8 @@ public final class CloudNetServer {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.IS_FULL).orElse(false);
     }
 
-    public void setFull(boolean full) {
-        this.serviceInfoSnapshot.setProperty(BridgeServiceProperty.IS_FULL, full);
-    }
-
     public boolean isEmpty() {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.IS_EMPTY).orElse(false);
-    }
-
-    public void setEmpty(boolean empty) {
-        this.serviceInfoSnapshot.setProperty(BridgeServiceProperty.IS_EMPTY, empty);
     }
 
     public boolean isIngame() {
@@ -71,10 +60,6 @@ public final class CloudNetServer {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.ONLINE_COUNT).orElse(0);
     }
 
-    public void setPlayerCount(int playerCount) {
-        this.serviceInfoSnapshot.setProperty(BridgeServiceProperty.ONLINE_COUNT, playerCount);
-    }
-
     public int getMaxPlayers() {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.MAX_PLAYERS).orElse(0);
     }
@@ -84,12 +69,16 @@ public final class CloudNetServer {
     }
 
     @NotNull
-    public List<ServicePlayer> getPlayers() {
+    public List<ServicePlayer> getServicePlayers() {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.PLAYERS).orElse(List.of()).stream().toList();
     }
 
-    public void setPlayers(@NotNull Collection<ServicePlayer> players) {
-        this.serviceInfoSnapshot.setProperty(BridgeServiceProperty.PLAYERS, players);
+    @NotNull
+    public List<Player> getPlayers() {
+        return getServicePlayers().stream()
+                .map(ServicePlayer::getUniqueId)
+                .map(Bukkit::getPlayer)
+                .toList();
     }
 
     @Nullable
@@ -106,10 +95,6 @@ public final class CloudNetServer {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.PLUGINS).orElse(List.of()).stream().toList();
     }
 
-    public void setPlugins(@NotNull Collection<PluginInfo> plugins) {
-        this.serviceInfoSnapshot.setProperty(BridgeServiceProperty.PLUGINS, plugins);
-    }
-
     @Nullable
     public String getState() {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.STATE).orElse(null);
@@ -122,10 +107,6 @@ public final class CloudNetServer {
     @Nullable
     public String getVersion() {
         return this.serviceInfoSnapshot.getProperty(BridgeServiceProperty.VERSION).orElse(null);
-    }
-
-    public void setVersion(@NotNull String version) {
-        this.serviceInfoSnapshot.setProperty(BridgeServiceProperty.VERSION, version);
     }
 
     @Override
