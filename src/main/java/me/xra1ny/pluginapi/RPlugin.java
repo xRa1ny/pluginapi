@@ -198,29 +198,6 @@ public abstract class RPlugin extends JavaPlugin {
         getLogger().setLevel(Level.parse(getConfig().getString(ConfigKeys.LOGGING_LEVEL, "ALL")));
         getConfig().set(ConfigKeys.LOGGING_LEVEL, getLogger().getLevel().toString());
 
-        ConfigurationSection mysql = getConfig().getConfigurationSection(ConfigKeys.MYSQL);
-
-        if(mysql == null) {
-            mysql = getConfig().createSection(ConfigKeys.MYSQL);
-        }
-
-        this.mysqlEnabled = mysql.getBoolean(ConfigKeys.MYSQL_ENABLED, false);
-        mysql.set(ConfigKeys.MYSQL_ENABLED, this.mysqlEnabled);
-
-        if(this.mysqlEnabled) {
-            this.mysqlUrl = mysql.getString(ConfigKeys.MYSQL_URL, "127.0.0.1");
-            mysql.set(ConfigKeys.MYSQL_URL, this.mysqlUrl);
-
-            this.mysqlPort = mysql.getInt(ConfigKeys.MYSQL_PORT, 3306);
-            mysql.set(ConfigKeys.MYSQL_PORT, this.mysqlPort);
-
-            this.mysqlUsername = mysql.getString(ConfigKeys.MYSQL_USERNAME, "root");
-            mysql.set(ConfigKeys.MYSQL_USERNAME, this.mysqlUsername);
-
-            this.mysqlPassword = mysql.getString(ConfigKeys.MYSQL_PASSWORD, "");
-            mysql.set(ConfigKeys.MYSQL_PASSWORD, this.mysqlPassword);
-        }
-
         ConfigurationSection nonMysql = getConfig().getConfigurationSection(ConfigKeys.NON_MYSQL);
 
         if(nonMysql == null) {

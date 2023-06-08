@@ -3,13 +3,6 @@ package me.xra1ny.pluginapi.utils;
 public interface ConfigKeys {
     String LOGGING_LEVEL = "logging-level";
 
-    String MYSQL = "mysql";
-    String MYSQL_ENABLED = "enabled";
-    String MYSQL_URL = "url";
-    String MYSQL_PORT = "port";
-    String MYSQL_USERNAME = "username";
-    String MYSQL_PASSWORD = "password";
-
     String NON_MYSQL = "non-mysql";
     String NON_MYSQL_FORCE = "force";
     String NON_MYSQL_PREFIX = "prefix";

@@ -24,21 +24,6 @@
 # ALL     - all messages will be logged
 logging-level: 'ALL'
 
-# the settings required to connect to a mysql server
-mysql:
-  # when enabled the api will attempt to connect to the specified mysql server
-  enabled: false
-  # the credentials of the mysql server
-  credentials:
-    # the url the mysql server is running on
-    url: 127.0.0.1
-    # the port the mysql server is running on
-    port: 3306
-    # the username to login as on the mysql server
-    username: USERNAME
-    # the password of the user to login as on the mysql server
-    password: PASSWORD
-
 # the settings to use when no mysql connection is established
 non-mysql:
   # when enabled the api will force to use these settings disregarding any mysql connection
