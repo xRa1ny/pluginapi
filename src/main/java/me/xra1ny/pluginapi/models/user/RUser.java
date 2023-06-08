@@ -54,4 +54,8 @@ public class RUser {
 
         this.player = Bukkit.getPlayer(this.player.getUniqueId());
     }
+
+    public void sendMessage(@NotNull String message) {
+        this.player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + message);
+    }
 }

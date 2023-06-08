@@ -348,6 +348,10 @@ public abstract class RPlugin extends JavaPlugin {
         }
     }
 
+    public static int broadcastMessage(@NotNull String message) {
+        return Bukkit.broadcastMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + message);
+    }
+
     public <T extends RUserManager> T getUserManager() {
         return (T) this.userManager;
     }
