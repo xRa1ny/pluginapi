@@ -86,6 +86,7 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
         if(!this.permission.isBlank()) {
             if(!sender.hasPermission(this.permission)) {
                 sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getPlayerNoPermissionErrorMessage());
+
                 return true;
             }
         }

@@ -55,9 +55,7 @@ public class RMaintenanceManager {
         RPlugin.getInstance().getConfig().set("maintenance.message", message);
         RPlugin.getInstance().saveConfig();
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Die Wartungsarbeiten Nachricht wurde angepasst!");
-        }
+        RPlugin.broadcastMessage("Die Wartungsarbeiten Nachricht wurde angepasst!");
 
         this.message = message;
     }
@@ -81,11 +79,7 @@ public class RMaintenanceManager {
             }
         }
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + "Die Wartungen wurden " + String.valueOf(enabled)
-                    .replace("true", ChatColor.GREEN + "aktiviert!")
-                    .replace("false", ChatColor.RED + "deaktiviert!"));
-        }
+        RPlugin.broadcastMessage("Die Wartungen wurden " + (enabled ? ChatColor.GREEN + "aktiviert!" : ChatColor.RED + "deaktiviert!"));
 
         this.enabled = enabled;
     }
@@ -109,9 +103,7 @@ public class RMaintenanceManager {
         final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
         // TODO: Add filter (Send Message only to permitted Players)
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + ChatColor.YELLOW + offlinePlayer.getName() + RPlugin.getInstance().getChatColor() + " wurde als Wartungsarbeiten Ausnahme " + ChatColor.GREEN + "hinzugefügt!");
-        }
+        RPlugin.broadcastMessage(ChatColor.YELLOW + offlinePlayer.getName() + RPlugin.getInstance().getChatColor() + " wurde als Wartungsarbeiten Ausnahme " + ChatColor.GREEN + "hinzugefügt!");
 
         updateConfig();
     }
@@ -130,9 +122,7 @@ public class RMaintenanceManager {
         final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
         // TODO: Add filter (Send Message only to permitted Players)
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + ChatColor.YELLOW + offlinePlayer.getName() + RPlugin.getInstance().getChatColor() + " wurde als Wartungsarbeiten Ausnahme " + ChatColor.RED + "entfernt!");
-        }
+        RPlugin.broadcastMessage(ChatColor.YELLOW + offlinePlayer.getName() + RPlugin.getInstance().getChatColor() + " wurde als Wartungsarbeiten Ausnahme " + ChatColor.RED + "entfernt!");
 
         updateConfig();
     }
