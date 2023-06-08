@@ -22,14 +22,14 @@ public @interface PluginInfo {
 
     /**
      * the user manager class to use for this plugin
-     * @return the user class
+     * @return the user manager class
      */
     @NotNull
     Class<? extends RUserManager> userManagerClass() default RUserManager.class;
 
     /**
      * the maintenance manager class to use for this plugin
-     * @return the user class
+     * @return the maintenance manager class
      */
     @NotNull
     Class<? extends RMaintenanceManager> maintenanceManagerClass() default RMaintenanceManager.class;
