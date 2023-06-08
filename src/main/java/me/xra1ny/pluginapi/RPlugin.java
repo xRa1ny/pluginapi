@@ -45,24 +45,6 @@ public abstract class RPlugin extends JavaPlugin {
     private String mysqlUrl;
 
     /**
-     * the config setting of the mysql url port to connect to
-     */
-    @Getter
-    private int mysqlPort;
-
-    /**
-     * the config setting of the mysql servers username to login as
-     */
-    @Getter(onMethod = @__(@NotNull))
-    private String mysqlUsername;
-
-    /**
-     * the config setting of the mysql servers user password to login as
-     */
-    @Getter(onMethod = @__(@NotNull))
-    private String mysqlPassword;
-
-    /**
      * the config setting whether to force non mysql config settings even when a mysql connection has been established
      */
     @Getter
@@ -197,6 +179,9 @@ public abstract class RPlugin extends JavaPlugin {
 
         getLogger().setLevel(Level.parse(getConfig().getString(ConfigKeys.LOGGING_LEVEL, "ALL")));
         getConfig().set(ConfigKeys.LOGGING_LEVEL, getLogger().getLevel().toString());
+
+        this.mysqlEnabled = getConfig().getBoolean(ConfigKeys.MYSQL_ENABLED, false);
+        getConfig().set(ConfigKeys.MYSQL_ENABLED, this.mysqlEnabled);
 
         ConfigurationSection nonMysql = getConfig().getConfigurationSection(ConfigKeys.NON_MYSQL);
 
