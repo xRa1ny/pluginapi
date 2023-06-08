@@ -24,6 +24,9 @@
 # ALL     - all messages will be logged
 logging-level: 'ALL'
 
+# when enabled, marks this plugin as mysql supported and will affect non-mysql configuration
+mysql-enabled: false
+
 # the settings to use when no mysql connection is established
 non-mysql:
   # when enabled the api will force to use these settings disregarding any mysql connection
