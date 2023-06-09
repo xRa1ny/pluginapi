@@ -140,10 +140,10 @@ public final class DefaultPluginListener implements Listener {
     public void onPlayerPreLogin(@NotNull AsyncPlayerPreLoginEvent e) {
         try {
             // If the Maintenances are enabled on this Server, check whether the current User is allowed to Join or not
-            if (RPlugin.getInstance().getMaintenanceManager().isEnabled()) {
-                if (!RPlugin.getInstance().getMaintenanceManager().getIgnoredUsers().stream()
+            if (RPlugin.getInstance().getServerMaintenanceManager().isEnabled()) {
+                if (!RPlugin.getInstance().getServerMaintenanceManager().getIgnoredUsers().stream()
                         .map(UUID::toString).toList().contains(e.getUniqueId().toString())) {
-                    e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, RPlugin.getInstance().getMaintenanceManager().getMessage());
+                    e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, RPlugin.getInstance().getServerMaintenanceManager().getMessage());
                 } else {
                     e.allow();
                 }

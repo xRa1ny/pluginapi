@@ -3,6 +3,11 @@ package me.xra1ny.pluginapi.utils;
 public interface ConfigKeys {
     String LOGGING_LEVEL = "logging-level";
 
+    String MAINTENANCE = "maintenance";
+    String MAINTENANCE_ENABLED = "enabled";
+    String MAINTENANCE_MESSAGE = "message";
+    String MAINTENANCE_IGNORED = "ignored";
+
     String MYSQL_ENABLED = "mysql";
 
     String NON_MYSQL = "non-mysql";

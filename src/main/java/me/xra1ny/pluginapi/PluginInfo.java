@@ -1,6 +1,5 @@
 package me.xra1ny.pluginapi;
 
-import me.xra1ny.pluginapi.models.maintenance.RMaintenanceManager;
 import me.xra1ny.pluginapi.models.user.RUser;
 import me.xra1ny.pluginapi.models.user.RUserManager;
 import org.jetbrains.annotations.NotNull;
@@ -26,11 +25,4 @@ public @interface PluginInfo {
      */
     @NotNull
     Class<? extends RUserManager> userManagerClass() default RUserManager.class;
-
-    /**
-     * the maintenance manager class to use for this plugin
-     * @return the maintenance manager class
-     */
-    @NotNull
-    Class<? extends RMaintenanceManager> maintenanceManagerClass() default RMaintenanceManager.class;
 }

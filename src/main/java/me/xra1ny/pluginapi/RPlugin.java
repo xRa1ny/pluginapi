@@ -9,7 +9,7 @@ import me.xra1ny.pluginapi.models.command.CommandManager;
 import me.xra1ny.pluginapi.models.hologram.HologramManager;
 import me.xra1ny.pluginapi.models.item.ItemStackManager;
 import me.xra1ny.pluginapi.models.listener.ListenerManager;
-import me.xra1ny.pluginapi.models.maintenance.RMaintenanceManager;
+import me.xra1ny.pluginapi.models.maintenance.ServerMaintenanceManager;
 import me.xra1ny.pluginapi.models.scoreboard.ScoreboardManager;
 import me.xra1ny.pluginapi.models.user.RUser;
 import me.xra1ny.pluginapi.models.user.RUserManager;
@@ -31,6 +31,10 @@ public abstract class RPlugin extends JavaPlugin {
      */
     @Getter(onMethod = @__(@NotNull))
     private static RPlugin instance;
+
+    private boolean maintenanceEnabled;
+
+    private String maintenanceMessage;
 
     /**
      * the config setting whether to use mysql or not
@@ -114,7 +118,8 @@ public abstract class RPlugin extends JavaPlugin {
     /**
      * the maintenance manager responsible for storing all maintenance related information and managing them
      */
-    private RMaintenanceManager maintenanceManager;
+    @Getter(onMethod = @__(@NotNull))
+    private ServerMaintenanceManager serverMaintenanceManager;
 
     /**
      * the item stack manager responsible for storing and managing all custom item stacks of this plugin
@@ -183,6 +188,18 @@ public abstract class RPlugin extends JavaPlugin {
         getLogger().setLevel(Level.parse(getConfig().getString(ConfigKeys.LOGGING_LEVEL, "ALL")));
         getConfig().set(ConfigKeys.LOGGING_LEVEL, getLogger().getLevel().toString());
 
+        ConfigurationSection maintenance = RPlugin.getInstance().getConfig().getConfigurationSection(ConfigKeys.MAINTENANCE);
+
+        if(maintenance == null) {
+            maintenance = RPlugin.getInstance().getConfig().createSection(ConfigKeys.MAINTENANCE);
+        }
+
+        this.maintenanceEnabled = maintenance.getBoolean(ConfigKeys.MAINTENANCE_ENABLED, false);
+        maintenance.set(ConfigKeys.MAINTENANCE_ENABLED, this.maintenanceEnabled);
+
+        this.maintenanceMessage = maintenance.getString(ConfigKeys.MAINTENANCE_MESSAGE, "§lMaintenance!");
+        maintenance.set(ConfigKeys.MAINTENANCE_MESSAGE, this.maintenanceMessage);
+
         this.mysqlEnabled = getConfig().getBoolean(ConfigKeys.MYSQL_ENABLED, false);
         getConfig().set(ConfigKeys.MYSQL_ENABLED, this.mysqlEnabled);
 
@@ -244,12 +261,11 @@ public abstract class RPlugin extends JavaPlugin {
             final PluginInfo info = getClass().getDeclaredAnnotation(PluginInfo.class);
             Class<? extends RUser> userClass = RUser.class;
             Class<? extends RUserManager> userManagerClass = RUserManager.class;
-            Class<? extends RMaintenanceManager> maintenanceManagerClass = RMaintenanceManager.class;
+            Class<? extends ServerMaintenanceManager> maintenanceManagerClass = ServerMaintenanceManager.class;
 
             if(info != null) {
                 userClass = info.userClass();
                 userManagerClass = info.userManagerClass();
-                maintenanceManagerClass = info.maintenanceManagerClass();
             }
 
             setupConfig();
@@ -257,7 +273,7 @@ public abstract class RPlugin extends JavaPlugin {
             this.listenerManager = new ListenerManager();
             this.commandManager = new CommandManager();
             this.userManager = userManagerClass.getDeclaredConstructor(Class.class, long.class).newInstance(userClass, this.userTimeout);
-            this.maintenanceManager = maintenanceManagerClass.getDeclaredConstructor().newInstance();
+            this.serverMaintenanceManager = new ServerMaintenanceManager(this.maintenanceEnabled, this.maintenanceMessage);
             this.itemStackManager = new ItemStackManager();
             this.scoreboardManager = new ScoreboardManager();
             this.hologramManager = new HologramManager();
@@ -322,9 +338,5 @@ public abstract class RPlugin extends JavaPlugin {
 
     public <T extends RUserManager> T getUserManager() {
         return (T) this.userManager;
-    }
-
-    public <T extends RMaintenanceManager> T getMaintenanceManager() {
-        return (T) this.maintenanceManager;
     }
 }
