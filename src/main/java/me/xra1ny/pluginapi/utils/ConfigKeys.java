@@ -10,6 +10,7 @@ public interface ConfigKeys {
     String NON_MYSQL_PREFIX = "prefix";
     String NON_MYSQL_CHAT_COLOR = "chat-color";
     String NON_MYSQL_PLAYER_NO_PERMISSION_ERROR_MESSAGE = "player-no-permission-error-message";
+    String NON_MYSQL_PLAYER_NOT_FOUND_ERROR_MESSAGE = "player-not-found-error-message";
     String NON_MYSQL_COMMAND_ONLY_PLAYER_ERROR_MESSAGE = "command-only-player-error-message";
     String NON_MYSQL_COMMAND_ERROR_MESSAGE = "command-error-message";
     String NON_MYSQL_COMMAND_INVALID_ARGS_ERROR_MESSAGE = "command-invalid-args-error-message";

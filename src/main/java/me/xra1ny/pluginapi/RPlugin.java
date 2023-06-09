@@ -86,6 +86,9 @@ public abstract class RPlugin extends JavaPlugin {
     @Getter(onMethod = @__(@NotNull))
     private String playerNoPermissionErrorMessage;
 
+    @Getter(onMethod = @__(@NotNull))
+    private String playerNotFoundErrorMessage;
+
     /**
      * the global error message displayed when the console performs a command that can only be executed by a player
      */
@@ -201,6 +204,9 @@ public abstract class RPlugin extends JavaPlugin {
 
             this.playerNoPermissionErrorMessage = nonMysql.getString(ConfigKeys.NON_MYSQL_PLAYER_NO_PERMISSION_ERROR_MESSAGE, "§l§cERROR! §r§cYou don't have permission to perform this action!");
             nonMysql.set(ConfigKeys.NON_MYSQL_PLAYER_NO_PERMISSION_ERROR_MESSAGE, this.playerNoPermissionErrorMessage);
+
+            this.playerNotFoundErrorMessage = nonMysql.getString(ConfigKeys.NON_MYSQL_PLAYER_NOT_FOUND_ERROR_MESSAGE, "§l§cERROR! The specified Player could not be found!");
+            nonMysql.set(ConfigKeys.NON_MYSQL_PLAYER_NOT_FOUND_ERROR_MESSAGE, this.playerNotFoundErrorMessage);
 
             this.onlyPlayerCommandErrorMessage = nonMysql.getString(ConfigKeys.NON_MYSQL_COMMAND_ONLY_PLAYER_ERROR_MESSAGE, "§l§cERROR! §r§cThis command can only be executed by a player!");
             nonMysql.set(ConfigKeys.NON_MYSQL_COMMAND_ONLY_PLAYER_ERROR_MESSAGE, this.onlyPlayerCommandErrorMessage);
