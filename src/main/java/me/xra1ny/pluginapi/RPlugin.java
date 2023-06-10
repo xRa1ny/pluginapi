@@ -17,6 +17,7 @@ import me.xra1ny.pluginapi.models.user.UserInputWindowManager;
 import me.xra1ny.pluginapi.utils.ConfigKeys;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -332,8 +333,24 @@ public abstract class RPlugin extends JavaPlugin {
         }
     }
 
-    public static int broadcastMessage(@NotNull String message) {
-        return Bukkit.broadcastMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + message);
+    public static int broadcastMessage(@NotNull String... message) {
+        final StringBuilder messageBuilder = new StringBuilder();
+
+        for(String msg : message) {
+            messageBuilder.append(RPlugin.getInstance().getChatColor()).append(msg);
+        }
+
+        return Bukkit.broadcastMessage(RPlugin.getInstance().getPrefix() + messageBuilder);
+    }
+
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull String... message) {
+        final StringBuilder messageBuilder = new StringBuilder();
+
+        for(String msg : message) {
+            messageBuilder.append(RPlugin.getInstance().getChatColor()).append(msg);
+        }
+
+        sender.sendMessage(RPlugin.getInstance().getPrefix() + messageBuilder);
     }
 
     public <T extends RUserManager> T getUserManager() {
