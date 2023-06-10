@@ -8,7 +8,7 @@ public interface ConfigKeys {
     String MAINTENANCE_MESSAGE = "message";
     String MAINTENANCE_IGNORED = "ignored";
 
-    String MYSQL_ENABLED = "mysql";
+    String MYSQL_ENABLED = "mysql-enabled";
 
     String NON_MYSQL = "non-mysql";
     String NON_MYSQL_FORCE = "force";
