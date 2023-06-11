@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.models.user.RUser;
 import me.xra1ny.pluginapi.utils.ConfigKeys;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -46,9 +45,7 @@ public class ServerMaintenanceManager {
             return;
         }
 
-        final ConfigurationSection maintenance = RPlugin.getInstance().getConfig().getConfigurationSection(ConfigKeys.MAINTENANCE);
-
-        maintenance.set(ConfigKeys.MAINTENANCE_MESSAGE, message);
+        RPlugin.getInstance().getConfig().set(ConfigKeys.MAINTENANCE_MESSAGE, message);
 
         RPlugin.getInstance().saveConfig();
 
@@ -64,9 +61,7 @@ public class ServerMaintenanceManager {
             return;
         }
 
-        final ConfigurationSection maintenance = RPlugin.getInstance().getConfig().getConfigurationSection(ConfigKeys.MAINTENANCE);
-
-        maintenance.set(ConfigKeys.MAINTENANCE_ENABLED, enabled);
+        RPlugin.getInstance().getConfig().set(ConfigKeys.MAINTENANCE_ENABLED, enabled);
 
         RPlugin.getInstance().saveConfig();
 
@@ -81,9 +76,7 @@ public class ServerMaintenanceManager {
     }
 
     private void updateConfig() {
-        final ConfigurationSection maintenance = RPlugin.getInstance().getConfig().getConfigurationSection(ConfigKeys.MAINTENANCE);
-
-        maintenance.set(ConfigKeys.MAINTENANCE_IGNORED, this.ignoredUsers.stream().map(UUID::toString).toList());
+        RPlugin.getInstance().getConfig().set(ConfigKeys.MAINTENANCE_IGNORED, this.ignoredUsers.stream().map(UUID::toString).toList());
 
         RPlugin.getInstance().saveConfig();
     }

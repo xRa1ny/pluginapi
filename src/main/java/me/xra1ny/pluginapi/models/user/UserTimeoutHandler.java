@@ -1,6 +1,7 @@
 package me.xra1ny.pluginapi.models.user;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.models.task.RRepeatableTask;
 import me.xra1ny.pluginapi.models.task.RepeatableTaskInfo;
@@ -8,7 +9,8 @@ import me.xra1ny.pluginapi.models.task.RepeatableTaskInfo;
 @RepeatableTaskInfo(interval = 1000)
 public class UserTimeoutHandler extends RRepeatableTask {
     @Getter
-    private final long userTimeout;
+    @Setter
+    private long userTimeout;
 
     public UserTimeoutHandler(long userTimeout) {
         this.userTimeout = userTimeout;

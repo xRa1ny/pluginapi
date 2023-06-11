@@ -93,7 +93,7 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
         if(this.requiresPlayer) {
             if(!(sender instanceof Player)) {
-                sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getOnlyPlayerCommandErrorMessage());
+                sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandOnlyPlayerErrorMessage());
 
                 return true;
             }
