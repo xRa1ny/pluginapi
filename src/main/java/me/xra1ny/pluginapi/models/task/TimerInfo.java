@@ -5,11 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface RepeatableTaskInfo {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TimerInfo {
     /**
-     * defines the interval of this repeatable task
+     * defines the countdown of this timer
      */
-    int interval();
+    int countdown();
 }

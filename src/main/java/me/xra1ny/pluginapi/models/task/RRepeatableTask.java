@@ -54,7 +54,7 @@ public abstract class RRepeatableTask {
             @Override
             public void run() {
                 try {
-                    tick();
+                    onTick();
                 } catch (Exception ex) {
                     RPlugin.getInstance().getLogger().log(Level.SEVERE, "error in repeatable task tick " + this, ex);
                 }
@@ -90,5 +90,5 @@ public abstract class RRepeatableTask {
     /**
      * called whenever the interval of this repeatable task expires
      */
-    public abstract void tick() throws Exception;
+    public abstract void onTick() throws Exception;
 }

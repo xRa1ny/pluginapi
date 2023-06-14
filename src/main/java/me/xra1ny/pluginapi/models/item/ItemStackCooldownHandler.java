@@ -22,7 +22,7 @@ public class ItemStackCooldownHandler extends RRepeatableTask {
     }
 
     @Override
-    public void tick() {
+    public void onTick() {
         for(RItemStack itemStack : itemStackManager.getItems()) {
             try {
                 for(Map.Entry<RUser, Integer> entry : itemStack.getCooldownQueue().entrySet()) {
