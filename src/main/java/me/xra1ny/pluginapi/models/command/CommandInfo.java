@@ -36,6 +36,7 @@ public @interface CommandInfo {
      * Supported patterns:
      * <li>%PLAYER%/li>
      * <li>%BOOLEAN%</li>
+     * <li>%NUMBER%</li>
      *
      * <br />
      *

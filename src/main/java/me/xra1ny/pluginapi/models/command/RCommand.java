@@ -163,19 +163,35 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
         }
 
         for(String arg : this.args) {
-            final String[] splitArgs = arg.split(" ");
+            final String[] originalArgs = arg.split(" ");
+            final String[] editedArgs = originalArgs.clone();
 
-            if(splitArgs.length > args.length-1) {
-                final String finalArg = splitArgs[args.length-1];
+            if(originalArgs.length > args.length-1) {
+                for(int i = 0; i < args.length; i++) {
+                    if (!originalArgs[i].equals("%PLAYER%") &&
+                            !originalArgs[i].equals("%BOOLEAN%")) {
+                        continue;
+                    }
 
-                if(!arg.startsWith(String.join(" ", args))) {
+                    editedArgs[i] = args[i];
+                }
+
+                final String finalArg = originalArgs[args.length-1];
+
+                if(!String.join(" ", editedArgs).startsWith(String.join(" ", args))) {
                     continue;
                 }
 
                 if(finalArg.equalsIgnoreCase(RPlugin.getInstance().PLAYER_IDENTIFIER)) {
                     for(Player player : Bukkit.getOnlinePlayers()) {
+                        if(tabCompleted.contains(player.getName())) {
+                            continue;
+                        }
+
                         tabCompleted.add(player.getName());
                     }
+                }else if(finalArg.equalsIgnoreCase("%NUMBER%")) {
+                    tabCompleted.add("0");
                 }else if(finalArg.equalsIgnoreCase("%BOOLEAN%")) {
                     tabCompleted.add("<true|false>");
                 }else if(finalArg.startsWith("%") && finalArg.endsWith("%")) {
