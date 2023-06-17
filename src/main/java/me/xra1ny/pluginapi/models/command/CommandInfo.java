@@ -35,22 +35,11 @@ public @interface CommandInfo {
      *
      * Supported patterns:
      * <li>%PLAYER%/li>
-     * <li>%COMMAND%</li>
-     * <li>%INTEGER%</li>
      * <li>%BOOLEAN%</li>
      *
      * <br />
      *
      * all other patterns will not be converted in auto tabcomplete!
-     *
-     * <p>
-     * <br />
-     *
-     * <strong>might contain the following values:</strong>
-     * <li>user %PLAYER% permission set %PERMISSION%</li>
-     * <li>group %GROUP% create</li>
-     * <li>user %PLAYER% allowed set %BOOLEAN%</li>
-     * <li>user %PLAYER% rd set %INTEGER%</li>
      */
     @NotNull
     String[] args() default {};

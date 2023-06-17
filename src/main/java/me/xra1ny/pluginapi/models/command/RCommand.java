@@ -176,10 +176,6 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
                     for(Player player : Bukkit.getOnlinePlayers()) {
                         tabCompleted.add(player.getName());
                     }
-                }else if(finalArg.equalsIgnoreCase("%INTEGER%")) {
-                    tabCompleted.add("<-2.147.483.647 bis 2.147.483.647>");
-                }else if(finalArg.equalsIgnoreCase("%LONG%")) {
-                    tabCompleted.add("<-9.223.372.036.854.775.807 bis 9.223.372.036.854.775.807>");
                 }else if(finalArg.equalsIgnoreCase("%BOOLEAN%")) {
                     tabCompleted.add("<true|false>");
                 }else if(finalArg.startsWith("%") && finalArg.endsWith("%")) {
