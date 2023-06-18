@@ -15,7 +15,7 @@ class ColorGradient {
     private static Hashtable<String, int[]> htmlColors;
 
     static {
-        htmlColors = new Hashtable<String, int[]>();
+        htmlColors = new Hashtable<>();
         htmlColors.put("black", new int[]{0x00, 0x00, 0x00});
         htmlColors.put("navy", new int[]{0x00, 0x00, 0x80});
         htmlColors.put("blue", new int[]{0x00, 0x00, 0xff});
@@ -44,12 +44,15 @@ class ColorGradient {
 
     private int calcHex(double number, int channelStart, int channelEnd) {
         double num = number;
+
         if (num < minNum) {
             num = minNum;
         }
+
         if (num > maxNum) {
             num = maxNum;
         }
+
         double numRange = maxNum - minNum;
         double cPerUnit = (channelEnd - channelStart) / numRange;
         return (int) Math.round(cPerUnit * (num - minNum) + channelStart);
@@ -57,6 +60,7 @@ class ColorGradient {
 
     private String formatHex(int val) {
         String hex = Integer.toHexString(val);
+
         if (hex.length() == 1) {
             return '0' + hex;
         } else {
@@ -83,6 +87,7 @@ class ColorGradient {
             return rgbStringToArray(s.replace("#", ""));
         } else {
             int[] rgbArray = htmlColors.get(s.toLowerCase());
+
             if (rgbArray == null) {
                 throw new InvalidColorException(s);
             } else {
@@ -95,6 +100,7 @@ class ColorGradient {
         int red = Integer.parseInt(s.substring(0, 2), 16);
         int green = Integer.parseInt(s.substring(2, 4), 16);
         int blue = Integer.parseInt(s.substring(4, 6), 16);
+
         return new int[]{red, green, blue};
     }
 

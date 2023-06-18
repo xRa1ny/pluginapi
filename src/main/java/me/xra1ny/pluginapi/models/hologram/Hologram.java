@@ -63,7 +63,6 @@ public final class Hologram {
         this.lines.addAll(List.of(lines));
         this.location = location;
         this.displayType = displayType;
-
         update();
     }
 
@@ -102,7 +101,6 @@ public final class Hologram {
             final Item item = this.location.getWorld().dropItem(this.base.getEyeLocation(), new ItemStack(this.displayType));
 
             item.setPickupDelay(Integer.MAX_VALUE);
-
             this.base.addPassenger(item);
         }
 
@@ -120,7 +118,6 @@ public final class Hologram {
             armorStand.setMarker(true);
             armorStand.setCustomName(line);
             armorStand.setCustomNameVisible(true);
-
             this.baseLines.add(armorStand);
         }
     }

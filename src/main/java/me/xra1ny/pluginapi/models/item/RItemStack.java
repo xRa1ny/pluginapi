@@ -91,7 +91,6 @@ public abstract class RItemStack extends ItemStack {
     public final void handleInteraction(@NotNull PlayerInteractEvent e, @NotNull RUser user) {
         if(!this.cooldownQueue.containsKey(user)) {
             final Action action = e.getAction();
-
             final boolean result;
 
             if(action.name().startsWith("LEFT_CLICK")) {

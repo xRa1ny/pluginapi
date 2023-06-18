@@ -41,15 +41,16 @@ public class Rainbow {
             throw new HomogeneousRainbowException();
         } else {
             double increment = (maxNum - minNum) / (spectrum.length - 1);
+
             ColorGradient firstGradient = new ColorGradient();
             firstGradient.setGradient(spectrum[0], spectrum[1]);
             firstGradient.setNumberRange(minNum, minNum + increment);
-
             colorGradients = new ArrayList<ColorGradient>();
             colorGradients.add(firstGradient);
 
             for (int i = 1; i < spectrum.length - 1; i++) {
                 ColorGradient colorGradient = new ColorGradient();
+
                 colorGradient.setGradient(spectrum[i], spectrum[i + 1]);
                 colorGradient.setNumberRange(minNum + increment * i, minNum + increment * (i + 1));
                 colorGradients.add(colorGradient);

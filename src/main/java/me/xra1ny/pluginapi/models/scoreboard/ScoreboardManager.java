@@ -48,7 +48,6 @@ public class ScoreboardManager {
         }
 
         this.globalScoreboards.add(globalScoreboard);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "global scoreboard " + globalScoreboard + " successfully registered!");
     }
 
@@ -65,7 +64,6 @@ public class ScoreboardManager {
         }
 
         this.globalScoreboards.remove(globalScoreboard);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "global scoreboard " + globalScoreboard + " successfully unregistered!");
     }
 
@@ -103,7 +101,6 @@ public class ScoreboardManager {
         }
 
         this.perPlayerScoreboards.add(perPlayerScoreboard);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "per player scoreboard " + perPlayerScoreboard + " successfully registered!");
     }
 
@@ -120,7 +117,6 @@ public class ScoreboardManager {
         }
 
         this.perPlayerScoreboards.remove(perPlayerScoreboard);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "per player scoreboard " + perPlayerScoreboard + " successfully unregistered!");
     }
 

@@ -9,17 +9,20 @@ public class HexCodeManager {
     public String createGradientFromString(String message, String[] colours) {
 
         int count = message.length();
+
         if (Math.min(count, colours.length) < 2) {
             return message;
         }
 
         ArrayList<String> cols = createGradient(count, colours);
 
-        String colourCodes = "";
+        StringBuilder colourCodes = new StringBuilder();
+
         for (int i = 0; i < cols.size(); i++) {
-            colourCodes += ChatColor.of(cols.get(i)) + "" + message.charAt(i);
+            colourCodes.append(ChatColor.of(cols.get(i))).append(message.charAt(i));
         }
-        return colourCodes;
+
+        return colourCodes.toString();
     }
 
     public ArrayList<String> createGradient(int count, String[] colours) {

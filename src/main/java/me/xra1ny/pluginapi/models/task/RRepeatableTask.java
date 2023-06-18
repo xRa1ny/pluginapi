@@ -39,13 +39,11 @@ public abstract class RRepeatableTask {
         }
 
         this.interval = info.interval();
-
         run();
     }
 
     public RRepeatableTask(int interval) {
         this.interval = interval;
-
         run();
     }
 
@@ -67,7 +65,6 @@ public abstract class RRepeatableTask {
      */
     public final void start() {
         stop();
-
         this.task = this.runnable.runTaskTimer(RPlugin.getInstance(), 0L, (this.interval / 1000) * 20);
     }
 

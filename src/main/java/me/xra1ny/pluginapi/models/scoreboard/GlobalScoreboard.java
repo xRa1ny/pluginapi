@@ -76,13 +76,7 @@ public final class GlobalScoreboard extends RScoreboard {
         final Objective objective = this.scoreboardContent.getBukkitScoreboard().getObjective(ChatColor.stripColor(this.scoreboardContent.getTitle()));
 
         for(int i = 0; i < this.lines.size(); i++) {
-            StringBuilder line = new StringBuilder(this.lines.get(i));
-
-            for(int j = 0; j < i; j++) {
-                line.append(ChatColor.RESET);
-            }
-
-            final Score score = objective.getScore(line.toString());
+            final Score score = objective.getScore(this.lines.get(i) + String.valueOf(ChatColor.RESET).repeat(i));
 
             score.setScore(this.lines.size()-i);
         }
@@ -98,7 +92,6 @@ public final class GlobalScoreboard extends RScoreboard {
         }
 
         this.users.add(user);
-
         update();
     }
 

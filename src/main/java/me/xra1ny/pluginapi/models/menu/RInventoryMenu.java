@@ -133,7 +133,6 @@ public abstract class RInventoryMenu implements InventoryHolder {
 
         // Open the created Inventory for the specified Player
         user.getPlayer().openInventory(this.inventory);
-
         this.openUsers.add(user);
     }
 }

@@ -35,7 +35,6 @@ public abstract class RPagedInventoryMenu extends RInventoryMenu {
         }
 
         this.page = page;
-
         onPageChange(page, user);
     }
 }

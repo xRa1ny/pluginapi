@@ -40,11 +40,8 @@ public final class HologramManager {
 
     public HologramManager() {
         this.configFile = new File(RPlugin.getInstance().getDataFolder(), "holograms.yml");
-
         RPlugin.getInstance().saveResource(this.configFile.getName(), false);
-
         this.config = YamlConfiguration.loadConfiguration(this.configFile);
-
         loadFromConfig();
     }
 
@@ -60,7 +57,6 @@ public final class HologramManager {
         }
 
         this.holograms.add(hologram);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "hologram " + hologram + " registered successfully!");
     }
 
@@ -72,7 +68,6 @@ public final class HologramManager {
         }
 
         this.holograms.remove(hologram);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "hologram " + hologram + " unregistered successfully!");
     }
 

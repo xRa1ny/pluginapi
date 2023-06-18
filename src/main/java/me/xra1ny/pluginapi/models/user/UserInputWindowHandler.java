@@ -19,7 +19,6 @@ public class UserInputWindowHandler extends RRepeatableTask {
 
     UserInputWindowHandler(@NotNull UserInputWindow inputWindow) throws ClassNotAnnotatedException {
         this.inputWindow = inputWindow;
-
         start();
     }
 
@@ -31,7 +30,6 @@ public class UserInputWindowHandler extends RRepeatableTask {
 
                 if (entry.getValue() <= 0) {
                     stop();
-
                     close(entry.getKey(), null);
                 }
             }

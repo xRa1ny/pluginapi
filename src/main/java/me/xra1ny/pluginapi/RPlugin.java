@@ -230,7 +230,6 @@ public abstract class RPlugin extends JavaPlugin {
             getConfig().set(ConfigKeys.NON_MYSQL_PREFIX_VALUE, this.prefix);
         }
 
-
         this.forceChatColor = getConfig().getBoolean(ConfigKeys.NON_MYSQL_CHAT_COLOR_FORCE, false);
         getConfig().set(ConfigKeys.NON_MYSQL_CHAT_COLOR_FORCE, this.forceChatColor);
 
@@ -238,8 +237,6 @@ public abstract class RPlugin extends JavaPlugin {
             this.chatColor = ChatColor.valueOf(getConfig().getString(ConfigKeys.NON_MYSQL_CHAT_COLOR_VALUE, String.valueOf(ChatColor.GRAY)));
             getConfig().set(ConfigKeys.NON_MYSQL_CHAT_COLOR_VALUE, this.chatColor.name());
         }
-
-
 
         this.forcePlayerNoPermissionErrorMessage = getConfig().getBoolean(ConfigKeys.NON_MYSQL_PLAYER_NO_PERMISSION_ERROR_MESSAGE_FORCE, false);
         getConfig().set(ConfigKeys.NON_MYSQL_PLAYER_NO_PERMISSION_ERROR_MESSAGE_FORCE, this.forcePlayerNoPermissionErrorMessage);
@@ -249,7 +246,6 @@ public abstract class RPlugin extends JavaPlugin {
             getConfig().set(ConfigKeys.NON_MYSQL_PLAYER_NO_PERMISSION_ERROR_MESSAGE_VALUE, this.playerNoPermissionErrorMessage);
         }
 
-
         this.forcePlayerNotFoundErrorMessage = getConfig().getBoolean(ConfigKeys.NON_MYSQL_PLAYER_NOT_FOUND_ERROR_MESSAGE_FORCE, false);
         getConfig().set(ConfigKeys.NON_MYSQL_PLAYER_NOT_FOUND_ERROR_MESSAGE_FORCE, this.forcePlayerNotFoundErrorMessage);
 
@@ -257,7 +253,6 @@ public abstract class RPlugin extends JavaPlugin {
             this.playerNotFoundErrorMessage = getConfig().getString(ConfigKeys.NON_MYSQL_PLAYER_NOT_FOUND_ERROR_MESSAGE_VALUE, "§l§cERROR! The specified player could not be found!");
             getConfig().set(ConfigKeys.NON_MYSQL_PLAYER_NOT_FOUND_ERROR_MESSAGE_VALUE, this.playerNotFoundErrorMessage);
         }
-
 
         this.forceCommandOnlyPlayerErrorMessage = getConfig().getBoolean(ConfigKeys.NON_MYSQL_COMMAND_ONLY_PLAYER_ERROR_MESSAGE_FORCE, false);
         getConfig().set(ConfigKeys.NON_MYSQL_COMMAND_ONLY_PLAYER_ERROR_MESSAGE_FORCE, this.forceCommandOnlyPlayerErrorMessage);
@@ -267,7 +262,6 @@ public abstract class RPlugin extends JavaPlugin {
             getConfig().set(ConfigKeys.NON_MYSQL_COMMAND_ONLY_PLAYER_ERROR_MESSAGE_VALUE, this.commandOnlyPlayerErrorMessage);
         }
 
-
         this.forceCommandErrorMessage = getConfig().getBoolean(ConfigKeys.NON_MYSQL_COMMAND_ERROR_MESSAGE_FORCE, false);
         getConfig().set(ConfigKeys.NON_MYSQL_COMMAND_ERROR_MESSAGE_FORCE, this.forceCommandErrorMessage);
 
@@ -275,7 +269,6 @@ public abstract class RPlugin extends JavaPlugin {
             this.commandErrorMessage = getConfig().getString(ConfigKeys.NON_MYSQL_COMMAND_ERROR_MESSAGE_VALUE, "§l§cERROR! §r§cError while executing command!");
             getConfig().set(ConfigKeys.NON_MYSQL_COMMAND_ERROR_MESSAGE_VALUE, this.commandErrorMessage);
         }
-
 
         this.forceCommandInvalidArgsErrorMessage = getConfig().getBoolean(ConfigKeys.NON_MYSQL_COMMAND_INVALID_ARGS_ERROR_MESSAGE_FORCE, false);
         getConfig().set(ConfigKeys.NON_MYSQL_COMMAND_INVALID_ARGS_ERROR_MESSAGE_FORCE, this.forceCommandInvalidArgsErrorMessage);
@@ -285,7 +278,6 @@ public abstract class RPlugin extends JavaPlugin {
             getConfig().set(ConfigKeys.NON_MYSQL_COMMAND_INVALID_ARGS_ERROR_MESSAGE_VALUE, this.commandInvalidArgsErrorMessage);
         }
 
-
         this.forceCommandInternalErrorMessage = getConfig().getBoolean(ConfigKeys.NON_MYSQL_COMMAND_INTERNAL_ERROR_MESSAGE_FORCE, false);
         getConfig().set(ConfigKeys.NON_MYSQL_COMMAND_INTERNAL_ERROR_MESSAGE_FORCE, this.forceCommandInternalErrorMessage);
 
@@ -293,7 +285,6 @@ public abstract class RPlugin extends JavaPlugin {
             this.commandInternalErrorMessage = getConfig().getString(ConfigKeys.NON_MYSQL_COMMAND_INTERNAL_ERROR_MESSAGE_VALUE, "§l§cERROR! §r§cInternal error while executing command!");
             getConfig().set(ConfigKeys.NON_MYSQL_COMMAND_INTERNAL_ERROR_MESSAGE_VALUE, this.commandInternalErrorMessage);
         }
-
 
         this.forceUserTimeout = getConfig().getBoolean(ConfigKeys.NON_MYSQL_USER_TIMEOUT_FORCE, false);
         getConfig().set(ConfigKeys.NON_MYSQL_USER_TIMEOUT_FORCE, this.forceUserTimeout);
@@ -304,12 +295,9 @@ public abstract class RPlugin extends JavaPlugin {
         }
 
         getLogger().log(Level.INFO, "config successfully setup!");
-
         getLogger().log(Level.INFO, "attempting to save config...");
-
         saveConfig();
         saveDefaultConfig();
-
         getLogger().log(Level.INFO, "config successfully saved!");
     }
 
@@ -317,7 +305,6 @@ public abstract class RPlugin extends JavaPlugin {
     public void onEnable() {
         try {
             getLogger().log(Level.INFO, "attempting to enable pluginapi...");
-
             RPlugin.instance = this;
 
             final PluginInfo info = getClass().getDeclaredAnnotation(PluginInfo.class);
@@ -342,22 +329,16 @@ public abstract class RPlugin extends JavaPlugin {
             this.userInputWindowManager = new UserInputWindowManager();
             this.hexCodeManager = new HexCodeManager();
             this.cloudNetManager = new CloudNetManager();
-
             this.listenerManager.register(new DefaultPluginConnectionListener());
             this.listenerManager.register(new DefaultPluginListener());
-
             getLogger().log(Level.INFO, "pluginapi enabled successfully!");
 
             try {
                 getLogger().log(Level.INFO, "attempting to enable external plugin...");
-
                 onPluginEnable();
-
                 saveConfig();
                 saveDefaultConfig();
-
                 this.startupTime = System.currentTimeMillis();
-
                 getLogger().log(Level.INFO, "external plugin enabled successfully!");
             }catch(Exception ex) {
                 getLogger().log(Level.SEVERE, "error while enabling external plugin!", ex);
@@ -380,11 +361,8 @@ public abstract class RPlugin extends JavaPlugin {
 
             try {
                 getLogger().log(Level.INFO, "attempting to disable external plugin...");
-
                 onPluginDisable();
-
                 saveConfig();
-
                 getLogger().log(Level.INFO, "external plugin disabled successfully!");
             }catch(Exception ex) {
                 getLogger().log(Level.SEVERE, "error while disabling external plugin!", ex);

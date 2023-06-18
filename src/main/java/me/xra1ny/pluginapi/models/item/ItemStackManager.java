@@ -56,7 +56,6 @@ public final class ItemStackManager {
         }
 
         this.items.add(itemStack);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "itemstack " + itemStack + " successfully registered!");
     }
 
@@ -90,7 +89,6 @@ public final class ItemStackManager {
         }
 
         this.items.remove(itemStack);
-
         RPlugin.getInstance().getLogger().info("itemstack " + itemStack + " successfully unregistered!");
     }
 

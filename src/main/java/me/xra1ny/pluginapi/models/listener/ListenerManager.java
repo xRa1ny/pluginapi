@@ -43,9 +43,7 @@ public class ListenerManager {
         }
 
         RPlugin.getInstance().getServer().getPluginManager().registerEvents(listener, RPlugin.getInstance());
-
         this.listeners.add(listener);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "listener " + listener + " successfully registered!");
     }
 
@@ -80,7 +78,6 @@ public class ListenerManager {
 
         HandlerList.unregisterAll(listener);
         this.listeners.remove(listener);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "listener " + listener + " successfully unregistered!");
     }
 

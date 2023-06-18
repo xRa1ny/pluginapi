@@ -64,7 +64,6 @@ final class ScoreboardContent {
      */
     public void setTitle(@NotNull String title) {
         this.title = title;
-
         update();
     }
 
@@ -78,7 +77,6 @@ final class ScoreboardContent {
         }
 
         this.teams.add(team);
-
         update();
     }
 
@@ -92,7 +90,6 @@ final class ScoreboardContent {
         }
 
         this.teams.remove(team);
-
         update();
     }
 }

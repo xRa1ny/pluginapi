@@ -80,7 +80,6 @@ public final class ScoreboardTeam {
      */
     public void update() {
         this.bukkitTeam.setDisplayName(this.name);
-
         this.bukkitTeam.setAllowFriendlyFire(this.friendlyFire);
         this.bukkitTeam.setCanSeeFriendlyInvisibles(this.canSeeFriendlyInvisibles);
 
@@ -133,7 +132,6 @@ public final class ScoreboardTeam {
         }
 
         this.members.add(user);
-
         update();
     }
 
@@ -147,7 +145,6 @@ public final class ScoreboardTeam {
         }
 
         this.members.remove(user);
-
         update();
     }
 }

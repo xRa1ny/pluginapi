@@ -58,7 +58,6 @@ public final class PerPlayerScoreboard extends RScoreboard {
         }
 
         user.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-
         updateContent(user);
 
         final ScoreboardContent scoreboard = this.scoreboards.get(user);
@@ -79,13 +78,7 @@ public final class PerPlayerScoreboard extends RScoreboard {
         final List<String> lines = applyLines(user);
 
         for(int i = 0; i < lines.size(); i++) {
-            final StringBuilder line = new StringBuilder(lines.get(i));
-
-            for(int j = 0; j < i; j++) {
-                line.append(ChatColor.RESET);
-            }
-
-            final Score score = objective.getScore(line.toString());
+            final Score score = objective.getScore(lines.get(i) + String.valueOf(ChatColor.RESET).repeat(i));
 
             score.setScore(lines.size()-i);
         }
@@ -101,7 +94,6 @@ public final class PerPlayerScoreboard extends RScoreboard {
         }
 
         this.scoreboards.put(user, new ScoreboardContent(title));
-
         update(user);
     }
 

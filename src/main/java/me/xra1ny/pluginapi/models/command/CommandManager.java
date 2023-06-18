@@ -42,7 +42,6 @@ public class CommandManager {
 
         RPlugin.getInstance().getServer().getPluginCommand(command.getName()).setExecutor(command);
         this.commands.add(command);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "command " + command + " successfully registered!");
     }
 
@@ -76,7 +75,6 @@ public class CommandManager {
         }
 
         this.commands.remove(command);
-
         RPlugin.getInstance().getLogger().log(Level.INFO, "command " + command + " successfully unregistered!");
     }
 
