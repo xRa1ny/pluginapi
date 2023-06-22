@@ -64,7 +64,10 @@ public abstract class RRepeatableTask {
      * starts this repeatable task
      */
     public final void start() {
-        stop();
+        if(isRunning()) {
+            return;
+        }
+
         this.task = this.runnable.runTaskTimer(RPlugin.getInstance(), 0L, (this.interval / 1000) * 20);
     }
 
@@ -72,7 +75,7 @@ public abstract class RRepeatableTask {
      * stops this repeatable task
      */
     public final void stop() {
-        if(this.task == null) {
+        if(!isRunning()) {
             return;
         }
 

@@ -110,7 +110,7 @@ public final class DefaultPluginListener implements Listener {
 
             RPlugin.getInstance().getItemStackManager().getItems()
                     .stream()
-                    .filter(i -> i.toString().equals(e.getItem().toString()))
+                    .filter(i -> i.equals(e.getItem()))
                     .findFirst().ifPresent(itemStack -> itemStack.handleInteraction(e, user));
         }catch(Exception ex) {
             RPlugin.getInstance().getLogger().log(Level.SEVERE, "error while executing default player interact event handler!");

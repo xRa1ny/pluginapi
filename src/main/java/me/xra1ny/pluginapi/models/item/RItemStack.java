@@ -107,4 +107,22 @@ public abstract class RItemStack extends ItemStack {
             onCooldown(e, user);
         }
     }
+
+    @Override
+    public String toString() {
+        return super.toString().replace(getType() + " x " + getAmount(), getType() + " x 1");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof ItemStack item)) {
+            return false;
+        }
+
+        if(obj instanceof RItemStack rItem) {
+            return toString().equals(rItem.toString());
+        }
+
+        return toString().equals(item.toString().replace(item.getType() + " x " + item.getAmount(), item.getType() + " x 1"));
+    }
 }
