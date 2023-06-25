@@ -72,9 +72,9 @@ public final class HologramManager {
     }
 
     public void unregisterAll() throws HologramNotRegisteredException {
-        for(Hologram hologram : this.holograms) {
-            unregister(hologram);
-        }
+        RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to unregister all holograms...");
+        this.holograms.clear();
+        RPlugin.getInstance().getLogger().log(Level.INFO, "successfully unregistered all holograms!");
     }
 
     /**

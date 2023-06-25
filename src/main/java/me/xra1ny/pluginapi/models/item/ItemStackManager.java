@@ -6,7 +6,6 @@ import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import me.xra1ny.pluginapi.exceptions.ItemStackAlreadyRegisteredException;
 import me.xra1ny.pluginapi.exceptions.ItemStackNotRegisteredException;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
@@ -92,34 +91,9 @@ public final class ItemStackManager {
         RPlugin.getInstance().getLogger().info("itemstack " + itemStack + " successfully unregistered!");
     }
 
-    /**
-     * unregisters all items registered within the package specified
-     * @param packageName the package name
-     * @throws ItemStackNotRegisteredException if any item within the package specified is not yet registered
-     */
-    public void unregisterAll(@NotNull String packageName) throws ItemStackNotRegisteredException {
-        RPlugin.getInstance().getLogger().log(Level.INFO, "unregistering itemstacks...");
-
-        for(RItemStack itemStack : this.items) {
-            if(!itemStack.getClass().getPackage().getName().equals(packageName)) {
-                continue;
-            }
-
-            unregister(itemStack);
-        }
-
-        RPlugin.getInstance().getLogger().log(Level.INFO, "itemstacks unregistered!");
-    }
-
-    /**
-     * retrieves all items that match the item specified
-     * @param itemStack the item
-     * @return all items that match the item specified
-     */
-    @NotNull
-    public List<RItemStack> getAll(@NotNull ItemStack itemStack) {
-        return this.items.stream()
-                .filter(_itemStack -> _itemStack.toString().equals(itemStack.toString()))
-                .toList();
+    public void unregisterAll() {
+        RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to unregister all itemstacks...");
+        this.items.clear();
+        RPlugin.getInstance().getLogger().log(Level.INFO, "successfully unregistered all itemstacks!");
     }
 }
