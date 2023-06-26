@@ -39,25 +39,10 @@ public abstract class RRepeatableTask {
         }
 
         this.interval = info.interval();
-        run();
     }
 
     public RRepeatableTask(int interval) {
         this.interval = interval;
-        run();
-    }
-
-    private void run() {
-        this.runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    onTick();
-                } catch (Exception ex) {
-                    RPlugin.getInstance().getLogger().log(Level.SEVERE, "error in repeatable task tick " + this, ex);
-                }
-            }
-        };
     }
 
     /**
@@ -68,6 +53,16 @@ public abstract class RRepeatableTask {
             return;
         }
 
+        this.runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    onTick();
+                } catch (Exception ex) {
+                    RPlugin.getInstance().getLogger().log(Level.SEVERE, "error in repeatable task tick " + this, ex);
+                }
+            }
+        };
         this.task = this.runnable.runTaskTimer(RPlugin.getInstance(), 0L, (this.interval / 1000) * 20);
     }
 
@@ -79,12 +74,14 @@ public abstract class RRepeatableTask {
             return;
         }
 
-        task.cancel();
+        this.task.cancel();
+        this.runnable.cancel();
         this.task = null;
+        this.runnable = null;
     }
 
     public final boolean isRunning() {
-        return this.task != null && !this.task.isCancelled();
+        return this.runnable != null && !this.runnable.isCancelled() && this.task != null && !this.task.isCancelled();
     }
 
     /**
