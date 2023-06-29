@@ -65,10 +65,8 @@ public final class UserInputWindowManager {
      */
     public void unregisterAll() throws UserInputWindowNotRegisteredException {
         RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to unregister all user input windows...");
-
-        for(UserInputWindow userInputWindow : this.userInputWindows) {
-            unregister(userInputWindow);
-        }
+        this.userInputWindows.clear();
+        RPlugin.getInstance().getLogger().log(Level.INFO, "successfully unregistered all user input windows!");
     }
 
     /**
