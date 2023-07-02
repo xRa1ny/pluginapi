@@ -3,8 +3,6 @@ package me.xra1ny.pluginapi;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import me.xra1ny.pluginapi.listeners.DefaultPluginConnectionListener;
-import me.xra1ny.pluginapi.listeners.DefaultPluginListener;
 import me.xra1ny.pluginapi.models.cloudnet.CloudNetManager;
 import me.xra1ny.pluginapi.models.color.HexCodeManager;
 import me.xra1ny.pluginapi.models.command.CommandManager;
@@ -329,8 +327,6 @@ public abstract class RPlugin extends JavaPlugin {
             this.userInputWindowManager = new UserInputWindowManager();
             this.hexCodeManager = new HexCodeManager();
             this.cloudNetManager = new CloudNetManager();
-            this.listenerManager.register(new DefaultPluginConnectionListener());
-            this.listenerManager.register(new DefaultPluginListener());
             getLogger().log(Level.INFO, "pluginapi enabled successfully!");
 
             try {
@@ -338,6 +334,7 @@ public abstract class RPlugin extends JavaPlugin {
                 onPluginEnable();
                 saveConfig();
                 saveDefaultConfig();
+                this.listenerManager.registerAll("me.xra1ny.pluginapi.listeners");
                 this.startupTime = System.currentTimeMillis();
                 getLogger().log(Level.INFO, "external plugin enabled successfully!");
             }catch(Exception ex) {
