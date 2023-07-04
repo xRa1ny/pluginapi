@@ -63,16 +63,6 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
     @NotNull
     protected abstract CommandReturnState executeBaseCommand(@NotNull CommandSender sender);
 
-//    /**
-//     * called when this command is executed with arguments (/command name arg1 arg2 arg3)
-//     * @param sender the sender
-//     * @param args the arguments
-//     * @param values the values of any unknown arguments
-//     * @return the status of this command execution
-//     */
-//    @NotNull
-//    protected abstract CommandReturnState executeWithArgs(@NotNull CommandSender sender, @NotNull String args, @NotNull String[] values);
-
     /**
      * Returns the Help Screen for this Command, excluding the Plugin Prefix
      */
