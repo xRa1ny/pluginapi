@@ -181,11 +181,6 @@ public abstract class RPlugin extends JavaPlugin {
     private CloudNetManager cloudNetManager;
 
     /**
-     * the global player identifier used in strings
-     */
-    public final String PLAYER_IDENTIFIER = "%PLAYER%";
-
-    /**
      * the time of plugin initialisation measured in milliseconds
      */
     @Getter
@@ -327,6 +322,7 @@ public abstract class RPlugin extends JavaPlugin {
             this.userInputWindowManager = new UserInputWindowManager();
             this.hexCodeManager = new HexCodeManager();
             this.cloudNetManager = new CloudNetManager();
+            this.listenerManager.registerAll("me.xra1ny.pluginapi.listeners");
             getLogger().log(Level.INFO, "pluginapi enabled successfully!");
 
             try {
@@ -334,7 +330,6 @@ public abstract class RPlugin extends JavaPlugin {
                 onPluginEnable();
                 saveConfig();
                 saveDefaultConfig();
-                this.listenerManager.registerAll("me.xra1ny.pluginapi.listeners");
                 this.startupTime = System.currentTimeMillis();
                 getLogger().log(Level.INFO, "external plugin enabled successfully!");
             }catch(Exception ex) {

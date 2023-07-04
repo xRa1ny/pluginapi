@@ -1,7 +1,6 @@
 package me.xra1ny.pluginapi.listeners;
 
 import me.xra1ny.pluginapi.RPlugin;
-import me.xra1ny.pluginapi.exceptions.UserNotRegisteredException;
 import me.xra1ny.pluginapi.models.scoreboard.GlobalScoreboard;
 import me.xra1ny.pluginapi.models.scoreboard.PerPlayerScoreboard;
 import me.xra1ny.pluginapi.models.user.RUser;
@@ -19,14 +18,14 @@ public class DefaultPluginConnectionListener implements Listener {
     @EventHandler
     public void onPlayerJoinServer(@NotNull PlayerJoinEvent e) {
         try {
-            RUser user;
-            try {
-                user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
-                user.setTimeout(RPlugin.getInstance().getUserManager().getUserTimeoutHandler().getUserTimeout());
-                user.update();
-            }catch (UserNotRegisteredException ex) {
+            RUser user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
+
+            if(user == null) {
                 user = RPlugin.getInstance().getUserManager().getUserClass().getDeclaredConstructor(Player.class).newInstance(e.getPlayer());
                 RPlugin.getInstance().getUserManager().register(user);
+            }else {
+                user.setTimeout(RPlugin.getInstance().getUserManager().getUserTimeoutHandler().getUserTimeout());
+                user.update();
             }
 
             e.setJoinMessage(null);
@@ -39,14 +38,7 @@ public class DefaultPluginConnectionListener implements Listener {
     @EventHandler
     public void onPlayerLeaveServer(@NotNull PlayerQuitEvent e) {
         try {
-            final RUser user;
-
-            try {
-                user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
-            }catch(UserNotRegisteredException ignored) {
-                return;
-            }
-
+            final RUser user = RPlugin.getInstance().getUserManager().get(e.getPlayer());
             final List<GlobalScoreboard> globalScoreboards = RPlugin.getInstance().getScoreboardManager().getGlobalScoreboards(user);
 
             if(globalScoreboards.size() != 0) {

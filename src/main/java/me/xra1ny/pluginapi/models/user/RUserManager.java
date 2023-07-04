@@ -79,10 +79,9 @@ public class RUserManager {
      * @param player the player
      * @return the user
      * @param <T> the user
-     * @throws UserNotRegisteredException if the user identified by the player specified is not yet registered
      */
     @Nullable
-    public <T extends RUser> T get(@NotNull Player player) throws UserNotRegisteredException {
+    public <T extends RUser> T get(@NotNull Player player) {
         return get(player.getUniqueId());
     }
 
@@ -91,18 +90,11 @@ public class RUserManager {
      * @param uuid the player uuid
      * @return the user
      * @param <T> the user
-     * @throws UserNotRegisteredException if the user identified by the player uuid specified is not yet registered
      */
-    public <T extends RUser> T get(@NotNull UUID uuid) throws UserNotRegisteredException {
-        final T user = (T) this.users.stream()
+    public <T extends RUser> T get(@NotNull UUID uuid) {
+        return (T) this.users.stream()
                 .filter(_user -> _user.getPlayer().getUniqueId().equals(uuid))
                 .findFirst().orElse(null);
-
-        if(user == null) {
-            throw new UserNotRegisteredException(uuid);
-        }
-
-        return user;
     }
 
     /**
@@ -110,15 +102,8 @@ public class RUserManager {
      * @param name the player name
      * @return the user
      * @param <T> the user
-     * @throws UserNotRegisteredException if the user identified by the player name specified is not yet registered
      */
-    public <T extends RUser> T get(@NotNull String name) throws UserNotRegisteredException {
-        final Player player = Bukkit.getPlayer(name);
-
-        if(player == null) {
-            throw new UserNotRegisteredException(name);
-        }
-
-        return get(player);
+    public <T extends RUser> T get(@NotNull String name) {
+        return get(Bukkit.getPlayer(name));
     }
 }

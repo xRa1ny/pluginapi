@@ -43,5 +43,5 @@ public @interface CommandInfo {
      * all other patterns will not be converted in auto tabcomplete!
      */
     @NotNull
-    String[] args() default {};
+    CommandArg[] args() default {};
 }
