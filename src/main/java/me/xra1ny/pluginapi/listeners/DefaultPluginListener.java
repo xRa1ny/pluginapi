@@ -15,7 +15,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -47,17 +46,12 @@ public final class DefaultPluginListener implements Listener {
     @EventHandler
     public void onPlayerClickInInventory(@NotNull InventoryClickEvent e) {
         try {
-            if(e.getClickedInventory() == null) {
-                return;
-            }
-
             final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getWhoClicked());
 
-            if(e.getClickedInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
-
+            if(user.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
                 // If the User clicks outside of Inventory Window, close it
-                if(e.getClickedInventory() == null) {
-                    user.getPlayer().closeInventory();
+                if(e.getClickedInventory() == null && inventoryMenu.getPreviousMenu() != null) {
+                    inventoryMenu.getPreviousMenu().open(user);
 
                     return;
                 }
@@ -77,20 +71,11 @@ public final class DefaultPluginListener implements Listener {
             final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getPlayer());
 
             if (e.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
-                if(inventoryMenu.getOpenUsers().contains(user)) {
-                    inventoryMenu.getOpenUsers().remove(user);
-
-                    if(inventoryMenu.getPreviousMenu() != null) {
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                inventoryMenu.getPreviousMenu().open(user);
-                            }
-                        }.runTaskLater(RPlugin.getInstance(), 1L);
-                    }
-
+                if(!inventoryMenu.getOpenUsers().contains(user)) {
+                    return;
                 }
 
+                inventoryMenu.getOpenUsers().remove(user);
                 inventoryMenu.onClose(e, user);
             }
         }catch(Exception ex) {

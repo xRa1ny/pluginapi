@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,25 +28,13 @@ public abstract class RInventoryMenu implements InventoryHolder {
      * the inventory of this inventory menu
      */
     @Getter(onMethod = @__(@NotNull))
-    private Inventory inventory;
+    private final Inventory inventory;
 
     /**
      * the background item of this inventory menu
      */
     @Getter(onMethod = @__(@NotNull))
-    private final org.bukkit.inventory.ItemStack background;
-
-    /**
-     * the title of this inventory menu
-     */
-    @Getter(onMethod = @__(@NotNull))
-    private final String title;
-
-    /**
-     * the size of this inventory menu
-     */
-    @Getter
-    private final int size;
+    private final ItemStack background;
 
     /**
      * the users this inventory is currently open for
@@ -70,9 +59,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
                     .type(info.background())
                     .build()
                     .toItemStack();
-            this.title = info.title();
-            this.size = info.size();
-            this.inventory = Bukkit.createInventory(this, this.size, this.title);
+            this.inventory = Bukkit.createInventory(this, info.size(), info.title());
             this.previousMenu = previousMenu;
         }
     }
