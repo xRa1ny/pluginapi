@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -112,32 +112,36 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
             boolean varArg = false;
             int varArgs = 0;
-            int varArgsIndex = Integer.MIN_VALUE;
+            String varArgsArgs = null;
             final Map<String, CommandArg> argMap = new HashMap<>();
+            final Map<String, CommandArg> formattedArgMap = new HashMap<>();
 
             for(CommandArg arg : this.args) {
-                String fullArg = arg.value().replaceAll("%.*%", "?");
+                String fullArg = arg.value();
                 final List<String> originalArgsList = List.of(arg.value().split(" "));
 
-                if(originalArgsList.size() >= args.length || originalArgsList.get(originalArgsList.size()-1).endsWith("%*")) {
+                if(originalArgsList.size() >= args.length || originalArgsList.get(originalArgsList.size()-1).endsWith("*")) {
                     final String finalArg = originalArgsList.get(originalArgsList.size()-1);
 
-                    if(List.of(args).size() >= originalArgsList.size() && finalArg.endsWith("%*")) {
-                        fullArg+="*";
+                    if(List.of(args).size() >= originalArgsList.size() && finalArg.endsWith("*")) {
                         varArg = true;
 
-                        if(varArgsIndex == Integer.MIN_VALUE) {
-                            varArgsIndex = originalArgsList.size()-1;
+                        if(varArgsArgs == null) {
+                            varArgsArgs = String.join(" ", Arrays.stream(arg.value().split(" "))
+                                    .limit(arg.value().split(" ").length-1)
+                                    .toList());
                         }
                     }
 
                     argMap.put(fullArg, arg);
+                    formattedArgMap.put(fullArg.replaceAll("%.*%", "?"), arg);
                 }
             }
 
             final List<String> commandArgs = new ArrayList<>(Stream.of(this.args)
                     .map(CommandArg::value)
                     .map(String::toLowerCase)
+                    .map(arg -> arg.replaceAll("%.*%", "?"))
                     .toList());
             final List<String> commandValues = new ArrayList<>();
             final StringBuilder builder = new StringBuilder();
@@ -158,16 +162,21 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
                         builder.append(builder.length() > 0 ? " " : "").append("?");
                     }
 
-                    if(List.of(args).indexOf(arg) >= varArgsIndex) {
-                        builder.append(varArg && varArgs == 0 ? "*" : "");
-                        varArgs++;
+                    if(varArgsArgs != null) {
+                        if(String.join(" ", List.of(args).stream()
+                                .limit(varArgsArgs.split(" ").length)
+                                .toList()).equals(varArgsArgs)) {
+                            builder.append(varArgs == 0 ? "*" : "");
+                            varArgs++;
+                        }
                     }
 
                     commandValues.add(arg);
                 }
             }
 
-            final CommandArg arg = argMap.get(builder.toString());
+            final CommandArg arg = formattedArgMap.get(builder.toString());
+            CommandReturnState commandReturnState = CommandReturnState.INVALID_ARGS;
 
             if(arg != null) {
                 if(!arg.permission().isBlank() && !sender.hasPermission(arg.permission())) {
@@ -175,33 +184,33 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
                     return true;
                 }
+
+                if(builder.length() > 0) {
+                    for(Method method : getClass().getMethods()) {
+                        final CommandArgHandler handler = method.getDeclaredAnnotation(CommandArgHandler.class);
+
+                        if(handler == null || !Arrays.asList(handler.value()).contains(arg.value())) {
+                            continue;
+                        }
+
+                        commandReturnState = (CommandReturnState) method.invoke(this, sender, arg.value(), commandValues.toArray(new String[0]));
+
+                        break;
+                    }
+                }
             }
 
-            CommandReturnState commandReturnState = CommandReturnState.INVALID_ARGS;
-
-            if(builder.length() > 0) {
-                for(Method method : getClass().getMethods()) {
-                    final CommandArgHandler handler = method.getDeclaredAnnotation(CommandArgHandler.class);
-
-                    if(handler == null || !Arrays.asList(handler.value()).contains(builder.toString())) {
-                        continue;
-                    }
-
-                    commandReturnState = (CommandReturnState) method.invoke(this, sender, builder.toString(), commandValues.toArray(new String[0]));
-
-                    break;
-                }
-            }else {
+            if(builder.length() == 0) {
                 commandReturnState = executeBaseCommand(sender);
             }
 
-           if(commandReturnState == CommandReturnState.ERROR) {
-               sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandErrorMessage());
+            if(commandReturnState == CommandReturnState.ERROR) {
+                sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandErrorMessage());
             }else if(commandReturnState == CommandReturnState.INVALID_ARGS) {
-               sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandInvalidArgsErrorMessage());
+                sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandInvalidArgsErrorMessage());
             }
 
-           return true;
+            return true;
         }catch(Exception ex) {
             sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandInternalErrorMessage());
             sender.sendMessage(ChatColor.RED.toString() + ex);
