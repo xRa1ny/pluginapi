@@ -63,7 +63,7 @@ public abstract class RRepeatableTask {
                 }
             }
         };
-        this.task = this.runnable.runTaskTimer(RPlugin.getInstance(), 0L, (this.interval / 1000) * 20);
+        this.task = this.runnable.runTaskTimer(RPlugin.getInstance(), 0L, (long) ((this.interval / 1000D) * 20L));
     }
 
     /**
