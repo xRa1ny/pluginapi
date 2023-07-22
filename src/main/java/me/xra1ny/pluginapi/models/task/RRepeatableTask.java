@@ -53,6 +53,7 @@ public abstract class RRepeatableTask {
             return;
         }
 
+        onStart();
         this.runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -67,6 +68,11 @@ public abstract class RRepeatableTask {
     }
 
     /**
+     * called when this repeatable task starts
+     */
+    public abstract void onStart();
+
+    /**
      * stops this repeatable task
      */
     public final void stop() {
@@ -74,11 +80,17 @@ public abstract class RRepeatableTask {
             return;
         }
 
+        onStop();
         this.task.cancel();
         this.runnable.cancel();
         this.task = null;
         this.runnable = null;
     }
+
+    /**
+     * called when this repeatable task stops
+     */
+    public abstract void onStop();
 
     public final boolean isRunning() {
         return this.runnable != null && !this.runnable.isCancelled() && this.task != null && !this.task.isCancelled();

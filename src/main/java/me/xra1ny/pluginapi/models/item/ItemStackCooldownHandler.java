@@ -22,6 +22,16 @@ public class ItemStackCooldownHandler extends RRepeatableTask {
     }
 
     @Override
+    public void onStart() {
+
+    }
+
+    @Override
+    public void onStop() {
+
+    }
+
+    @Override
     public void onTick() {
         for(RItemStack itemStack : itemStackManager.getItems()) {
             try {
