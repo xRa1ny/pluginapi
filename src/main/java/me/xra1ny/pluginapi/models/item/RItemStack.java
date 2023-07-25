@@ -2,17 +2,20 @@ package me.xra1ny.pluginapi.models.item;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import me.xra1ny.pluginapi.models.user.RUser;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Used to create ItemStacks that can be interacted with
@@ -30,6 +33,12 @@ public abstract class RItemStack extends ItemStack {
      */
     @Getter
     private int cooldown = 0;
+
+    @Getter
+    private final boolean localised;
+
+    @Getter(onMethod = @__(@NotNull))
+    private final UUID uuid = UUID.randomUUID();
 
     public RItemStack() throws ClassNotAnnotatedException {
         @Nullable
@@ -51,14 +60,14 @@ public abstract class RItemStack extends ItemStack {
 
         setType(itemStack.getType());
         setAmount(itemStack.getAmount());
-        setItemMeta(itemStack.getItemMeta());
         this.cooldown = info.cooldown();
+        this.localised = info.localised();
     }
 
     public RItemStack(@NotNull ItemStack item) {
         super(item);
-        log.info("");
-        log.info("Initialising ItemStack {}", this);
+
+        this.localised = false;
     }
 
     /**
@@ -108,6 +117,32 @@ public abstract class RItemStack extends ItemStack {
         }
     }
 
+    public void add(@NotNull RUser user) {
+        final ItemStack itemStack = clone();
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(this.localised) {
+            itemMeta.setDisplayName(RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), itemMeta.getDisplayName()));
+        }
+
+        itemStack.setItemMeta(itemMeta);
+
+        user.getPlayer().getInventory().addItem(itemStack);
+    }
+
+    public void give(@NotNull RUser user, int slot) {
+        final ItemStack itemStack = clone();
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(this.localised) {
+            itemMeta.setDisplayName(RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), itemMeta.getDisplayName()));
+        }
+
+        itemStack.setItemMeta(itemMeta);
+
+        user.getPlayer().getInventory().setItem(slot, itemStack);
+    }
+
     @Override
     public String toString() {
         return super.toString().replace(getType() + " x " + getAmount(), getType() + " x 1");
@@ -120,9 +155,15 @@ public abstract class RItemStack extends ItemStack {
         }
 
         if(obj instanceof RItemStack rItem) {
-            return toString().equals(rItem.toString());
+            return rItem.getUuid().equals(this.uuid);
         }
 
-        return toString().equals(item.toString().replace(item.getType() + " x " + item.getAmount(), item.getType() + " x 1"));
+        String toString = toString();
+
+        if(this.localised) {
+            toString = toString.replace(getItemMeta().getDisplayName(), "");
+        }
+
+        return toString.equals(item.toString().replace(item.getType() + " x " + item.getAmount(), item.getType() + " x 1"));
     }
 }

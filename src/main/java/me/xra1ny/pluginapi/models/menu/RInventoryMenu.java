@@ -2,6 +2,7 @@ package me.xra1ny.pluginapi.models.menu;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import me.xra1ny.pluginapi.models.item.ItemBuilder;
 import me.xra1ny.pluginapi.models.user.RUser;
@@ -18,17 +19,19 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /** Used to create Interactive Inventories */
 @Slf4j
 public abstract class RInventoryMenu implements InventoryHolder {
+    @Getter(onMethod = @__(@NotNull))
+    private final String title;
+
+    @Getter
+    private final int size;
     /**
      * the inventory of this inventory menu
      */
     @Getter(onMethod = @__(@NotNull))
-    private final Inventory inventory;
+    private Inventory inventory;
 
     /**
      * the background item of this inventory menu
@@ -37,31 +40,30 @@ public abstract class RInventoryMenu implements InventoryHolder {
     private final ItemStack background;
 
     /**
-     * the users this inventory is currently open for
-     */
-    @Getter(onMethod = @__(@NotNull))
-    private final List<RUser> openUsers = new ArrayList<>();
-
-    /**
      * the previous menu of this inventory menu
      */
     @Getter(onMethod = @__(@Nullable))
     private final RInventoryMenu previousMenu;
+
+    @Getter
+    private final boolean localised;
 
     public RInventoryMenu(@Nullable RInventoryMenu previousMenu) {
         final InventoryMenuInfo info = getClass().getDeclaredAnnotation(InventoryMenuInfo.class);
 
         if(info == null) {
             throw new RuntimeException(new ClassNotAnnotatedException(getClass(), InventoryMenuInfo.class));
-        }else {
-            this.background = ItemBuilder.builder()
-                    .name(null)
-                    .type(info.background())
-                    .build()
-                    .toItemStack();
-            this.inventory = Bukkit.createInventory(this, info.size(), info.title());
-            this.previousMenu = previousMenu;
         }
+
+        this.title = info.title();
+        this.size = info.size();
+        this.background = ItemBuilder.builder()
+                .name(null)
+                .type(info.background())
+                .build()
+                .toItemStack();
+        this.previousMenu = previousMenu;
+        this.localised = info.localised();
     }
 
     /**
@@ -114,12 +116,9 @@ public abstract class RInventoryMenu implements InventoryHolder {
      * @param user the user
      */
     public final void open(@NotNull RUser user) {
-        if(this.openUsers.contains(user)) {
-            return;
-        }
+        this.inventory = Bukkit.createInventory(this, this.size, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), this.title) : this.title));
 
         // Open the created Inventory for the specified Player
         user.getPlayer().openInventory(this.inventory);
-        this.openUsers.add(user);
     }
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
+import me.xra1ny.pluginapi.models.user.RUser;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -42,6 +43,9 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
     @Getter(onMethod = @__(@NotNull))
     private final boolean requiresPlayer;
 
+    @Getter
+    private final boolean localised;
+
     public RCommand() throws ClassNotAnnotatedException {
         final CommandInfo info = getClass().getDeclaredAnnotation(CommandInfo.class);
 
@@ -53,6 +57,7 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
         this.permission = info.permission();
         this.args = info.args();
         this.requiresPlayer = info.requiresPlayer();
+        this.localised = info.localised();
     }
 
     /**
@@ -85,6 +90,8 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
                 return true;
             }
         }
+
+        final RUser user = RPlugin.getInstance().getUserManager().get((Player) sender);
 
         try {
             if(args.length == 1) {
@@ -175,7 +182,7 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
             if(arg != null) {
                 if(!arg.permission().isBlank() && !sender.hasPermission(arg.permission())) {
-                    RPlugin.sendMessage(sender, RPlugin.getInstance().getPlayerNoPermissionErrorMessage());
+                    RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getPlayerNoPermissionErrorMessage()) : RPlugin.getInstance().getPlayerNoPermissionErrorMessage()));
 
                     return true;
                 }
@@ -200,14 +207,14 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
             }
 
             if(commandReturnState == CommandReturnState.ERROR) {
-                sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandErrorMessage());
+                sender.sendMessage(RPlugin.getInstance().getPrefix() + (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandErrorMessage()) : RPlugin.getInstance().getCommandErrorMessage()));
             }else if(commandReturnState == CommandReturnState.INVALID_ARGS) {
-                sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandInvalidArgsErrorMessage());
+                sender.sendMessage(RPlugin.getInstance().getPrefix() + (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInvalidArgsErrorMessage()) : RPlugin.getInstance().getCommandInvalidArgsErrorMessage()));
             }
 
             return true;
         }catch(Exception ex) {
-            sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getCommandInternalErrorMessage());
+            sender.sendMessage(RPlugin.getInstance().getPrefix() + (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInternalErrorMessage()) : RPlugin.getInstance().getCommandInternalErrorMessage()));
             sender.sendMessage(ChatColor.RED.toString() + ex);
         }
 
@@ -302,7 +309,9 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
     private void sendHelpScreen(@NotNull CommandSender sender) {
         for(String line : help(sender)) {
-            sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + line);
+            final String finalLine = (sender instanceof Player ? this.localised ? RPlugin.getInstance().getLocalisationManager().get(RPlugin.getInstance().getUserManager().get((Player) sender).getLocalisationConfigName(), line) : line : line);
+
+            sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + finalLine);
         }
     }
 }

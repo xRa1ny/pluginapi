@@ -71,11 +71,6 @@ public final class DefaultPluginListener implements Listener {
             final RUser user = RPlugin.getInstance().getUserManager().get((Player) e.getPlayer());
 
             if (e.getInventory().getHolder() instanceof RInventoryMenu inventoryMenu) {
-                if(!inventoryMenu.getOpenUsers().contains(user)) {
-                    return;
-                }
-
-                inventoryMenu.getOpenUsers().remove(user);
                 inventoryMenu.onClose(e, user);
             }
         }catch(Exception ex) {

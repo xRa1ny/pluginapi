@@ -27,4 +27,6 @@ public @interface InventoryMenuInfo {
      */
     @NotNull
     Material background() default Material.AIR;
+
+    boolean localised() default false;
 }

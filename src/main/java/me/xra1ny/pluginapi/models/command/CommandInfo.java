@@ -44,4 +44,6 @@ public @interface CommandInfo {
      */
     @NotNull
     CommandArg[] args() default {};
+
+    boolean localised() default false;
 }

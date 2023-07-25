@@ -27,4 +27,6 @@ public @interface ItemStackInfo {
     ItemFlag[] itemFlags() default {};
 
     int cooldown() default 0;
+
+    boolean localised() default false;
 }
