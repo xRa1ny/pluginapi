@@ -3,6 +3,7 @@ package me.xra1ny.pluginapi.models.user;
 import lombok.Getter;
 import lombok.Setter;
 import me.xra1ny.pluginapi.RPlugin;
+import me.xra1ny.pluginapi.models.localisation.Replacement;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,10 @@ public class RUser {
     @Setter
     private long timeout;
 
+    @Getter(onMethod = @__(@Nullable))
+    @Setter(onParam = @__(@NotNull))
+    private String localisationConfigName;
+
     public RUser(@NotNull Player player) {
         this.player = player;
         this.timeout = RPlugin.getInstance().getUserManager().getUserTimeoutHandler().getUserTimeout();
@@ -57,5 +62,13 @@ public class RUser {
 
     public void sendMessage(@NotNull String... message) {
         RPlugin.sendMessage(this.player, message);
+    }
+
+    public void sendTranslatedMessage(@NotNull String localisationConfigName, @NotNull String key, @NotNull Replacement... replacements) {
+        sendMessage(RPlugin.getInstance().getLocalisationManager().get(localisationConfigName, key, replacements));
+    }
+
+    public void sendTranslatedMessage(@NotNull String key, @NotNull Replacement... replacements) {
+        sendTranslatedMessage(this.localisationConfigName, key, replacements);
     }
 }

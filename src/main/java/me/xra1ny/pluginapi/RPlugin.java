@@ -9,6 +9,7 @@ import me.xra1ny.pluginapi.models.command.CommandManager;
 import me.xra1ny.pluginapi.models.hologram.HologramManager;
 import me.xra1ny.pluginapi.models.item.ItemStackManager;
 import me.xra1ny.pluginapi.models.listener.ListenerManager;
+import me.xra1ny.pluginapi.models.localisation.LocalisationManager;
 import me.xra1ny.pluginapi.models.maintenance.ServerMaintenanceManager;
 import me.xra1ny.pluginapi.models.scoreboard.ScoreboardManager;
 import me.xra1ny.pluginapi.models.user.RUser;
@@ -180,6 +181,9 @@ public abstract class RPlugin extends JavaPlugin {
     @Getter(onMethod = @__(@NotNull))
     private CloudNetManager cloudNetManager;
 
+    @Getter(onMethod = @__(@NotNull))
+    private LocalisationManager localisationManager;
+
     /**
      * the time of plugin initialisation measured in milliseconds
      */
@@ -322,6 +326,7 @@ public abstract class RPlugin extends JavaPlugin {
             this.userInputWindowManager = new UserInputWindowManager();
             this.hexCodeManager = new HexCodeManager();
             this.cloudNetManager = new CloudNetManager();
+            this.localisationManager = new LocalisationManager(info.localisationConfigUrls());
             this.listenerManager.registerAll("me.xra1ny.pluginapi.listeners");
             getLogger().log(Level.INFO, "pluginapi enabled successfully!");
 
