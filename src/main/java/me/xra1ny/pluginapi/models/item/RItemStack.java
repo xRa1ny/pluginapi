@@ -60,6 +60,7 @@ public abstract class RItemStack extends ItemStack {
 
         setType(itemStack.getType());
         setAmount(itemStack.getAmount());
+        setItemMeta(itemStack.getItemMeta());
         this.cooldown = info.cooldown();
         this.localised = info.localised();
     }
