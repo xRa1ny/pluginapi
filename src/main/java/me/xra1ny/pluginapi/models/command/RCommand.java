@@ -91,7 +91,11 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
             }
         }
 
-        final RUser user = RPlugin.getInstance().getUserManager().get((Player) sender);
+        RUser user = null;
+
+        if(sender instanceof Player) {
+            user = RPlugin.getInstance().getUserManager().get((Player) sender);
+        }
 
         try {
             if(args.length == 1) {
@@ -182,7 +186,12 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
             if(arg != null) {
                 if(!arg.permission().isBlank() && !sender.hasPermission(arg.permission())) {
-                    RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getPlayerNoPermissionErrorMessage()) : RPlugin.getInstance().getPlayerNoPermissionErrorMessage()));
+                    if(sender instanceof Player) {
+                        RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getPlayerNoPermissionErrorMessage()) : RPlugin.getInstance().getPlayerNoPermissionErrorMessage()));
+                    }else {
+                        RPlugin.sendMessage(sender, RPlugin.getInstance().getPlayerNoPermissionErrorMessage());
+                    }
+
 
                     return true;
                 }
@@ -207,14 +216,27 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
             }
 
             if(commandReturnState == CommandReturnState.ERROR) {
-                sender.sendMessage(RPlugin.getInstance().getPrefix() + (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandErrorMessage()) : RPlugin.getInstance().getCommandErrorMessage()));
+                if(sender instanceof Player) {
+                    RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandErrorMessage()) : RPlugin.getInstance().getCommandErrorMessage()));
+                }else {
+                    RPlugin.sendMessage(sender, RPlugin.getInstance().getCommandErrorMessage());
+                }
             }else if(commandReturnState == CommandReturnState.INVALID_ARGS) {
-                sender.sendMessage(RPlugin.getInstance().getPrefix() + (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInvalidArgsErrorMessage()) : RPlugin.getInstance().getCommandInvalidArgsErrorMessage()));
+                if(sender instanceof Player) {
+                    RPlugin.sendMessage(sender, RPlugin.getInstance().getPrefix() + (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInvalidArgsErrorMessage()) : RPlugin.getInstance().getCommandInvalidArgsErrorMessage()));
+                }else {
+                    RPlugin.sendMessage(sender, RPlugin.getInstance().getCommandInvalidArgsErrorMessage());
+                }
             }
 
             return true;
         }catch(Exception ex) {
-            sender.sendMessage(RPlugin.getInstance().getPrefix() + (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInternalErrorMessage()) : RPlugin.getInstance().getCommandInternalErrorMessage()));
+            if(sender instanceof Player) {
+                RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInternalErrorMessage()) : RPlugin.getInstance().getCommandInternalErrorMessage()));
+            }else {
+                RPlugin.sendMessage(sender, RPlugin.getInstance().getCommandInternalErrorMessage());
+            }
+
             sender.sendMessage(ChatColor.RED.toString() + ex);
         }
 
