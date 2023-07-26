@@ -223,7 +223,7 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
                 }
             }else if(commandReturnState == CommandReturnState.INVALID_ARGS) {
                 if(sender instanceof Player) {
-                    RPlugin.sendMessage(sender, RPlugin.getInstance().getPrefix() + (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInvalidArgsErrorMessage()) : RPlugin.getInstance().getCommandInvalidArgsErrorMessage()));
+                    RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInvalidArgsErrorMessage()) : RPlugin.getInstance().getCommandInvalidArgsErrorMessage()));
                 }else {
                     RPlugin.sendMessage(sender, RPlugin.getInstance().getCommandInvalidArgsErrorMessage());
                 }
