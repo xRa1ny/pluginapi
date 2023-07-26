@@ -2,10 +2,10 @@ package me.xra1ny.pluginapi.models.scoreboard;
 
 import lombok.Getter;
 import me.xra1ny.pluginapi.RPlugin;
-import me.xra1ny.pluginapi.exceptions.GlobalScoreboardAlreadyRegisteredException;
-import me.xra1ny.pluginapi.exceptions.GlobalScoreboardNotYetRegisteredException;
-import me.xra1ny.pluginapi.exceptions.PerPlayerScoreboardAlreadyRegisteredException;
-import me.xra1ny.pluginapi.exceptions.PerPlayerScoreboardNotRegisteredException;
+import me.xra1ny.pluginapi.exceptions.scoreboard.GlobalScoreboardAlreadyRegisteredException;
+import me.xra1ny.pluginapi.exceptions.scoreboard.GlobalScoreboardNotYetRegisteredException;
+import me.xra1ny.pluginapi.exceptions.scoreboard.PerPlayerScoreboardAlreadyRegisteredException;
+import me.xra1ny.pluginapi.exceptions.scoreboard.PerPlayerScoreboardNotRegisteredException;
 import me.xra1ny.pluginapi.models.user.RUser;
 import org.jetbrains.annotations.NotNull;
 

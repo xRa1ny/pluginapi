@@ -2,8 +2,8 @@ package me.xra1ny.pluginapi.models.listener;
 
 import lombok.Getter;
 import me.xra1ny.pluginapi.RPlugin;
-import me.xra1ny.pluginapi.exceptions.ListenerAlreadyRegisteredException;
-import me.xra1ny.pluginapi.exceptions.ListenerNotRegisteredException;
+import me.xra1ny.pluginapi.exceptions.listener.ListenerAlreadyRegisteredException;
+import me.xra1ny.pluginapi.exceptions.listener.ListenerNotRegisteredException;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;

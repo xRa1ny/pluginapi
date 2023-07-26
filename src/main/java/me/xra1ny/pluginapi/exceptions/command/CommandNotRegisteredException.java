@@ -1,4 +1,4 @@
-package me.xra1ny.pluginapi.exceptions;
+package me.xra1ny.pluginapi.exceptions.command;
 
 import me.xra1ny.pluginapi.models.command.RCommand;
 import me.xra1ny.pluginapi.models.exception.RPluginException;

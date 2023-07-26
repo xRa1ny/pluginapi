@@ -2,8 +2,8 @@ package me.xra1ny.pluginapi.models.user;
 
 import lombok.Getter;
 import me.xra1ny.pluginapi.RPlugin;
-import me.xra1ny.pluginapi.exceptions.UserAlreadyRegisteredException;
-import me.xra1ny.pluginapi.exceptions.UserNotRegisteredException;
+import me.xra1ny.pluginapi.exceptions.user.UserAlreadyRegisteredException;
+import me.xra1ny.pluginapi.exceptions.user.UserNotRegisteredException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

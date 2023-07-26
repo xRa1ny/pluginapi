@@ -2,8 +2,8 @@ package me.xra1ny.pluginapi.models.user;
 
 import lombok.Getter;
 import me.xra1ny.pluginapi.RPlugin;
-import me.xra1ny.pluginapi.exceptions.UserInputWindowAlreadyRegisteredException;
-import me.xra1ny.pluginapi.exceptions.UserInputWindowNotRegisteredException;
+import me.xra1ny.pluginapi.exceptions.user.UserInputWindowAlreadyRegisteredException;
+import me.xra1ny.pluginapi.exceptions.user.UserInputWindowNotRegisteredException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

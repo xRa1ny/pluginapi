@@ -1,8 +1,8 @@
 package me.xra1ny.pluginapi.models.color;
 
-import me.xra1ny.pluginapi.exceptions.HomogeneousRainbowException;
-import me.xra1ny.pluginapi.exceptions.InvalidColorException;
-import me.xra1ny.pluginapi.exceptions.NumberRangeException;
+import me.xra1ny.pluginapi.exceptions.color.HomogeneousRainbowException;
+import me.xra1ny.pluginapi.exceptions.color.InvalidColorException;
+import me.xra1ny.pluginapi.exceptions.color.NumberRangeException;
 
 import java.util.ArrayList;
 

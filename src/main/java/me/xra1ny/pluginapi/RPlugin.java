@@ -6,6 +6,8 @@ import lombok.Setter;
 import me.xra1ny.pluginapi.models.cloudnet.CloudNetManager;
 import me.xra1ny.pluginapi.models.color.HexCodeManager;
 import me.xra1ny.pluginapi.models.command.CommandManager;
+import me.xra1ny.pluginapi.models.config.ConfigManager;
+import me.xra1ny.pluginapi.models.config.RConfig;
 import me.xra1ny.pluginapi.models.hologram.HologramManager;
 import me.xra1ny.pluginapi.models.item.ItemStackManager;
 import me.xra1ny.pluginapi.models.listener.ListenerManager;
@@ -184,6 +186,9 @@ public abstract class RPlugin extends JavaPlugin {
     @Getter(onMethod = @__(@NotNull))
     private LocalisationManager localisationManager;
 
+    @Getter(onMethod = @__(@NotNull))
+    private ConfigManager configManager;
+
     /**
      * the time of plugin initialisation measured in milliseconds
      */
@@ -308,10 +313,12 @@ public abstract class RPlugin extends JavaPlugin {
             Class<? extends RUser> userClass = RUser.class;
             Class<? extends RUserManager> userManagerClass = RUserManager.class;
             Class<? extends ServerMaintenanceManager> maintenanceManagerClass = ServerMaintenanceManager.class;
+            String[] localisationConfigUrls = {};
 
             if(info != null) {
                 userClass = info.userClass();
                 userManagerClass = info.userManagerClass();
+                localisationConfigUrls = info.localisationConfigUrls();
             }
 
             setupConfig();
@@ -326,7 +333,8 @@ public abstract class RPlugin extends JavaPlugin {
             this.userInputWindowManager = new UserInputWindowManager();
             this.hexCodeManager = new HexCodeManager();
             this.cloudNetManager = new CloudNetManager();
-            this.localisationManager = new LocalisationManager(info.localisationConfigUrls());
+            this.localisationManager = new LocalisationManager(localisationConfigUrls);
+            this.configManager = new ConfigManager();
             this.listenerManager.registerAll("me.xra1ny.pluginapi.listeners");
             getLogger().log(Level.INFO, "pluginapi enabled successfully!");
 
@@ -336,6 +344,11 @@ public abstract class RPlugin extends JavaPlugin {
                 saveConfig();
                 saveDefaultConfig();
                 this.startupTime = System.currentTimeMillis();
+
+                for(RConfig config : this.configManager.getConfigs()) {
+                    config.update();
+                }
+
                 getLogger().log(Level.INFO, "external plugin enabled successfully!");
             }catch(Exception ex) {
                 getLogger().log(Level.SEVERE, "error while enabling external plugin!", ex);

@@ -2,8 +2,8 @@ package me.xra1ny.pluginapi.models.hologram;
 
 import lombok.Getter;
 import me.xra1ny.pluginapi.RPlugin;
-import me.xra1ny.pluginapi.exceptions.HologramAlreadyRegisteredException;
-import me.xra1ny.pluginapi.exceptions.HologramNotRegisteredException;
+import me.xra1ny.pluginapi.exceptions.hologram.HologramAlreadyRegisteredException;
+import me.xra1ny.pluginapi.exceptions.hologram.HologramNotRegisteredException;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

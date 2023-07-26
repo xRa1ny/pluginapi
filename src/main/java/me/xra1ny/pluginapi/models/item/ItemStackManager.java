@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
-import me.xra1ny.pluginapi.exceptions.ItemStackAlreadyRegisteredException;
-import me.xra1ny.pluginapi.exceptions.ItemStackNotRegisteredException;
+import me.xra1ny.pluginapi.exceptions.item.ItemStackAlreadyRegisteredException;
+import me.xra1ny.pluginapi.exceptions.item.ItemStackNotRegisteredException;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 

@@ -1,4 +1,4 @@
-package me.xra1ny.pluginapi.exceptions;
+package me.xra1ny.pluginapi.exceptions.cloudnet;
 
 import de.dytanic.cloudnet.driver.service.ServiceTask;
 import me.xra1ny.pluginapi.models.exception.RPluginException;

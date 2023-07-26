@@ -1,4 +1,4 @@
-package me.xra1ny.pluginapi.exceptions;
+package me.xra1ny.pluginapi.exceptions.cloudnet;
 
 import me.xra1ny.pluginapi.models.exception.RPluginException;
 import org.jetbrains.annotations.NotNull;

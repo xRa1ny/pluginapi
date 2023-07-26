@@ -1,4 +1,4 @@
-package me.xra1ny.pluginapi.exceptions;
+package me.xra1ny.pluginapi.exceptions.color;
 
 
 import me.xra1ny.pluginapi.models.exception.RainbowException;

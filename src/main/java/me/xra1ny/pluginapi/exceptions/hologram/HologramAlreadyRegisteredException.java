@@ -1,4 +1,4 @@
-package me.xra1ny.pluginapi.exceptions;
+package me.xra1ny.pluginapi.exceptions.hologram;
 
 import me.xra1ny.pluginapi.models.exception.RPluginException;
 import me.xra1ny.pluginapi.models.hologram.Hologram;

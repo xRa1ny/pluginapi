@@ -2,7 +2,7 @@ package me.xra1ny.pluginapi.models.command;
 
 import lombok.Getter;
 import me.xra1ny.pluginapi.RPlugin;
-import me.xra1ny.pluginapi.exceptions.CommandAlreadyRegisteredException;
+import me.xra1ny.pluginapi.exceptions.command.CommandAlreadyRegisteredException;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
