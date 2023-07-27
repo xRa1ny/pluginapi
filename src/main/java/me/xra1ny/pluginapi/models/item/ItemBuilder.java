@@ -3,17 +3,20 @@ package me.xra1ny.pluginapi.models.item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
+import me.xra1ny.pluginapi.utils.NamespacedKeys;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 @Builder(toBuilder = true)
 @Getter(onMethod = @__(@NotNull))
@@ -42,6 +45,8 @@ public class ItemBuilder {
 
 		if(this.type != Material.AIR) {
 			final ItemMeta meta = item.getItemMeta();
+
+			meta.getPersistentDataContainer().set(NamespacedKeys.ITEM_UUID, PersistentDataType.STRING, UUID.randomUUID().toString());
 
 			if(this.name == null || this.name.isBlank()) {
 				meta.setDisplayName(ChatColor.RESET.toString());

@@ -5,10 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import me.xra1ny.pluginapi.models.user.RUser;
+import me.xra1ny.pluginapi.utils.NamespacedKeys;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,12 +65,6 @@ public abstract class RItemStack extends ItemStack {
         setItemMeta(itemStack.getItemMeta());
         this.cooldown = info.cooldown();
         this.localised = info.localised();
-    }
-
-    public RItemStack(@NotNull ItemStack item) {
-        super(item);
-
-        this.localised = false;
     }
 
     /**
@@ -155,16 +151,19 @@ public abstract class RItemStack extends ItemStack {
             return false;
         }
 
-        if(obj instanceof RItemStack rItem) {
-            return rItem.getUuid().equals(this.uuid);
+        if(!item.getItemMeta().getPersistentDataContainer().has(NamespacedKeys.ITEM_UUID, PersistentDataType.STRING)) {
+            String toString = toString();
+
+            if(this.localised) {
+                toString = toString.replace(getItemMeta().getDisplayName(), "");
+            }
+
+            return toString.equals(item.toString().replace(item.getType() + " x " + item.getAmount(), item.getType() + " x 1"));
         }
 
-        String toString = toString();
+        final UUID uuid = UUID.fromString(getItemMeta().getPersistentDataContainer().get(NamespacedKeys.ITEM_UUID, PersistentDataType.STRING));
+        final UUID otherUuid = UUID.fromString(item.getItemMeta().getPersistentDataContainer().get(NamespacedKeys.ITEM_UUID, PersistentDataType.STRING));
 
-        if(this.localised) {
-            toString = toString.replace(getItemMeta().getDisplayName(), "");
-        }
-
-        return toString.equals(item.toString().replace(item.getType() + " x " + item.getAmount(), item.getType() + " x 1"));
+        return uuid.equals(otherUuid);
     }
 }
