@@ -29,4 +29,6 @@ public @interface ItemStackInfo {
     int cooldown() default 0;
 
     boolean localised() default false;
+
+    boolean enchanted() default false;
 }

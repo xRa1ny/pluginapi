@@ -6,6 +6,7 @@ import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import me.xra1ny.pluginapi.models.user.RUser;
 import me.xra1ny.pluginapi.utils.NamespacedKeys;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -59,10 +60,15 @@ public abstract class RItemStack extends ItemStack {
                 .itemFlags(List.of(info.itemFlags()))
                 .build()
                 .toItemStack();
+        final ItemMeta meta = itemStack.getItemMeta();
+
+        if(info.enchanted()) {
+            meta.addEnchant(Enchantment.LUCK, 1, true);
+        }
 
         setType(itemStack.getType());
         setAmount(itemStack.getAmount());
-        setItemMeta(itemStack.getItemMeta());
+        setItemMeta(meta);
         this.cooldown = info.cooldown();
         this.localised = info.localised();
     }
@@ -165,5 +171,9 @@ public abstract class RItemStack extends ItemStack {
         final UUID otherUuid = UUID.fromString(item.getItemMeta().getPersistentDataContainer().get(NamespacedKeys.ITEM_UUID, PersistentDataType.STRING));
 
         return uuid.equals(otherUuid);
+    }
+
+    public boolean isEnchanted() {
+        return !getItemMeta().getEnchants().isEmpty();
     }
 }
