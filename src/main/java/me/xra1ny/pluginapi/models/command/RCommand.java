@@ -144,9 +144,6 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
                 values.add(arg);
             }
 
-            System.out.println("formatted: " + formattedArgsBuilder);
-            System.out.println("values: " + values);
-
             CommandArg finalCommandArg = null;
 
             for(CommandArg commandArg : this.args) {
