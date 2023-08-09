@@ -125,7 +125,7 @@ public abstract class RItemStack extends ItemStack {
         final ItemMeta itemMeta = itemStack.getItemMeta();
 
         if(this.localised) {
-            itemMeta.setDisplayName(RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), itemMeta.getDisplayName()));
+            itemMeta.setDisplayName(RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigClass(), itemMeta.getDisplayName()));
         }
 
         itemStack.setItemMeta(itemMeta);
@@ -138,7 +138,7 @@ public abstract class RItemStack extends ItemStack {
         final ItemMeta itemMeta = itemStack.getItemMeta();
 
         if(this.localised) {
-            itemMeta.setDisplayName(RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), itemMeta.getDisplayName()));
+            itemMeta.setDisplayName(RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigClass(), itemMeta.getDisplayName()));
         }
 
         itemStack.setItemMeta(itemMeta);

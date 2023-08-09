@@ -176,13 +176,13 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
             if(commandReturnState == CommandReturnState.ERROR) {
                 if(sender instanceof Player) {
-                    RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandErrorMessage()) : RPlugin.getInstance().getCommandErrorMessage()));
+                    RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigClass(), RPlugin.getInstance().getCommandErrorMessage()) : RPlugin.getInstance().getCommandErrorMessage()));
                 }else {
                     RPlugin.sendMessage(sender, RPlugin.getInstance().getCommandErrorMessage());
                 }
             }else if(commandReturnState == CommandReturnState.INVALID_ARGS) {
                 if(sender instanceof Player) {
-                    RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInvalidArgsErrorMessage()) : RPlugin.getInstance().getCommandInvalidArgsErrorMessage()));
+                    RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigClass(), RPlugin.getInstance().getCommandInvalidArgsErrorMessage()) : RPlugin.getInstance().getCommandInvalidArgsErrorMessage()));
                 }else {
                     RPlugin.sendMessage(sender, RPlugin.getInstance().getCommandInvalidArgsErrorMessage());
                 }
@@ -191,7 +191,7 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
             return true;
         }catch(Exception ex) {
             if(sender instanceof Player) {
-                RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), RPlugin.getInstance().getCommandInternalErrorMessage()) : RPlugin.getInstance().getCommandInternalErrorMessage()));
+                RPlugin.sendMessage(sender, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigClass(), RPlugin.getInstance().getCommandInternalErrorMessage()) : RPlugin.getInstance().getCommandInternalErrorMessage()));
             }else {
                 RPlugin.sendMessage(sender, RPlugin.getInstance().getCommandInternalErrorMessage());
             }
@@ -313,7 +313,7 @@ public abstract class RCommand implements CommandExecutor, TabExecutor {
 
     private void sendHelpScreen(@NotNull CommandSender sender) {
         for(String line : help(sender)) {
-            final String finalLine = (sender instanceof Player ? this.localised ? RPlugin.getInstance().getLocalisationManager().get(RPlugin.getInstance().getUserManager().get((Player) sender).getLocalisationConfigName(), line) : line : line);
+            final String finalLine = (sender instanceof Player ? this.localised ? RPlugin.getInstance().getLocalisationManager().get(RPlugin.getInstance().getUserManager().get((Player) sender).getLocalisationConfigClass(), line) : line : line);
 
             sender.sendMessage(RPlugin.getInstance().getPrefix() + RPlugin.getInstance().getChatColor() + finalLine);
         }

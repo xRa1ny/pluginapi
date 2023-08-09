@@ -1,5 +1,6 @@
 package me.xra1ny.pluginapi;
 
+import me.xra1ny.pluginapi.models.config.RConfig;
 import me.xra1ny.pluginapi.models.user.RUser;
 import me.xra1ny.pluginapi.models.user.RUserManager;
 import org.jetbrains.annotations.NotNull;
@@ -27,5 +28,5 @@ public @interface PluginInfo {
     Class<? extends RUserManager> userManagerClass() default RUserManager.class;
 
     @NotNull
-    String[] localisationConfigUrls() default {};
+    Class<? extends RConfig>[] localisationConfigClasses() default {};
 }

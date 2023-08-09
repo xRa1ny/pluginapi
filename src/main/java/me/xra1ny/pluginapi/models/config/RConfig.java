@@ -6,11 +6,10 @@ import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.reflections.ReflectionUtils;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 public abstract class RConfig {
     @Getter(onMethod = @__(@NotNull))
@@ -26,7 +25,7 @@ public abstract class RConfig {
     public RConfig() {
         final ConfigInfo info = getClass().getDeclaredAnnotation(ConfigInfo.class);
 
-        if(info == null) {
+        if (info == null) {
             throw new ClassNotAnnotatedException(getClass(), ConfigInfo.class);
         }
 
@@ -44,16 +43,14 @@ public abstract class RConfig {
         this.config = YamlConfiguration.loadConfiguration(this.configFile);
     }
 
-    public <T> T get(@NotNull Class<T> type, @NotNull String fieldName) {
-        final Field field = Arrays.stream(getClass().getDeclaredFields())
-                .filter(_field -> Arrays.stream(_field.getAnnotations())
-                        .map(Annotation::getClass)
-                        .toList().contains(Path.class))
+    public <T> T get(@NotNull Class<T> type, @NotNull String key) {
+        final Field field = ReflectionUtils.getAllFields(getClass()).stream()
+                .filter(_field -> _field.getDeclaredAnnotation(Path.class) != null)
                 .filter(_field -> _field.getType().equals(type))
-                .filter(_field -> _field.getName().equals(fieldName))
+                .filter(_field -> _field.getDeclaredAnnotation(Path.class).value().equalsIgnoreCase(key))
                 .findFirst().orElse(null);
 
-        if(field == null) {
+        if (field == null) {
             return null;
         }
 
@@ -64,10 +61,10 @@ public abstract class RConfig {
 
     @SneakyThrows
     public void save() {
-        for(Field field : getClass().getDeclaredFields()) {
+        for (Field field : ReflectionUtils.getAllFields(getClass())) {
             final Path path = field.getAnnotation(Path.class);
 
-            if(path == null) {
+            if (path == null) {
                 continue;
             }
 
@@ -80,10 +77,10 @@ public abstract class RConfig {
 
     @SneakyThrows
     public void update() {
-        for(Field field : getClass().getDeclaredFields()) {
+        for (Field field : ReflectionUtils.getAllFields(getClass())) {
             final Path path = field.getAnnotation(Path.class);
 
-            if(path == null) {
+            if (path == null) {
                 continue;
             }
 

@@ -313,12 +313,12 @@ public abstract class RPlugin extends JavaPlugin {
             Class<? extends RUser> userClass = RUser.class;
             Class<? extends RUserManager> userManagerClass = RUserManager.class;
             Class<? extends ServerMaintenanceManager> maintenanceManagerClass = ServerMaintenanceManager.class;
-            String[] localisationConfigUrls = {};
+            Class<? extends RConfig>[] localisationConfigs = new Class[0];
 
             if(info != null) {
                 userClass = info.userClass();
                 userManagerClass = info.userManagerClass();
-                localisationConfigUrls = info.localisationConfigUrls();
+                localisationConfigs = info.localisationConfigClasses();
             }
 
             setupConfig();
@@ -333,7 +333,7 @@ public abstract class RPlugin extends JavaPlugin {
             this.userInputWindowManager = new UserInputWindowManager();
             this.hexCodeManager = new HexCodeManager();
             this.cloudNetManager = new CloudNetManager();
-            this.localisationManager = new LocalisationManager(localisationConfigUrls);
+            this.localisationManager = new LocalisationManager(localisationConfigs);
             this.configManager = new ConfigManager();
             this.listenerManager.registerAll("me.xra1ny.pluginapi.listeners");
             getLogger().log(Level.INFO, "pluginapi enabled successfully!");

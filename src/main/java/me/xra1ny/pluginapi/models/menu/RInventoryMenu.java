@@ -116,7 +116,7 @@ public abstract class RInventoryMenu implements InventoryHolder {
      * @param user the user
      */
     public final void open(@NotNull RUser user) {
-        this.inventory = Bukkit.createInventory(this, this.size, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigName(), this.title) : this.title));
+        this.inventory = Bukkit.createInventory(this, this.size, (this.localised ? RPlugin.getInstance().getLocalisationManager().get(user.getLocalisationConfigClass(), this.title) : this.title));
 
         // Open the created Inventory for the specified Player
         user.getPlayer().openInventory(this.inventory);

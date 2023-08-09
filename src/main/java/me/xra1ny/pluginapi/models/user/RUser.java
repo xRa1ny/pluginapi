@@ -3,6 +3,7 @@ package me.xra1ny.pluginapi.models.user;
 import lombok.Getter;
 import lombok.Setter;
 import me.xra1ny.pluginapi.RPlugin;
+import me.xra1ny.pluginapi.models.config.RConfig;
 import me.xra1ny.pluginapi.models.localisation.Replacement;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ public class RUser {
 
     @Getter(onMethod = @__(@Nullable))
     @Setter(onParam = @__(@NotNull))
-    private String localisationConfigName;
+    private Class<? extends RConfig> localisationConfigClass;
 
     public RUser(@NotNull Player player) {
         this.player = player;
@@ -64,11 +65,11 @@ public class RUser {
         RPlugin.sendMessage(this.player, message);
     }
 
-    public void sendTranslatedMessage(@NotNull String localisationConfigName, @NotNull String key, @NotNull Replacement... replacements) {
-        sendMessage(RPlugin.getInstance().getLocalisationManager().get(localisationConfigName, key, replacements));
+    public void sendTranslatedMessage(@NotNull Class<? extends RConfig> localisationConfigClass, @NotNull String key, @NotNull Replacement... replacements) {
+        sendMessage(RPlugin.getInstance().getLocalisationManager().get(localisationConfigClass, key, replacements));
     }
 
     public void sendTranslatedMessage(@NotNull String key, @NotNull Replacement... replacements) {
-        sendTranslatedMessage(this.localisationConfigName, key, replacements);
+        sendTranslatedMessage(this.localisationConfigClass, key, replacements);
     }
 }
