@@ -8,6 +8,7 @@ import me.xra1ny.pluginapi.models.color.HexCodeManager;
 import me.xra1ny.pluginapi.models.command.CommandManager;
 import me.xra1ny.pluginapi.models.config.ConfigManager;
 import me.xra1ny.pluginapi.models.config.RConfig;
+import me.xra1ny.pluginapi.models.hologram.Hologram;
 import me.xra1ny.pluginapi.models.hologram.HologramManager;
 import me.xra1ny.pluginapi.models.item.ItemStackManager;
 import me.xra1ny.pluginapi.models.listener.ListenerManager;
@@ -365,6 +366,10 @@ public abstract class RPlugin extends JavaPlugin {
 
             for(Player player : Bukkit.getOnlinePlayers()) {
                 player.kickPlayer("Server is restarting...");
+            }
+
+            for(Hologram hologram : hologramManager.getHolograms()) {
+                hologram.remove();
             }
 
             getLogger().log(Level.INFO, "pluginapi disabled successfully!");

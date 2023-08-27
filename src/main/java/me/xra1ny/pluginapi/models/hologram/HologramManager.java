@@ -1,6 +1,7 @@
 package me.xra1ny.pluginapi.models.hologram;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.hologram.HologramAlreadyRegisteredException;
 import me.xra1ny.pluginapi.exceptions.hologram.HologramNotRegisteredException;
@@ -80,6 +81,7 @@ public final class HologramManager {
     /**
      * loads all holograms from config
      */
+    @SneakyThrows
     public void loadFromConfig() {
         RPlugin.getInstance().getLogger().log(Level.INFO, "attempting to load all holograms from config...");
 
@@ -87,22 +89,27 @@ public final class HologramManager {
             final ConfigurationSection section = this.config.getConfigurationSection(key);
 
             if(section == null) {
+                RPlugin.getInstance().getLogger().log(Level.INFO, "section is null, continuing...");
+
                 continue;
             }
 
-            final String name = section.getString("name");
             final List<String> lines = (List<String>) section.getList("lines");
-            final Material material = Material.valueOf(section.getString("type"));
+            final String materialName = section.getString("type");
+            final Material material = materialName == null ? null : Material.valueOf(materialName);
             final Location location = section.getLocation("location");
 
             // Skip Hologram Creation if Values are null
-            if(name == null || lines == null || location == null) {
+            if(lines == null || location == null) {
+                RPlugin.getInstance().getLogger().log(Level.WARNING, "section info is null, continuing...");
+
                 continue;
             }
 
             // Attempt to create the loaded Hologram from Config Information...
-            final Hologram hologram = new Hologram(name, location, material, lines.toArray(new String[0]));
+            final Hologram hologram = new Hologram(key, location, material, lines.toArray(new String[0]));
 
+            register(hologram);
             hologram.update();
         }
 
@@ -117,7 +124,7 @@ public final class HologramManager {
         final ConfigurationSection section = this.config.createSection(hologram.getName());
 
         section.set("lines", hologram.getLines());
-        section.set("material", hologram.getDisplayType().toString());
+        section.set("material", String.valueOf(hologram.getDisplayType()));
         section.set("location", hologram.getLocation());
 
         try {

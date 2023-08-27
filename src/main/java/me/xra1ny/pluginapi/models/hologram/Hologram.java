@@ -63,7 +63,6 @@ public final class Hologram {
         this.lines.addAll(List.of(lines));
         this.location = location;
         this.displayType = displayType;
-        update();
     }
 
     /**
