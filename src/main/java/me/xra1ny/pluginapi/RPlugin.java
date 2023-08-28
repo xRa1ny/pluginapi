@@ -323,6 +323,7 @@ public abstract class RPlugin extends JavaPlugin {
             }
 
             setupConfig();
+            reloadNonMySqlValues();
 
             this.listenerManager = new ListenerManager();
             this.commandManager = new CommandManager();
@@ -337,6 +338,7 @@ public abstract class RPlugin extends JavaPlugin {
             this.localisationManager = new LocalisationManager(localisationConfigs);
             this.configManager = new ConfigManager();
             this.listenerManager.registerAll("me.xra1ny.pluginapi.listeners");
+            this.commandManager.registerAll("me.xra1ny.pluginapi.commands");
             getLogger().log(Level.INFO, "pluginapi enabled successfully!");
 
             try {
@@ -409,5 +411,20 @@ public abstract class RPlugin extends JavaPlugin {
 
     public <T extends RUserManager> T getUserManager() {
         return (T) this.userManager;
+    }
+
+    /**
+     * called when this plugin enables or reloadNonMySqlValues() is called
+     */
+    protected abstract void onNonMySqlValueInitialisation() throws Exception;
+
+    public void reloadNonMySqlValues() {
+        try {
+            getLogger().log(Level.INFO, "reloading non mysql values...");
+            onNonMySqlValueInitialisation();
+            getLogger().log(Level.INFO, "non mysql values reloaded!");
+        } catch (Exception e) {
+            getLogger().log(Level.SEVERE, "error while reloading non mysql values!", e);
+        }
     }
 }
