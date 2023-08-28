@@ -323,7 +323,6 @@ public abstract class RPlugin extends JavaPlugin {
             }
 
             setupConfig();
-            reloadNonMySqlValues();
 
             this.listenerManager = new ListenerManager();
             this.commandManager = new CommandManager();
@@ -352,6 +351,7 @@ public abstract class RPlugin extends JavaPlugin {
                     config.update();
                 }
 
+                reloadNonMySqlValues();
                 getLogger().log(Level.INFO, "external plugin enabled successfully!");
             }catch(Exception ex) {
                 getLogger().log(Level.SEVERE, "error while enabling external plugin!", ex);
