@@ -45,6 +45,7 @@ public abstract class UserInputWindow {
         }
 
         this.users.put(user, this.timer);
+        onOpen(user);
     }
 
     /**
