@@ -48,10 +48,12 @@ public class ItemBuilder {
 
 			meta.getPersistentDataContainer().set(NamespacedKeys.ITEM_UUID, PersistentDataType.STRING, UUID.randomUUID().toString());
 
-			if(this.name == null || this.name.isBlank()) {
-				meta.setDisplayName(ChatColor.RESET.toString());
-			}else {
-				meta.setDisplayName(this.name);
+			if(this.name != null) {
+				if(this.name.isBlank()) {
+					meta.setDisplayName(ChatColor.RESET.toString());
+				}else {
+					meta.setDisplayName(this.name);
+				}
 			}
 
 			// Set Enchantments if set
