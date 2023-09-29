@@ -39,7 +39,7 @@ public class ItemBuilder {
 	private int amount = 1;
 
 	@NotNull
-	public ItemStack toItemStack() {
+	public RItemStack toItemStack() {
 		// Create ItemStack and ItemMeta
 		final ItemStack item = new ItemStack((type != null ? type : Material.COBBLESTONE), amount);
 
@@ -57,14 +57,14 @@ public class ItemBuilder {
 			}
 
 			// Set Enchantments if set
-			if(enchantments.size() > 0) {
+			if(!enchantments.isEmpty()) {
 				for(Entry<Enchantment, Integer> entrySet : enchantments.entrySet()) {
 					meta.addEnchant(entrySet.getKey(), entrySet.getValue(), true);
 				}
 			}
 
 			// Set ItemFlags is set, else use all
-			if(itemFlags.size() > 0) {
+			if(!itemFlags.isEmpty()) {
 				for(ItemFlag itemFlag : itemFlags) {
 					meta.addItemFlags(itemFlag);
 				}
@@ -75,7 +75,7 @@ public class ItemBuilder {
 			}
 
 			// Set Lore is set
-			if(lore.size() > 0) {
+			if(!lore.isEmpty()) {
 				meta.setLore(lore);
 			}
 
@@ -83,6 +83,6 @@ public class ItemBuilder {
 			item.setItemMeta(meta);
 		}
 
-		return item;
+		return RItemStack.build(item);
 	}
 }

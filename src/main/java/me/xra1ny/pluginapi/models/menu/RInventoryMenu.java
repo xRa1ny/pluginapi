@@ -19,12 +19,20 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/** Used to create Interactive Inventories */
+/**
+ * used to create interactive inventories
+ */
 @Slf4j
 public abstract class RInventoryMenu implements InventoryHolder {
+    /**
+     * the title of this inventory
+     */
     @Getter(onMethod = @__(@NotNull))
     private final String title;
 
+    /**
+     * the size in slots of this inventory
+     */
     @Getter
     private final int size;
     /**

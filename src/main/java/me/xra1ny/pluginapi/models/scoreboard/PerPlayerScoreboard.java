@@ -1,7 +1,9 @@
 package me.xra1ny.pluginapi.models.scoreboard;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.models.user.RUser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,10 +35,13 @@ public final class PerPlayerScoreboard extends RScoreboard {
     @Getter(onMethod = @__(@NotNull))
     private final Map<RUser, ScoreboardContent> scoreboards = new HashMap<>();
 
+    @SneakyThrows
     @SafeVarargs
     public PerPlayerScoreboard(@NotNull String title, @NotNull Function<RUser, String>... lines) {
         this.title = title;
         this.lines = Arrays.asList(lines);
+
+        RPlugin.getInstance().getScoreboardManager().register(this);
     }
 
     /**

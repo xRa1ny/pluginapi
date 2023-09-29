@@ -1,6 +1,7 @@
 package me.xra1ny.pluginapi.models.item;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
@@ -43,6 +44,7 @@ public abstract class RItemStack extends ItemStack {
     @Getter(onMethod = @__(@NotNull))
     private final UUID uuid = UUID.randomUUID();
 
+    @SneakyThrows
     public RItemStack() throws ClassNotAnnotatedException {
         @Nullable
         final ItemStackInfo info = getClass().getDeclaredAnnotation(ItemStackInfo.class);
@@ -71,6 +73,24 @@ public abstract class RItemStack extends ItemStack {
         setItemMeta(meta);
         this.cooldown = info.cooldown();
         this.localised = info.localised();
+
+        RPlugin.getInstance().getItemStackManager().register(this);
+    }
+
+    @SneakyThrows
+    public RItemStack(@NotNull ItemStack itemStack, boolean enchanted, boolean localised) {
+        final ItemMeta meta = itemStack.getItemMeta();
+
+        if(enchanted) {
+            meta.addEnchant(Enchantment.LUCK, 1, true);
+        }
+
+        setType(itemStack.getType());
+        setAmount(itemStack.getAmount());
+        setItemMeta(meta);
+        this.localised = localised;
+
+        RPlugin.getInstance().getItemStackManager().register(this);
     }
 
     /**
@@ -175,5 +195,35 @@ public abstract class RItemStack extends ItemStack {
 
     public boolean isEnchanted() {
         return !getItemMeta().getEnchants().isEmpty();
+    }
+
+    /**
+     * constructs an empty r item stack from a normal item stack copying its compatible attributes
+     *
+     * @param itemStack the item stack
+     * @return the r item stack
+     */
+    public static RItemStack build(@NotNull ItemStack itemStack) {
+        return new RItemStack(itemStack, !itemStack.getEnchantments().isEmpty(), false) {
+            @Override
+            public boolean onLeftClick(@NotNull PlayerInteractEvent e, @NotNull RUser user) {
+                return false;
+            }
+
+            @Override
+            public boolean onRightClick(@NotNull PlayerInteractEvent e, @NotNull RUser user) {
+                return false;
+            }
+
+            @Override
+            public void onCooldown(@NotNull PlayerInteractEvent e, @NotNull RUser user) {
+
+            }
+
+            @Override
+            public void onCooldownExpire(@NotNull RUser user) {
+
+            }
+        };
     }
 }

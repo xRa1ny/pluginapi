@@ -1,6 +1,8 @@
 package me.xra1ny.pluginapi.models.user;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
+import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.exceptions.ClassNotAnnotatedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,9 +32,12 @@ public abstract class UserInputWindow {
     @Getter(onMethod = @__(@NotNull))
     private final Map<RUser, Integer> users = new HashMap<>();
 
+    @SneakyThrows
     public UserInputWindow(int millis) throws ClassNotAnnotatedException {
         this.timer = millis;
         this.inputWindowHandler = new UserInputWindowHandler(this);
+
+        RPlugin.getInstance().getUserInputWindowManager().register(this);
     }
 
     /**

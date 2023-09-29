@@ -2,6 +2,8 @@ package me.xra1ny.pluginapi.models.hologram;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
+import me.xra1ny.pluginapi.RPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -58,11 +60,14 @@ public final class Hologram {
     @Setter(onParam = @__(@NotNull))
     private Material displayType;
 
+    @SneakyThrows
     public Hologram(@NotNull String name, @NotNull Location location, @Nullable Material displayType, @NotNull String... lines) {
         this.name = name;
         this.lines.addAll(List.of(lines));
         this.location = location;
         this.displayType = displayType;
+
+        RPlugin.getInstance().getHologramManager().register(this);
     }
 
     /**

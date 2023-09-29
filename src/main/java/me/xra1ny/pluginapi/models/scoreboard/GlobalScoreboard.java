@@ -1,7 +1,9 @@
 package me.xra1ny.pluginapi.models.scoreboard;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import me.xra1ny.pluginapi.RPlugin;
 import me.xra1ny.pluginapi.models.user.RUser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -34,9 +36,12 @@ public final class GlobalScoreboard extends RScoreboard {
     @Getter(onMethod = @__({@NotNull, @Unmodifiable}))
     private final List<RUser> users = new ArrayList<>();
 
+    @SneakyThrows
     public GlobalScoreboard(@NotNull String title, @NotNull String... lines) {
         this.scoreboardContent = new ScoreboardContent(title);
         this.lines = Arrays.asList(lines);
+
+        RPlugin.getInstance().getScoreboardManager().register(this);
     }
 
     /**
